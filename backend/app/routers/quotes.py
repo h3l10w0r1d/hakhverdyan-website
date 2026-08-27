@@ -1,0 +1,46 @@
+from typing import List
+
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
+
+from ..database import get_db
+from ..models import Product, QuoteRequest, QuoteRequestItem
+from ..schemas import QuoteRequestIn, QuoteRequestOut
+
+router = APIRouter(prefix="/api/quotes", tags=["quotes"])
+
+
+@router.post("", response_model=QuoteRequestOut, status_code=201)
+def create_quote(payload: QuoteRequestIn, db: Session = Depends(get_db)):
+    if not payload.items:
+        raise HTTPException(status_code=400, detail="Quote request must include at least one item")
+
+    quote = QuoteRequest(name=payload.name, phone=payload.phone, email=payload.email, note=payload.note, total=0)
+    db.add(quote)
+    db.flush()
+
+    total = 0
+    for item in payload.items:
+        product = db.get(Product, item.product_id)
+        if not product:
+            raise HTTPException(status_code=404, detail=f"Product '{item.product_id}' not found")
+        line_total = product.price * item.qty
+        total += line_total
+        db.add(QuoteRequestItem(
+            quote_request_id=quote.id,
+            product_id=product.id,
+            product_name=product.name,
+            unit=product.unit,
+            qty=item.qty,
+            price_at_time=product.price,
+        ))
+
+    quote.total = total
+    db.commit()
+    db.refresh(quote)
+    return quote
+
+
+@router.get("", response_model=List[QuoteRequestOut])
+def list_quotes(db: Session = Depends(get_db)):
+    return db.query(QuoteRequest).order_by(QuoteRequest.created_at.desc()).all()
