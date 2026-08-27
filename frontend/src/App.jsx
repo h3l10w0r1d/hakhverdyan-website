@@ -1,13 +1,15 @@
+import { lazy } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
 import Home from "./pages/Home";
-import About from "./pages/About";
-import Catalog from "./pages/Catalog";
-import Services from "./pages/Services";
-import Contacts from "./pages/Contacts";
-import Blog from "./pages/Blog";
-import BlogPost from "./pages/BlogPost";
 import { QuoteCartProvider } from "./context/QuoteCartContext";
+
+const About = lazy(() => import("./pages/About"));
+const Catalog = lazy(() => import("./pages/Catalog"));
+const Services = lazy(() => import("./pages/Services"));
+const Contacts = lazy(() => import("./pages/Contacts"));
+const Blog = lazy(() => import("./pages/Blog"));
+const BlogPost = lazy(() => import("./pages/BlogPost"));
 
 export default function App() {
   return (

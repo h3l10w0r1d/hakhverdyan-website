@@ -65,7 +65,7 @@ export default function Nav() {
               {link.label}
             </NavLink>
           ))}
-          <LanguageSwitch className="mobile-menu-lang" />
+          <LanguageSwitch className="mobile-menu-lang" align="center" />
           <MagnetButton as="button" className="nav-cta mobile-menu-cta">{t("nav.requestQuote")}</MagnetButton>
         </div>
       )}

@@ -1,10 +1,11 @@
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Nav from "./Nav";
 import Footer from "./Footer";
 import QuoteCart from "./QuoteCart";
+import PageLoader from "./PageLoader";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -75,7 +76,9 @@ export default function Layout() {
       <div className="cursor-glow" id="cursorGlow"></div>
 
       <Nav />
-      <Outlet />
+      <Suspense fallback={<PageLoader />}>
+        <Outlet />
+      </Suspense>
       <Footer />
       <QuoteCart />
     </>
