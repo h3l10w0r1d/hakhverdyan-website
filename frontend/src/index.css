@@ -489,8 +489,8 @@ footer{ position:relative; z-index:1; padding:64px 32px 30px; border-top:1px sol
 .qty-stepper button{ width:32px; height:38px; border:none; background:none; cursor:pointer; font-size:16px; color:var(--ink); font-family:inherit; }
 .qty-stepper span{ min-width:20px; text-align:center; font-size:14px; font-weight:600; }
 .add-quote-btn{
-  flex:1; display:flex; align-items:center; justify-content:center; gap:7px; white-space:nowrap;
-  background:var(--ink); color:#fff; border:none; border-radius:999px; padding:0 14px; height:38px;
+  flex:1; min-width:0; display:flex; align-items:center; justify-content:center; gap:7px; text-align:center;
+  background:var(--ink); color:#fff; border:none; border-radius:999px; padding:9px 14px; min-height:38px;
   font-weight:600; font-size:13.5px; cursor:pointer; transition:background .25s ease; font-family:inherit;
 }
 .add-quote-btn:hover{ background:var(--red); }
@@ -724,9 +724,9 @@ footer{ position:relative; z-index:1; padding:64px 32px 30px; border-top:1px sol
   .float-card .ic{ width:30px; height:30px; border-radius:10px; }
   .float-card .txt-title{ font-size:12px; }
   .float-card .txt-sub{ font-size:10.5px; }
-  .card-stock{ top:6%; left:-4%; bottom:auto; }
-  .card-rating{ bottom:6%; left:-4%; top:auto; }
-  .badge-promo{ top:6%; right:-4%; left:auto; bottom:auto; padding:8px 12px; font-size:11.5px; }
+  .card-stock{ top:6%; left:-4%; bottom:auto; max-width:62%; }
+  .card-rating{ bottom:6%; left:-4%; top:auto; max-width:62%; }
+  .badge-promo{ top:6%; right:-4%; left:auto; bottom:auto; padding:8px 12px; font-size:11.5px; max-width:52%; white-space:normal; line-height:1.3; text-align:left; }
   nav ul{display:none;}
   .nav-right .nav-cta{ display:none; }
   .nav-burger{ display:flex; }
@@ -741,6 +741,18 @@ footer{ position:relative; z-index:1; padding:64px 32px 30px; border-top:1px sol
 @media (max-width: 560px){
   .form-row{ grid-template-columns:1fr; }
   .contact-form{ padding:24px; }
+}
+@media (max-width: 400px){
+  /* Logo + language switch + burger get tight on narrow phones, especially with longer
+     Armenian labels — trim padding and drop the language code text, keep the flag. */
+  header{ padding:16px 14px; }
+  .nav-inner{ padding:8px 8px 8px 16px; }
+  .logo{ font-size:16.5px; gap:6px; }
+  .nav-right{ gap:6px; }
+  .nav-right > .lang-switch .lang-switch-trigger{ padding:8px 9px; gap:0; }
+  .nav-right > .lang-switch .lang-switch-trigger .lang-code{ display:none; }
+  .nav-right > .lang-switch .lang-switch-trigger .lang-chevron{ margin-left:2px; }
+  .nav-burger{ width:38px; height:38px; }
 }
 @media (max-width: 1080px){
   .why-grid{ grid-template-columns:repeat(2,1fr); }
