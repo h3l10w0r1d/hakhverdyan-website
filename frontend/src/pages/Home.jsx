@@ -163,7 +163,9 @@ export default function Home() {
         <div className="marquee-mask">
           <div className="marquee-track" id="marqueeTrack">
             {Array.from({ length: 2 }).map((_, i) => (
-              <span key={i}>MEDOS&nbsp;&nbsp;&nbsp;&nbsp;MACO&nbsp;&nbsp;&nbsp;&nbsp;ARPLAS&nbsp;&nbsp;&nbsp;&nbsp;PALRAM&nbsp;&nbsp;&nbsp;&nbsp;FLEXIDOOR</span>
+              <span key={i}>
+                MEDOS&nbsp;&nbsp;&nbsp;&nbsp;ALCOTEK&nbsp;&nbsp;&nbsp;&nbsp;MARGA CIPTA&nbsp;&nbsp;&nbsp;&nbsp;MACROLUX&nbsp;&nbsp;&nbsp;&nbsp;DONJOY&nbsp;&nbsp;&nbsp;&nbsp;AR STEEL&nbsp;&nbsp;&nbsp;&nbsp;DORMAKABA&nbsp;&nbsp;&nbsp;&nbsp;FLEXIDOOR&nbsp;&nbsp;&nbsp;&nbsp;ALUMINCO&nbsp;&nbsp;&nbsp;&nbsp;PALRAM&nbsp;&nbsp;&nbsp;&nbsp;PLASTILUX&nbsp;&nbsp;&nbsp;&nbsp;COMUNELLO GROUP
+              </span>
             ))}
           </div>
         </div>

@@ -70,7 +70,7 @@ export default function About() {
             <div className="stat"><CountUp target={500} suffix="+" delay={0.9} duration={1.4} /><div className="label">{t("about.statProjects")}</div></div>
             <div className="stat"><CountUp target={15} suffix="+" delay={0.9} duration={1.4} /><div className="label">{t("about.statYears")}</div></div>
             <div className="stat"><CountUp target={2} delay={0.9} duration={1.4} /><div className="label">{t("about.statLocations")}</div></div>
-            <div className="stat"><CountUp target={5} suffix="+" delay={0.9} duration={1.4} /><div className="label">{t("about.statPartners")}</div></div>
+            <div className="stat"><CountUp target={12} delay={0.9} duration={1.4} /><div className="label">{t("about.statPartners")}</div></div>
           </div>
         </div>
       </section>

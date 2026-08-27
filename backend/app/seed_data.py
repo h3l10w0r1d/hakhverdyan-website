@@ -171,7 +171,7 @@ BLOG_POSTS = [
             "մեխանիզմն օգտագործվում են ամեն օր։ Դա համակարգի այն մասն է, որն իրականացնում է ամենամեծ "
             "մեխանիկական աշխատանքը, և սովորաբար դա առաջինն է փչանում, եթե ցածրորակ է — շատ առաջ, քան "
             "շրջանակը կամ ապակին ցույց կտան որևէ մաշվածություն։\n\n"
-            "Հաստատված եվրոպական արտադրողների կցամասերը (մենք համագործակցում ենք Maco-ի և այլոց հետ) "
+            "Հաստատված եվրոպական արտադրողների կցամասերը (մենք համագործակցում ենք dormakaba-ի և այլոց հետ) "
             "կառուցված են փաստագրված ցիկլային փորձարկման ստանդարտներով — տասնյակ հազարավոր բացման-փակման "
             "ցիկլեր մինչև խափանումը, փորձարկված և գնահատված, ոչ միայն հայտարարված։ Չգնահատված "
             "մատակարարներից ցածրգնանոց կցամասերն այս փորձարկումը բաց են թողնում, և դա հայտնվում է "
@@ -191,7 +191,7 @@ BLOG_POSTS = [
             "get used every single day. It's the part of the system doing the most mechanical work, and it's "
             "usually the first thing to fail if it's low quality — long before the frame or glass show any "
             "wear at all.\n\n"
-            "Hardware from established European manufacturers (we work with Maco, among others) is built to "
+            "Hardware from established European manufacturers (we work with dormakaba, among others) is built to "
             "documented cycle-testing standards — tens of thousands of open-close cycles before failure, tested "
             "and rated, not just claimed. Budget hardware from unrated suppliers skips that testing, and it "
             "shows up a year or two in as sticking handles, misaligned multi-point locks, or hinges that start "
@@ -335,12 +335,12 @@ PRODUCTS = [
         "badge": "Ships in 3 days", "badge_hy": _SHIPS_3_HY, "is_promo": False, "icon": "pvc-chamber",
     },
     {
-        "id": "maco-handle", "name": "Maco Door Handle — Chrome", "name_hy": "Maco դռան բռնակ — Քրոմապատ", "category": "hardware",
+        "id": "maco-handle", "name": "dormakaba Door Handle — Chrome", "name_hy": "dormakaba դռան բռնակ — Քրոմապատ", "category": "hardware",
         "spec": "Hardware, chrome finish", "spec_hy": "Կցամաս, քրոմապատ հարդարանք", "price": 4500, "old_price": None, "unit": "/ pc",
         "badge": "In stock", "badge_hy": _IN_STOCK_HY, "is_promo": False, "icon": "handle",
     },
     {
-        "id": "maco-lock", "name": "Maco Window Lock Set", "name_hy": "Maco պատուհանի կողպեքների հավաքածու", "category": "hardware",
+        "id": "maco-lock", "name": "dormakaba Window Lock Set", "name_hy": "dormakaba պատուհանի կողպեքների հավաքածու", "category": "hardware",
         "spec": "Multi-point locking hardware", "spec_hy": "Բազմակետ փակող կցամաս", "price": 3200, "old_price": None, "unit": "/ set",
         "badge": "In stock", "badge_hy": _IN_STOCK_HY, "is_promo": False, "icon": "lock",
     },
