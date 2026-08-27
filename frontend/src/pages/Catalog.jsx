@@ -1,22 +1,17 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import gsap from "gsap";
 import useReveal from "../lib/useReveal";
 import MagnetButton from "../components/MagnetButton";
 import ProductCard from "../components/ProductCard";
 import { fetchProducts } from "../lib/api";
+import { localized } from "../lib/localized";
 import { ArrowIcon, SearchIcon, GlobeIcon, WrenchIcon, ClockIcon } from "../lib/icons";
 
-const TABS = [
-  { key: "all", label: "All" },
-  { key: "profiles", label: "Profiles" },
-  { key: "hardware", label: "Hardware" },
-  { key: "sheets", label: "Sheets" },
-  { key: "doors", label: "Doors & Gates" },
-  { key: "facades", label: "Facades" },
-];
-
 export default function Catalog() {
+  const { t, i18n } = useTranslation();
+  const lang = i18n.resolvedLanguage;
   const [searchParams, setSearchParams] = useSearchParams();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -24,6 +19,15 @@ export default function Catalog() {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("default");
   const finalCtaRef = useRef(null);
+
+  const TABS = [
+    { key: "all", label: t("catalog.tabAll") },
+    { key: "profiles", label: t("catalog.tabProfiles") },
+    { key: "hardware", label: t("catalog.tabHardware") },
+    { key: "sheets", label: t("catalog.tabSheets") },
+    { key: "doors", label: t("catalog.tabDoors") },
+    { key: "facades", label: t("catalog.tabFacades") },
+  ];
 
   useEffect(() => {
     setLoading(true);
@@ -36,6 +40,7 @@ export default function Catalog() {
   useEffect(() => {
     const cat = searchParams.get("cat");
     if (cat && TABS.some(t => t.key === cat)) setActiveTab(cat);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
   function selectTab(key) {
@@ -48,14 +53,17 @@ export default function Catalog() {
     if (activeTab !== "all") list = list.filter(p => p.category === activeTab);
     if (search.trim()) {
       const needle = search.trim().toLowerCase();
-      list = list.filter(p => p.name.toLowerCase().includes(needle) || p.spec.toLowerCase().includes(needle));
+      list = list.filter(p =>
+        localized(p, "name", lang).toLowerCase().includes(needle) ||
+        localized(p, "spec", lang).toLowerCase().includes(needle)
+      );
     }
     const sorted = [...list];
     if (sort === "price-asc") sorted.sort((a, b) => a.price - b.price);
     else if (sort === "price-desc") sorted.sort((a, b) => b.price - a.price);
-    else if (sort === "name-asc") sorted.sort((a, b) => a.name.localeCompare(b.name));
+    else if (sort === "name-asc") sorted.sort((a, b) => localized(a, "name", lang).localeCompare(localized(b, "name", lang)));
     return sorted;
-  }, [products, activeTab, search, sort]);
+  }, [products, activeTab, search, sort, lang]);
 
   useReveal([loading]);
 
@@ -88,33 +96,33 @@ export default function Catalog() {
     <>
       <section className="cat-hero">
         <div className="cat-hero-inner">
-          <div className="section-tag">Catalog</div>
-          <h1>Every profile, panel, and fitting we stock.</h1>
-          <p className="sub">Search, filter, and add straight to your quote — same fixed pricing, same 48-hour turnaround.</p>
+          <div className="section-tag">{t("catalog.tag")}</div>
+          <h1>{t("catalog.title")}</h1>
+          <p className="sub">{t("catalog.sub")}</p>
 
           <div className="search-row">
             <label className="search-box">
               <SearchIcon />
               <input
                 type="text"
-                placeholder='Search products — e.g. "aluminum", "handle", "ABS"'
+                placeholder={t("catalog.searchPlaceholder")}
                 value={search}
                 onChange={e => setSearch(e.target.value)}
               />
             </label>
             <select className="sort-select" value={sort} onChange={e => setSort(e.target.value)}>
-              <option value="default">Sort: Featured</option>
-              <option value="price-asc">Price: Low to High</option>
-              <option value="price-desc">Price: High to Low</option>
-              <option value="name-asc">Name: A–Z</option>
+              <option value="default">{t("catalog.sortFeatured")}</option>
+              <option value="price-asc">{t("catalog.sortPriceAsc")}</option>
+              <option value="price-desc">{t("catalog.sortPriceDesc")}</option>
+              <option value="name-asc">{t("catalog.sortNameAsc")}</option>
             </select>
           </div>
 
           <div className="trust-strip">
-            <div className="trust-item"><span className="ic">֏</span>Fixed pricing</div>
-            <div className="trust-item"><span className="ic"><GlobeIcon size={15} /></span>EU-sourced</div>
-            <div className="trust-item"><span className="ic"><WrenchIcon size={15} /></span>Full installation</div>
-            <div className="trust-item"><span className="ic"><ClockIcon size={15} /></span>48h quotes</div>
+            <div className="trust-item"><span className="ic">֏</span>{t("catalog.trustPricing")}</div>
+            <div className="trust-item"><span className="ic"><GlobeIcon size={15} /></span>{t("catalog.trustEu")}</div>
+            <div className="trust-item"><span className="ic"><WrenchIcon size={15} /></span>{t("catalog.trustInstall")}</div>
+            <div className="trust-item"><span className="ic"><ClockIcon size={15} /></span>{t("catalog.trustQuotes")}</div>
           </div>
         </div>
       </section>
@@ -134,7 +142,7 @@ export default function Catalog() {
               ))}
             </div>
             <div className="result-count">
-              {loading ? "Loading…" : `${visible.length} product${visible.length === 1 ? "" : "s"}`}
+              {loading ? t("common.loading") : t("catalog.productCount", { count: visible.length })}
             </div>
           </div>
 
@@ -144,8 +152,8 @@ export default function Catalog() {
 
           {!loading && visible.length === 0 && (
             <div className="no-results">
-              <h3>No products match that search.</h3>
-              <p>Try a different keyword or clear the category filter.</p>
+              <h3>{t("catalog.noResultsTitle")}</h3>
+              <p>{t("catalog.noResultsDesc")}</p>
             </div>
           )}
         </div>
@@ -154,11 +162,11 @@ export default function Catalog() {
       <section className="block" style={{ paddingTop: 0 }}>
         <div className="container">
           <div className="final-cta reveal" id="finalCta" ref={finalCtaRef}>
-            <h2>Can't find a spec you need?</h2>
-            <p>Call +374&nbsp;60&nbsp;770&nbsp;700 or send your drawings — we source most items on request.</p>
+            <h2>{t("catalog.finalCtaTitle")}</h2>
+            <p>{t("catalog.finalCtaDesc")}</p>
             <div className="cta-row">
-              <MagnetButton as="button" className="btn-primary">Request a Quote <ArrowIcon size={16} /></MagnetButton>
-              <button className="btn-secondary">Call +374 60 770 700</button>
+              <MagnetButton as="button" className="btn-primary">{t("common.requestQuote")} <ArrowIcon size={16} /></MagnetButton>
+              <button className="btn-secondary">{t("common.callUs")}</button>
             </div>
           </div>
         </div>

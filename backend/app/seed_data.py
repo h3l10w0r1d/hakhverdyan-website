@@ -11,10 +11,32 @@ BLOG_POSTS = [
     {
         "slug": "aluminum-vs-pvc-windows",
         "title": "Aluminum vs. PVC Windows: Which Should You Choose?",
+        "title_hy": "Ալյումինե թե՞ PVC պատուհաններ. ո՞րն ընտրել",
         "excerpt": "Both systems perform well — the right choice depends on your building type, budget, and climate exposure. Here's how to decide.",
+        "excerpt_hy": "Երկու համակարգերն էլ լավ են աշխատում — ճիշտ ընտրությունը կախված է շենքի տեսակից, բյուջեից և կլիմայական պայմաններից։ Ահա թե ինչպես որոշել։",
         "category": "Guides",
+        "category_hy": "Ուղեցույցներ",
         "cover_url": _WINDOW_PHOTO,
         "published_at": datetime(2026, 8, 20),
+        "content_hy": (
+            "Ալյումին-PVC բանավեճն իրականում կապված չէ նրա հետ, թե որ նյութն է «ավելի լավը» — այն կապված է "
+            "նրա հետ, թե որն է հարմար կոնկրետ խնդրի համար։ Գրեթե ամեն գնանշման ժամանակ մեզ հարցնում են սա, "
+            "ուստի ահա ազնիվ վերլուծությունը։\n\n"
+            "Ալյումինե պրոֆիլներն ավելի ամուր են՝ ըստ շրջանակի միլիմետրի, ինչը նշանակում է ավելի բարակ "
+            "եզրագծեր և ավելի մեծ ապակու մակերես նույն բացվածքի համար։ Դա դարձնում է դրանք լռելյայն ընտրություն "
+            "առևտրային ցուցափեղկերի, մեծ սահող դռների և ցանկացած վայրի համար, որտեղ ճարտարապետական տեսքը "
+            "կարևոր է նույնքան, որքան ֆունկցիան։ Փոխզիջումը ջերմահաղորդականությունն է — ալյումինին անհրաժեշտ "
+            "է ջերմային խզում, որպեսզի լավ գործի մեկուսացման առումով, ինչը արժե ստուգել գնումից առաջ։\n\n"
+            "PVC պրոֆիլներն ի սկզբանե ավելի լավ են մեկուսացնում՝ շնորհիվ բազմախցիկ կառուցվածքի (մենք ունենք "
+            "5- և 10մմ խցիկների տարբերակներ)։ Դրանք սովորաբար ավելի ծախսարդյունավետ ընտրություն են ստանդարտ "
+            "բնակելի պատուհանների համար, որտեղ ջերմային արդյունավետությունը ավելի կարևոր է, քան շրջանակի "
+            "բարակությունը։ Շրջանակներն ավելի հաստ են, ինչը որոշ տանտերերի էսթետիկորեն դուր չի գալիս, բայց "
+            "արդյունավետությունը մեկ դրամի հաշվով դժվար է գերազանցել։\n\n"
+            "Մեր հիմնական սկզբունքը. եթե ապակեպատում եք խանութի ցուցափեղկ, պատշգամբի դուռ կամ ցանկացած "
+            "մեծաչափ բացվածք, դիտարկեք ալյումինը։ Եթե փոխարինում եք ստանդարտ բնակելի պատուհանները, և ջերմային "
+            "արդյունավետությունը գերակայություն է, PVC-ն սովորաբար հաղթում է գնով։ Բերեք մեզ ձեր չափսերը, և "
+            "մենք կհաշվարկենք երկուսն էլ, որպեսզի կարողանաք համեմատել իրական թվերը՝ առանց կռահելու։"
+        ),
         "content": (
             "The aluminum-vs-PVC debate isn't really about which material is \"better\" — it's about which "
             "one fits the specific job. We get asked this on nearly every quote, so here's the honest breakdown.\n\n"
@@ -36,10 +58,36 @@ BLOG_POSTS = [
     {
         "slug": "signs-your-windows-need-replacing",
         "title": "5 Signs Your Windows Need Replacing",
+        "title_hy": "5 նշան, որ ձեր պատուհանները փոխարինման կարիք ունեն",
         "excerpt": "Drafts and fogging are obvious. The less obvious signs cost you more the longer you ignore them.",
+        "excerpt_hy": "Քամու անցումն ու մշուշապատումն ակնհայտ են։ Ավելի քիչ ակնհայտ նշանները ձեզ ավելի թանկ են նստում, որքան երկար անտեսում եք դրանք։",
         "category": "Maintenance",
+        "category_hy": "Սպասարկում",
         "cover_url": _FACADE_PHOTO,
         "published_at": datetime(2026, 8, 13),
+        "content_hy": (
+            "Մարդկանց մեծամասնությունը փոխարինում է պատուհանները միայն այն բանից հետո, երբ ինչ-որ բան "
+            "լիովին փչանում է։ Այդ պահին սովորաբար արդեն վճարել եք խափանման համար՝ ջեռուցման ավելի բարձր "
+            "հաշիվների տեսքով մեկ-երկու տարվա ընթացքում։ Ահա, թե ինչ ստուգել, մինչև հասնի այդ աստիճանի։\n\n"
+            "1. Խտացում ապակիների միջև։ Եթե տեսնում եք մշուշ կամ խոնավություն երկշերտ ապակեպատման միավորի "
+            "ներսում (ոչ մակերեսին, այլ ապակու շերտերի միջև), հերմետիկացումը փչացել է։ Այդ միավորը "
+            "փոխարինման կարիք ունի — մաքրելը չի օգնի։\n\n"
+            "2. Դժվարություն բացելիս կամ փակելիս։ Պրոֆիլները թեթևակի կորանում են 15-20 տարվա ընթացքում, "
+            "հատկապես հարավահայաց պատերի վրա՝ ուժեղ արևի ազդեցության տակ։ Եթե պատուհանը, որը նախկինում "
+            "հեշտությամբ էր բացվում, այժմ ուժ է պահանջում, հավանաբար շրջանակը տեղաշարժվել է։\n\n"
+            "3. Տեսանելի լույս շրջանակի շուրջ՝ փակ վիճակում։ Սա սովորաբար նշանակում է, որ եղանակապաշտպան "
+            "կնիքը վատացել է, կամ շրջանակն ինքն է թեթևակի բաժանվել պատից։ Ցանկացած դեպքում, դուք կորցնում "
+            "եք կլիմայացված օդը 24/7 ռեժիմով։\n\n"
+            "4. Նկատելի քամու անցում նույնիսկ պատուհանն ամբողջովին փակած ժամանակ։ Քամոտ օրը մոտեցրեք "
+            "վառված մոմ կամ ձեռքը շրջանակի եզրին — եթե զգում եք շարժում, օդն անցնում է։\n\n"
+            "5. Աճող էներգիայի հաշիվներ՝ առանց այլ բացատրության։ Հին, մեկ խցիկով PVC կամ առանց ջերմային "
+            "խզման ալյումինե շրջանակները կորցնում են զարմանալիորեն շատ ջերմություն։ Եթե ձեր հաշիվներն "
+            "աստիճանաբար բարձրացել են մի քանի տարվա ընթացքում, և ոչինչ այլ չի փոխվել, պատուհանները "
+            "հավանական մեղավորն են։\n\n"
+            "Այս ոչ մեկը շտապ, նույն օրվա վերանորոգում չի պահանջում, բայց դրանցից մեկից ավելիի անտեսումը "
+            "սովորաբար նշանակում է, որ դուք արդեն անցել եք այն կետը, երբ փոխարինումն ավելի արագ է "
+            "վճարվում, քան վերանորոգումը։"
+        ),
         "content": (
             "Most people replace windows only after something breaks outright. By then, you've usually already "
             "paid for the failure in higher heating bills for a year or two. Here's what to check before it "
@@ -65,10 +113,32 @@ BLOG_POSTS = [
     {
         "slug": "how-to-read-a-window-quote",
         "title": "How to Read a Window Quote (and Avoid Hidden Costs)",
+        "title_hy": "Ինչպես կարդալ պատուհանի գնանշումը (և խուսափել թաքնված ծախսերից)",
         "excerpt": "Not all quotes are priced the same way. Here's what should be itemized before you sign anything.",
+        "excerpt_hy": "Բոլոր գնանշումները միատեսակ չեն գնագոյացվում։ Ահա, թե ինչը պետք է մանրամասնված լինի, մինչև ինչ-որ բան ստորագրելը։",
         "category": "Buying Guide",
+        "category_hy": "Գնման ուղեցույց",
         "cover_url": _SHEET_PHOTO,
         "published_at": datetime(2026, 8, 6),
+        "content_hy": (
+            "Պատուհանի կամ դռան գնանշումը պետք է ճշգրիտ ասի, թե ինչի համար եք վճարում, մինչև որևէ աշխատանք "
+            "սկսվի։ Եթե գնանշումը պարզապես մեկ ընդհանուր թիվ է, խնդրեք մանրամասն բաշխում — վստահելի "
+            "մատակարարները միշտ պատրաստ կունենան այն։\n\n"
+            "Նվազագույնը, պատշաճ գնանշումը պետք է առանձնացնի՝ նյութի արժեքը (պրոֆիլ, ապակի, կցամասեր — "
+            "գնված միավորով, որպեսզի կարողանաք համեմատել այլ մատակարարների հետ), տեղադրման աշխատանքը, "
+            "հին միավորի ապամոնտաժումն ու հեռացումը, եթե կիրառելի է, և բացվածքի պահանջած ցանկացած "
+            "կառուցվածքային աշխատանք (չափի փոփոխում, վերնաշարվածքի վերանորոգում, հերմետիկացում)։\n\n"
+            "Ամենատարածված թաքնված ծախսը, որը մենք տեսնում ենք այլ ընկերությունների կողմից ավելացվում "
+            "ավելի ուշ, հեռացումն է՝ հին շրջանակների և ապակու տեղափոխումը։ Նախապես հարցրեք՝ արդյոք դա "
+            "ներառված է։ Երկրորդ ամենատարածվածը «օբյեկտի պայմանների» լրավճարներն են, որոնք ավելացվում են "
+            "այն բանից հետո, երբ թիմը հասնում է և հայտնաբերում, որ բացվածքը ուղղանկյուն չէ։ Գնանշումից "
+            "առաջ լավ չափագրման այցը պետք է սա հայտնաբերի նախապես, ոչ թե այն բանից հետո, երբ ձեր գումարն "
+            "արդեն հանձնված է։\n\n"
+            "Վերջապես, ստուգեք՝ արդյոք գինը ֆիքսված է, թե գնահատական։ Մենք տրամադրում ենք ֆիքսված գներ "
+            "անձնական կամ լուսանկարով չափագրումից հետո, հատուկ որպեսզի աշխատանքի սկսվելուց հետո "
+            "վերաբանակցում չլինի — եթե դա ստանդարտ պրակտիկա չէ ձեր դիմած մատակարարի մոտ, հարցրեք, թե "
+            "ինչու։"
+        ),
         "content": (
             "A window or door quote should tell you exactly what you're paying for before any work starts. If "
             "a quote is just a single lump-sum number, ask for a breakdown — reputable suppliers will always "
@@ -89,10 +159,33 @@ BLOG_POSTS = [
     {
         "slug": "why-eu-sourced-hardware-matters",
         "title": "Why EU-Sourced Hardware Matters for Long-Term Durability",
+        "title_hy": "Ինչու է եվրոպական ծագման կցամասերի կարևորությունը երկարաժամկետ ամրության համար",
         "excerpt": "Handles and locks take the most daily wear of any part of a window or door system. Sourcing matters more than people think.",
+        "excerpt_hy": "Բռնակներն ու կողպեքները կրում են պատուհանի կամ դռան համակարգի ամենօրյա մաշվածության մեծ մասը։ Ծագումն ավելի կարևոր է, քան մարդիկ կարծում են։",
         "category": "Materials",
+        "category_hy": "Նյութեր",
         "cover_url": _HARDWARE_PHOTO,
         "published_at": datetime(2026, 7, 28),
+        "content_hy": (
+            "Պատուհանի շրջանակին կարող են դիպչել տարեկան երկու անգամ՝ մաքրման ժամանակ։ Բռնակն ու փակող "
+            "մեխանիզմն օգտագործվում են ամեն օր։ Դա համակարգի այն մասն է, որն իրականացնում է ամենամեծ "
+            "մեխանիկական աշխատանքը, և սովորաբար դա առաջինն է փչանում, եթե ցածրորակ է — շատ առաջ, քան "
+            "շրջանակը կամ ապակին ցույց կտան որևէ մաշվածություն։\n\n"
+            "Հաստատված եվրոպական արտադրողների կցամասերը (մենք համագործակցում ենք Maco-ի և այլոց հետ) "
+            "կառուցված են փաստագրված ցիկլային փորձարկման ստանդարտներով — տասնյակ հազարավոր բացման-փակման "
+            "ցիկլեր մինչև խափանումը, փորձարկված և գնահատված, ոչ միայն հայտարարված։ Չգնահատված "
+            "մատակարարներից ցածրգնանոց կցամասերն այս փորձարկումը բաց են թողնում, և դա հայտնվում է "
+            "մեկ-երկու տարվա ընթացքում՝ խրվող բռնակների, սխալ դասավորված բազմակետ կողպեքների կամ "
+            "իրանի ծանրության տակ կախվող ամրակալիչների տեսքով։\n\n"
+            "Փաստագրված արտադրողից մատակարարման մյուս առավելությունը՝ փոխարինող մասերը մնում են "
+            "հասանելի։ Եթե բռնակը կամ կողպող մեխանիզմը փչանա հինգ տարի հետո, մենք սովորաբար կարող ենք "
+            "գտնել ճշգրիտ փոխարինող մասը՝ ամբողջ միավորը փոխարինելու փոխարեն։ Դա հաճախ հնարավոր չէ "
+            "ընդհանուր կամ անանուն կցամասերի դեպքում, որտեղ կոնկրետ մոդելը կարող է պարզապես այլևս "
+            "գոյություն չունենալ։\n\n"
+            "Դա գնանշման մեջ փոքր տող է՝ ապակու և շրջանակի համեմատ, բայց անհամաչափորեն պատասխանատու է "
+            "այն բանի համար, թե ինչպես կզգացվի պատուհանը կամ դուռն օգտագործելիս հաջորդ տասնհինգ "
+            "տարիների ընթացքում։"
+        ),
         "content": (
             "A window frame might get touched twice a year during cleaning. The handle and locking mechanism "
             "get used every single day. It's the part of the system doing the most mechanical work, and it's "
@@ -114,10 +207,34 @@ BLOG_POSTS = [
     {
         "slug": "sectional-vs-swing-gates",
         "title": "Sectional vs. Swing Gates: Picking the Right Garage Door",
+        "title_hy": "Սեկցիոն թե՞ բացվող դարպաս. ճիշտ ավտոտնակի դռան ընտրություն",
         "excerpt": "Space, climate, and how often you use the garage all affect which gate type makes sense.",
+        "excerpt_hy": "Տարածքը, կլիման և ավտոտնակի օգտագործման հաճախականությունը որոշում են, թե որ դարպասի տեսակն է հարմար։",
         "category": "Guides",
+        "category_hy": "Ուղեցույցներ",
         "cover_url": _GATE_PHOTO,
         "published_at": datetime(2026, 7, 20),
+        "content_hy": (
+            "Սեկցիոն դարպասները բացվում են ուղղահայաց՝ հորիզոնական վահանակների սեկցիաներով, շարժվելով "
+            "առաստաղի երկայնքով։ Բացվող դարպասները բացվում են դեպի դուրս՝ ծխնիների վրա, ինչպես մեծաչափ "
+            "դռների զույգ։ Երկուսն էլ տարածված են Երևանում, և ճիշտ ընտրությունը սովորաբար կախված է երեք "
+            "հարցից։\n\n"
+            "Որքա՞ն ազատ տարածք ունեք։ Սեկցիոն դռներին անհրաժեշտ է վերին ռելսի տարածք ավտոտնակի ներսում, "
+            "բայց ոչ մի ազատ տարածք առջևում — օգտակար է, եթե կայանում եք փողոցին մոտ կամ ունեք կարճ "
+            "մուտք։ Բացվող դարպասներին անհրաժեշտ է ազատ տարածք բացվածքի առջևում՝ բացվելու համար, ինչը "
+            "կարող է խնդիր լինել քաղաքային նեղ հողամասերում։\n\n"
+            "Որքա՞ն հաճախ եք օգտագործում այն։ Սեկցիոն դարպասները բնականաբար համադրվում են ավտոմատ "
+            "բացիչների հետ և ավելի հարմար ընտրություն են, եթե օրվա ընթացքում մի քանի անգամ ներս-դուրս եք "
+            "անում։ Բացվող դարպասներն էլ կարող են ավտոմատացվել, բայց մեխանիզմն ավելի բացահայտված է "
+            "եղանակին և ընդհանուր առմամբ ավելի շատ սպասարկում է պահանջում ժամանակի ընթացքում։\n\n"
+            "Ինչպիսի՞ կլիմայի եք ենթարկվում։ Սեկցիոն դարպասներն ավելի ամուր են հերմետիկացնում ամբողջ "
+            "բացվածքով, ինչը կարևոր է, եթե ավտոտնակը ջեռուցվում է կամ կցված է կենցաղային տարածքին։ "
+            "Ջերմամեկուսացված սեկցիոն վահանակները (մենք ունենք և՛ ստանդարտ, և՛ ջերմամեկուսացված) զգալի "
+            "տարբերություն են ստեղծում ջեռուցվող ավտոտնակում ձմռանը։\n\n"
+            "Եթե վստահ չեք, թե որն է հարմար ձեր դասավորությանը, ուղարկեք մեզ բացվածքի լուսանկարը և "
+            "մոտավորապես, թե ինչպես է օգտագործվում առջևի տարածքը — դա սովորաբար բավական է անմիջապես "
+            "բացառելու համար մի տարբերակ։"
+        ),
         "content": (
             "Sectional gates open vertically in horizontal panel sections, tracking up along the ceiling. Swing "
             "gates open outward on hinges, like a pair of oversized doors. Both are common in Yerevan, and the "
@@ -139,10 +256,35 @@ BLOG_POSTS = [
     {
         "slug": "winter-checklist-windows-doors",
         "title": "Preparing Your Home for Winter: A Window & Door Checklist",
+        "title_hy": "Տան նախապատրաստում ձմռանը. պատուհանների և դռների ստուգաթերթ",
         "excerpt": "A few hours of checks in autumn can prevent the most common (and most expensive) winter problems.",
+        "excerpt_hy": "Աշնանը մի քանի ժամ ստուգումը կանխարգելում է ամենատարածված (և ամենաթանկ) ձմեռային խնդիրները։",
         "category": "Maintenance",
+        "category_hy": "Սպասարկում",
         "cover_url": _DOOR_PHOTO,
         "published_at": datetime(2026, 7, 10),
+        "content_hy": (
+            "Պատուհանների և դռների խնդիրների մեծ մասը, որ ի հայտ են գալիս ձմռանը, փաստացի տեսանելի են "
+            "եղել աշնանը — պարզապես հայտնաբերվում են դժվար ճանապարհով՝ առաջին իսկապես ցուրտ գիշերին։ "
+            "Կարճ սեզոնային ստուգումը կկանխարգելի դրանց մեծ մասը։\n\n"
+            "Ստուգեք եղանակապաշտպան կնիքը ամեն արտաքին դռան վրա։ Ռետինե կնիքները սեղմվում և ճաքում են "
+            "մի քանի տարվա ընթացքում, հատկապես ամենաշատ օգտագործվող դռան վրա։ Եթե տեսնում եք լույս փակ "
+            "դռան շուրջ կամ զգում եք քամու անցում ծնկի բարձրության վրա, կնիքը փոխարինման կարիք ունի — "
+            "դա էժան լուծում է, որը կանխարգելում է ջերմության զգալի կորուստ։\n\n"
+            "Փորձարկեք ամեն պատուհանի կողպեքն ամբողջովին փակած վիճակում, ոչ միայն ամրացված։ Բազմակետ "
+            "կողպեքները սեղմում են շրջանակը կնիքին միայն ամբողջովին ամրացված ժամանակ — փակ, բայց "
+            "չկողպված պատուհանը կարող է կորցնել զգալի ջերմություն, նույնիսկ եթե թվում է, թե փակ է։\n\n"
+            "Նայեք PVC և ալյումինե շրջանակների ջրահեռացման անցքերին — փոքր բացվածքներ ներքևի ռելսի "
+            "վրա, որոնք թույլ են տալիս խտացմանը դուրս գալ։ Եթե դրանք արգելափակված են կեղտով կամ աղբով, "
+            "ջուրը կարող է կուտակվել և սառչել շրջանակի ներսում ցրտահարության ժամանակ, ինչը ճնշում է "
+            "ստեղծում կնիքների վրա։\n\n"
+            "Վերջապես, ստուգեք ցանկացած արտաքին հերմետիկ (սիլիկոն կամ նման) նյութ, որտեղ շրջանակները "
+            "հանդիպում են պատին։ UV ճառագայթումը մի քանի տարվա ընթացքում քայքայում է այն, և այստեղ "
+            "ճաքած կնիքը ամենատարածված աղբյուրներից մեկն է քամու անցումների համար, որը մարդիկ "
+            "սխալմամբ համարում են պատուհանի խնդիր, մինչդեռ դա իրականում տեղադրման կնիքի խնդիր է։\n\n"
+            "Եթե սա ցույց է տալիս խնդիր, արժե ամրագրել զննում մինչև ցուրտն է հաստատվում, ոչ թե դրա "
+            "ընթացքում — մասերն ու ժամանակացույցն ավելի սեղմ են դառնում, երբ ձմեռն արդեն եկել է։"
+        ),
         "content": (
             "Most window and door problems that show up in winter were actually visible in autumn — they just "
             "get discovered the hard way, on the first genuinely cold night. A short seasonal check catches "
@@ -166,80 +308,85 @@ BLOG_POSTS = [
     },
 ]
 
+_IN_STOCK_HY = "Առկա է"
+_SHIPS_3_HY = "Առաքում 3 օրում"
+_SHIPS_7_HY = "Առաքում 7 օրում"
+_MADE_TO_ORDER_HY = "Պատրաստվում է պատվերով"
+
 PRODUCTS = [
     {
-        "id": "alu-t40", "name": "Aluminum Profile T-40", "category": "profiles",
-        "spec": "T-shaped, mill finish", "price": 6800, "old_price": None, "unit": "/ m",
-        "badge": "In stock", "is_promo": False, "icon": "aluminum",
+        "id": "alu-t40", "name": "Aluminum Profile T-40", "name_hy": "Ալյումինե պրոֆիլ T-40", "category": "profiles",
+        "spec": "T-shaped, mill finish", "spec_hy": "T-աձև, գործարանային մշակում", "price": 6800, "old_price": None, "unit": "/ m",
+        "badge": "In stock", "badge_hy": _IN_STOCK_HY, "is_promo": False, "icon": "aluminum",
     },
     {
-        "id": "alu-l25", "name": "Aluminum Profile Angle L-25", "category": "profiles",
-        "spec": "Angle section, mill finish", "price": 4200, "old_price": None, "unit": "/ m",
-        "badge": "In stock", "is_promo": False, "icon": "aluminum-angle",
+        "id": "alu-l25", "name": "Aluminum Profile Angle L-25", "name_hy": "Ալյումինե պրոֆիլ Անկյուն L-25", "category": "profiles",
+        "spec": "Angle section, mill finish", "spec_hy": "Անկյունային հատված, գործարանային մշակում", "price": 4200, "old_price": None, "unit": "/ m",
+        "badge": "In stock", "badge_hy": _IN_STOCK_HY, "is_promo": False, "icon": "aluminum-angle",
     },
     {
-        "id": "pvc-10", "name": "PVC Profile 10mm", "category": "profiles",
-        "spec": "Glass-compatible, energy-efficient", "price": 5200, "old_price": None, "unit": "/ m",
-        "badge": "In stock", "is_promo": False, "icon": "pvc",
+        "id": "pvc-10", "name": "PVC Profile 10mm", "name_hy": "PVC պրոֆիլ 10մմ", "category": "profiles",
+        "spec": "Glass-compatible, energy-efficient", "spec_hy": "Ապակեհամատեղելի, էներգախնայող", "price": 5200, "old_price": None, "unit": "/ m",
+        "badge": "In stock", "badge_hy": _IN_STOCK_HY, "is_promo": False, "icon": "pvc",
     },
     {
-        "id": "pvc-5ch", "name": "PVC Profile 5-Chamber", "category": "profiles",
-        "spec": "Higher insulation rating", "price": 7600, "old_price": None, "unit": "/ m",
-        "badge": "Ships in 3 days", "is_promo": False, "icon": "pvc-chamber",
+        "id": "pvc-5ch", "name": "PVC Profile 5-Chamber", "name_hy": "PVC պրոֆիլ 5-խցիկով", "category": "profiles",
+        "spec": "Higher insulation rating", "spec_hy": "Բարձրացված ջերմամեկուսացում", "price": 7600, "old_price": None, "unit": "/ m",
+        "badge": "Ships in 3 days", "badge_hy": _SHIPS_3_HY, "is_promo": False, "icon": "pvc-chamber",
     },
     {
-        "id": "maco-handle", "name": "Maco Door Handle — Chrome", "category": "hardware",
-        "spec": "Hardware, chrome finish", "price": 4500, "old_price": None, "unit": "/ pc",
-        "badge": "In stock", "is_promo": False, "icon": "handle",
+        "id": "maco-handle", "name": "Maco Door Handle — Chrome", "name_hy": "Maco դռան բռնակ — Քրոմապատ", "category": "hardware",
+        "spec": "Hardware, chrome finish", "spec_hy": "Կցամաս, քրոմապատ հարդարանք", "price": 4500, "old_price": None, "unit": "/ pc",
+        "badge": "In stock", "badge_hy": _IN_STOCK_HY, "is_promo": False, "icon": "handle",
     },
     {
-        "id": "maco-lock", "name": "Maco Window Lock Set", "category": "hardware",
-        "spec": "Multi-point locking hardware", "price": 3200, "old_price": None, "unit": "/ set",
-        "badge": "In stock", "is_promo": False, "icon": "lock",
+        "id": "maco-lock", "name": "Maco Window Lock Set", "name_hy": "Maco պատուհանի կողպեքների հավաքածու", "category": "hardware",
+        "spec": "Multi-point locking hardware", "spec_hy": "Բազմակետ փակող կցամաս", "price": 3200, "old_price": None, "unit": "/ set",
+        "badge": "In stock", "badge_hy": _IN_STOCK_HY, "is_promo": False, "icon": "lock",
     },
     {
-        "id": "abs-sheet", "name": "ABS Sheet 1200×600mm", "category": "sheets",
-        "spec": "0.8mm — while stock lasts", "price": 2400, "old_price": 3000, "unit": "/ m²",
-        "badge": "-20% now", "is_promo": True, "icon": "layers",
+        "id": "abs-sheet", "name": "ABS Sheet 1200×600mm", "name_hy": "ABS թերթ 1200×600մմ", "category": "sheets",
+        "spec": "0.8mm — while stock lasts", "spec_hy": "0.8մմ — մինչև պաշարների սպառումը", "price": 2400, "old_price": 3000, "unit": "/ m²",
+        "badge": "-20% now", "badge_hy": "-20% հիմա", "is_promo": True, "icon": "layers",
     },
     {
-        "id": "ss-sheet", "name": "Stainless Steel Sheet 1.2mm", "category": "sheets",
-        "spec": "Brushed, architectural grade", "price": 9900, "old_price": None, "unit": "/ m²",
-        "badge": "Ships in 3 days", "is_promo": False, "icon": "sheen",
+        "id": "ss-sheet", "name": "Stainless Steel Sheet 1.2mm", "name_hy": "Չժանգոտվող պողպատե թերթ 1.2մմ", "category": "sheets",
+        "spec": "Brushed, architectural grade", "spec_hy": "Փայլեցված, ճարտարապետական որակի", "price": 9900, "old_price": None, "unit": "/ m²",
+        "badge": "Ships in 3 days", "badge_hy": _SHIPS_3_HY, "is_promo": False, "icon": "sheen",
     },
     {
-        "id": "palram-poly", "name": "Polycarbonate Sheet (Palram)", "category": "sheets",
-        "spec": "UV-protected, twin-wall", "price": 8500, "old_price": None, "unit": "/ m²",
-        "badge": "In stock", "is_promo": False, "icon": "polycarbonate",
+        "id": "palram-poly", "name": "Polycarbonate Sheet (Palram)", "name_hy": "Պոլիկարբոնատե թերթ (Palram)", "category": "sheets",
+        "spec": "UV-protected, twin-wall", "spec_hy": "UV-պաշտպանված, երկշերտ", "price": 8500, "old_price": None, "unit": "/ m²",
+        "badge": "In stock", "badge_hy": _IN_STOCK_HY, "is_promo": False, "icon": "polycarbonate",
     },
     {
-        "id": "int-door", "name": "Interior Door — Classic", "category": "doors",
-        "spec": "Custom-fit, made to measure", "price": 62000, "old_price": None, "unit": "/ unit",
-        "badge": "Made to order", "is_promo": False, "icon": "door-split",
+        "id": "int-door", "name": "Interior Door — Classic", "name_hy": "Ներսի դուռ — Դասական", "category": "doors",
+        "spec": "Custom-fit, made to measure", "spec_hy": "Անհատական չափսերով, ըստ պատվերի", "price": 62000, "old_price": None, "unit": "/ unit",
+        "badge": "Made to order", "badge_hy": _MADE_TO_ORDER_HY, "is_promo": False, "icon": "door-split",
     },
     {
-        "id": "int-door-flush", "name": "Interior Door — Modern Flush", "category": "doors",
-        "spec": "Handle-less, minimalist finish", "price": 74000, "old_price": None, "unit": "/ unit",
-        "badge": "Made to order", "is_promo": False, "icon": "door-flush",
+        "id": "int-door-flush", "name": "Interior Door — Modern Flush", "name_hy": "Ներսի դուռ — Ժամանակակից հարթ", "category": "doors",
+        "spec": "Handle-less, minimalist finish", "spec_hy": "Առանց բռնակի, մինիմալիստական հարդարանք", "price": 74000, "old_price": None, "unit": "/ unit",
+        "badge": "Made to order", "badge_hy": _MADE_TO_ORDER_HY, "is_promo": False, "icon": "door-flush",
     },
     {
-        "id": "sect-gate", "name": "Sectional Gate — Standard", "category": "doors",
-        "spec": "Up to 3 × 2.5m opening", "price": 380000, "old_price": None, "unit": "/ unit",
-        "badge": "Made to order", "is_promo": False, "icon": "gate",
+        "id": "sect-gate", "name": "Sectional Gate — Standard", "name_hy": "Սեկցիոն դարպաս — Ստանդարտ", "category": "doors",
+        "spec": "Up to 3 × 2.5m opening", "spec_hy": "Մինչև 3 × 2.5մ բացվածք", "price": 380000, "old_price": None, "unit": "/ unit",
+        "badge": "Made to order", "badge_hy": _MADE_TO_ORDER_HY, "is_promo": False, "icon": "gate",
     },
     {
-        "id": "sect-gate-ins", "name": "Sectional Gate — Insulated", "category": "doors",
-        "spec": "Thermal break panels", "price": 460000, "old_price": None, "unit": "/ unit",
-        "badge": "Made to order", "is_promo": False, "icon": "gate-insulated",
+        "id": "sect-gate-ins", "name": "Sectional Gate — Insulated", "name_hy": "Սեկցիոն դարպաս — Ջերմամեկուսացված", "category": "doors",
+        "spec": "Thermal break panels", "spec_hy": "Ջերմամեկուսիչ վահանակներով", "price": 460000, "old_price": None, "unit": "/ unit",
+        "badge": "Made to order", "badge_hy": _MADE_TO_ORDER_HY, "is_promo": False, "icon": "gate-insulated",
     },
     {
-        "id": "glass-facade", "name": "Glass Facade Panel", "category": "facades",
-        "spec": "Structural glazing system", "price": 24000, "old_price": None, "unit": "/ m²",
-        "badge": "Ships in 7 days", "is_promo": False, "icon": "facade-grid",
+        "id": "glass-facade", "name": "Glass Facade Panel", "name_hy": "Ապակե ճակատի վահանակ", "category": "facades",
+        "spec": "Structural glazing system", "spec_hy": "Կառուցվածքային ապակեպատման համակարգ", "price": 24000, "old_price": None, "unit": "/ m²",
+        "badge": "Ships in 7 days", "badge_hy": _SHIPS_7_HY, "is_promo": False, "icon": "facade-grid",
     },
     {
-        "id": "struct-glazing", "name": "Structural Glazing Unit", "category": "facades",
-        "spec": "Frameless, double-glazed", "price": 31000, "old_price": None, "unit": "/ m²",
-        "badge": "Ships in 7 days", "is_promo": False, "icon": "facade-frameless",
+        "id": "struct-glazing", "name": "Structural Glazing Unit", "name_hy": "Կառուցվածքային ապակեպատման միավոր", "category": "facades",
+        "spec": "Frameless, double-glazed", "spec_hy": "Առանց շրջանակի, կրկնակի ապակեպատում", "price": 31000, "old_price": None, "unit": "/ m²",
+        "badge": "Ships in 7 days", "badge_hy": _SHIPS_7_HY, "is_promo": False, "icon": "facade-frameless",
     },
 ]

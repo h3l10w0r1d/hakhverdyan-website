@@ -1,22 +1,24 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { fetchProducts } from "../lib/api";
 import ProductCard from "./ProductCard";
-
-const TABS = [
-  { key: "all", label: "All" },
-  { key: "profiles", label: "Profiles" },
-  { key: "hardware", label: "Hardware" },
-  { key: "sheets", label: "Sheets" },
-  { key: "doors", label: "Doors & Gates" },
-  { key: "facades", label: "Facades" },
-];
 
 // A curated subset shown on the homepage — one from each category, ABS sheet promo included.
 const FEATURED_IDS = ["alu-t40", "pvc-10", "maco-handle", "abs-sheet", "ss-sheet", "int-door", "sect-gate", "glass-facade"];
 
 export default function FeaturedProducts() {
+  const { t } = useTranslation();
   const [products, setProducts] = useState([]);
   const [activeTab, setActiveTab] = useState("all");
+
+  const TABS = [
+    { key: "all", label: t("catalog.tabAll") },
+    { key: "profiles", label: t("catalog.tabProfiles") },
+    { key: "hardware", label: t("catalog.tabHardware") },
+    { key: "sheets", label: t("catalog.tabSheets") },
+    { key: "doors", label: t("catalog.tabDoors") },
+    { key: "facades", label: t("catalog.tabFacades") },
+  ];
 
   useEffect(() => {
     fetchProducts()

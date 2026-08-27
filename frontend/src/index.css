@@ -94,6 +94,17 @@ nav a.nav-link.active{ color:var(--ink); background:var(--grey-50); }
 .mobile-menu-link.active{ background:var(--grey-50); color:var(--red); }
 .mobile-menu-cta{ justify-content:center; margin:8px 4px 4px; padding:15px 20px; font-size:15px; }
 
+/* ---------- Language switch ---------- */
+.lang-switch{ display:flex; align-items:center; background:var(--grey-50); border-radius:999px; padding:3px; gap:2px; flex:none; }
+.lang-switch-btn{
+  border:none; background:none; cursor:pointer; font-family:inherit; font-weight:700; font-size:12px;
+  letter-spacing:0.02em; color:var(--grey-600); padding:7px 12px; border-radius:999px; transition:all .2s ease;
+}
+.lang-switch-btn.active{ background:var(--ink); color:#fff; }
+.lang-switch-btn:hover:not(.active){ color:var(--ink); }
+.mobile-menu-lang{ justify-content:center; background:var(--grey-50); margin:6px 4px 0; padding:4px; }
+.mobile-menu-lang .lang-switch-btn{ flex:1; padding:11px 12px; font-size:13px; }
+
 /* ---------- Buttons ---------- */
 .cta-row{display:flex; align-items:center; gap:16px; margin-bottom:0; flex-wrap:wrap;}
 .btn-primary{

@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { submitQuote } from "../lib/api";
 
 const CART_KEY = "hakhverdyan_quote_v1";
@@ -14,6 +15,7 @@ function loadCart() {
 }
 
 export function QuoteCartProvider({ children }) {
+  const { t } = useTranslation();
   const [items, setItems] = useState(loadCart);
   const [panelOpen, setPanelOpen] = useState(false);
   const [toast, setToast] = useState(null);
@@ -49,17 +51,17 @@ export function QuoteCartProvider({ children }) {
 
   async function sendQuote() {
     if (!items.length) {
-      setToast("Add at least one product first.");
+      setToast(t("quoteCart.addFirstProduct"));
       return;
     }
     try {
       const payload = { items: items.map(i => ({ product_id: i.id, qty: i.qty })) };
       const result = await submitQuote(payload);
-      setToast(`Quote request #${result.id} sent — we'll reply within 48h.`);
+      setToast(t("quoteCart.sentToast", { id: result.id }));
       setItems([]);
       setPanelOpen(false);
     } catch (err) {
-      setToast("Couldn't send the request — please try again or call us.");
+      setToast(t("quoteCart.errorToast"));
     }
   }
 

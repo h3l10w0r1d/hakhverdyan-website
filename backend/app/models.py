@@ -12,12 +12,15 @@ class Product(Base):
 
     id: Mapped[str] = mapped_column(String, primary_key=True)
     name: Mapped[str] = mapped_column(String, nullable=False)
+    name_hy: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     category: Mapped[str] = mapped_column(String, index=True, nullable=False)
     spec: Mapped[str] = mapped_column(String, nullable=False)
+    spec_hy: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     price: Mapped[int] = mapped_column(Integer, nullable=False)
     old_price: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
     unit: Mapped[str] = mapped_column(String, nullable=False)
     badge: Mapped[str] = mapped_column(String, nullable=False, default="In stock")
+    badge_hy: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     is_promo: Mapped[bool] = mapped_column(Boolean, default=False)
     icon: Mapped[str] = mapped_column(String, nullable=False, default="box")
 
@@ -58,9 +61,13 @@ class BlogPost(Base):
 
     slug: Mapped[str] = mapped_column(String, primary_key=True)
     title: Mapped[str] = mapped_column(String, nullable=False)
+    title_hy: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     excerpt: Mapped[str] = mapped_column(String, nullable=False)
+    excerpt_hy: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     content: Mapped[str] = mapped_column(String, nullable=False)
+    content_hy: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     category: Mapped[str] = mapped_column(String, index=True, nullable=False)
+    category_hy: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     cover_url: Mapped[str] = mapped_column(String, nullable=False)
     published_at: Mapped[datetime] = mapped_column(DateTime, nullable=False)
 

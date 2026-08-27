@@ -1,14 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import gsap from "gsap";
 import MagnetButton from "../components/MagnetButton";
 import { fetchPost, fetchPosts } from "../lib/api";
+import { localized } from "../lib/localized";
 import { ArrowIcon } from "../lib/icons";
 
-const fmtDate = iso => new Date(iso).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
-const readTime = text => `${Math.max(1, Math.round(text.split(/\s+/).length / 200))} min read`;
-
 export default function BlogPost() {
+  const { t, i18n } = useTranslation();
+  const lang = i18n.resolvedLanguage;
+  const fmtDate = iso => new Date(iso).toLocaleDateString(lang === "hy" ? "hy-AM" : "en-US", { month: "long", day: "numeric", year: "numeric" });
+
   const { slug } = useParams();
   const navigate = useNavigate();
   const [post, setPost] = useState(null);
@@ -62,11 +65,11 @@ export default function BlogPost() {
     return (
       <section className="services-hero">
         <div className="services-hero-inner">
-          <div className="section-tag">Blog</div>
-          <h1>That post doesn't exist.</h1>
-          <p className="sub">It may have been moved or unpublished.</p>
+          <div className="section-tag">{t("blog.tag")}</div>
+          <h1>{t("blog.notFoundTitle")}</h1>
+          <p className="sub">{t("blog.notFoundDesc")}</p>
           <MagnetButton as="button" className="btn-secondary" onClick={() => navigate("/blog")} style={{ marginTop: 24 }}>
-            Back to blog
+            {t("blog.backToBlog")}
           </MagnetButton>
         </div>
       </section>
@@ -75,23 +78,28 @@ export default function BlogPost() {
 
   if (!post) return <section className="services-hero" />;
 
-  const paragraphs = post.content.split("\n\n");
+  const title = localized(post, "title", lang);
+  const category = localized(post, "category", lang);
+  const content = localized(post, "content", lang);
+  const paragraphs = content.split("\n\n");
+  const wordDivisor = lang === "hy" ? 160 : 200; // Armenian reads a little slower word-for-word given longer average word length
+  const minutes = Math.max(1, Math.round(content.split(/\s+/).length / wordDivisor));
 
   return (
     <>
       <section className="article-hero">
         <div className="article-hero-inner">
           <Link className="article-back" to="/blog">
-            <span style={{ display: "inline-flex", transform: "scaleX(-1)" }}><ArrowIcon size={14} /></span> Back to blog
+            <span style={{ display: "inline-flex", transform: "scaleX(-1)" }}><ArrowIcon size={14} /></span> {t("blog.backToBlog")}
           </Link>
-          <h1>{post.title}</h1>
+          <h1>{title}</h1>
           <div className="article-meta-row">
-            <span className="blog-category" style={{ position: "static", background: "var(--ink)" }}>{post.category}</span>
+            <span className="blog-category" style={{ position: "static", background: "var(--ink)" }}>{category}</span>
             <span>{fmtDate(post.published_at)}</span>
             <span className="dot" style={{ width: 3, height: 3, borderRadius: "50%", background: "var(--grey-400)" }}></span>
-            <span>{readTime(post.content)}</span>
+            <span>{t("blog.minRead", { count: minutes })}</span>
           </div>
-          <img className="article-cover" src={post.cover_url} alt={post.title} />
+          <img className="article-cover" src={post.cover_url} alt={title} />
         </div>
       </section>
 
@@ -103,16 +111,16 @@ export default function BlogPost() {
 
           {related.length > 0 && (
             <div className="related-posts">
-              <div className="section-tag">More on {post.category}</div>
+              <div className="section-tag">{t("blog.moreOn", { category })}</div>
               <div className="blog-grid" style={{ gridTemplateColumns: `repeat(${related.length}, 1fr)`, marginTop: 20 }}>
                 {related.map(r => (
                   <Link className="blog-card" to={`/blog/${r.slug}`} key={r.slug}>
                     <div className="blog-thumb" style={{ height: 160 }}>
-                      <img src={r.cover_url} alt={r.title} loading="lazy" />
-                      <span className="blog-category">{r.category}</span>
+                      <img src={r.cover_url} alt={localized(r, "title", lang)} loading="lazy" />
+                      <span className="blog-category">{localized(r, "category", lang)}</span>
                     </div>
-                    <h3 style={{ fontSize: 16 }}>{r.title}</h3>
-                    <span className="blog-card-link">Read article <ArrowIcon size={15} /></span>
+                    <h3 style={{ fontSize: 16 }}>{localized(r, "title", lang)}</h3>
+                    <span className="blog-card-link">{t("common.readArticle")} <ArrowIcon size={15} /></span>
                   </Link>
                 ))}
               </div>
@@ -124,11 +132,11 @@ export default function BlogPost() {
       <section className="block">
         <div className="container article-cta">
           <div className="final-cta" id="finalCta" ref={finalCtaRef}>
-            <h2>Have a project in mind?</h2>
-            <p>Call +374&nbsp;60&nbsp;770&nbsp;700 or send your specs — most quotes are ready within 48 hours.</p>
+            <h2>{t("blog.haveProject")}</h2>
+            <p>{t("home.finalCtaDesc")}</p>
             <div className="cta-row">
-              <MagnetButton as="button" className="btn-primary">Request a Quote <ArrowIcon size={16} /></MagnetButton>
-              <button className="btn-secondary">Call +374 60 770 700</button>
+              <MagnetButton as="button" className="btn-primary">{t("common.requestQuote")} <ArrowIcon size={16} /></MagnetButton>
+              <button className="btn-secondary">{t("common.callUs")}</button>
             </div>
           </div>
         </div>

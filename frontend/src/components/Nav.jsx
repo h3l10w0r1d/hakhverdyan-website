@@ -1,20 +1,23 @@
 import { useEffect, useRef, useState } from "react";
 import { NavLink, Link, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import gsap from "gsap";
 import MagnetButton from "./MagnetButton";
-
-const LINKS = [
-  { to: "/about", label: "About" },
-  { to: "/catalog", label: "Catalog" },
-  { to: "/services", label: "Services" },
-  { to: "/blog", label: "Blog" },
-  { to: "/contacts", label: "Contacts" },
-];
+import LanguageSwitch from "./LanguageSwitch";
 
 export default function Nav() {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const menuRef = useRef(null);
   const location = useLocation();
+
+  const LINKS = [
+    { to: "/about", label: t("nav.about") },
+    { to: "/catalog", label: t("nav.catalog") },
+    { to: "/services", label: t("nav.services") },
+    { to: "/blog", label: t("nav.blog") },
+    { to: "/contacts", label: t("nav.contacts") },
+  ];
 
   useEffect(() => { setOpen(false); }, [location.pathname]);
 
@@ -34,7 +37,7 @@ export default function Nav() {
         <nav>
           <ul>
             {LINKS.map(link => (
-              <li key={link.label}>
+              <li key={link.to}>
                 <NavLink className={({ isActive }) => "nav-link" + (isActive ? " active" : "")} to={link.to}>
                   {link.label}
                 </NavLink>
@@ -43,7 +46,8 @@ export default function Nav() {
           </ul>
         </nav>
         <div className="nav-right">
-          <MagnetButton as="button" className="nav-cta">Request Quote</MagnetButton>
+          <LanguageSwitch />
+          <MagnetButton as="button" className="nav-cta">{t("nav.requestQuote")}</MagnetButton>
           <button className="nav-burger" aria-label={open ? "Close menu" : "Open menu"} onClick={() => setOpen(o => !o)}>
             {open ? (
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
@@ -57,11 +61,12 @@ export default function Nav() {
       {open && (
         <div className="mobile-menu" ref={menuRef}>
           {LINKS.map(link => (
-            <NavLink key={link.label} className={({ isActive }) => "mobile-menu-link" + (isActive ? " active" : "")} to={link.to}>
+            <NavLink key={link.to} className={({ isActive }) => "mobile-menu-link" + (isActive ? " active" : "")} to={link.to}>
               {link.label}
             </NavLink>
           ))}
-          <MagnetButton as="button" className="nav-cta mobile-menu-cta">Request Quote</MagnetButton>
+          <LanguageSwitch className="mobile-menu-lang" />
+          <MagnetButton as="button" className="nav-cta mobile-menu-cta">{t("nav.requestQuote")}</MagnetButton>
         </div>
       )}
     </header>

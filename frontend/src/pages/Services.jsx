@@ -1,43 +1,45 @@
 import { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import gsap from "gsap";
 import useReveal from "../lib/useReveal";
 import MagnetButton from "../components/MagnetButton";
 import { ArrowIcon, CheckIcon, WrenchIcon, DraftIcon, HeadsetIcon, GlobeIcon, ClockIcon, ShieldCheckIcon } from "../lib/icons";
 
-const SERVICES = [
-  {
-    num: "01",
-    icon: <WrenchIcon size={22} />,
-    title: "Construction & Assembly",
-    lead: "On-site construction and structural assembly for aluminum, PVC, and glass systems — residential and commercial. Certified crews handle everything from measurement to final fit.",
-    items: ["Site measurement & prep", "Structural assembly & installation", "Sealing & weatherproofing", "Post-install cleanup & walkthrough"],
-  },
-  {
-    num: "02",
-    icon: <DraftIcon size={22} />,
-    title: "Engineering Consultation",
-    lead: "Technical planning and material specification before you commit — sized, priced, and ready to build. We catch spec issues before they become expensive reorders.",
-    items: ["Load & structural review", "Material & profile selection", "Technical drawings", "Budget-accurate quoting"],
-  },
-  {
-    num: "03",
-    icon: <HeadsetIcon size={22} />,
-    title: "Technical & After-Sales Support",
-    lead: "Maintenance, part replacement, and advisory support long after installation is complete. The relationship doesn't end at handover.",
-    items: ["Scheduled maintenance visits", "Replacement parts sourcing", "Troubleshooting & repairs", "Priority phone support"],
-  },
-];
-
-const INCLUDED = [
-  { icon: "֏", title: "Fixed Quote", desc: "Priced before work starts, honored through completion — no change orders you didn't approve." },
-  { icon: <ClockIcon />, title: "On-Time Crews", desc: "Scheduled dates are commitments. Delays get communicated before they happen, not after." },
-  { icon: <ShieldCheckIcon />, title: "Licensed & Insured", desc: "Every install is covered — materials, labor, and liability, from day one." },
-  { icon: <GlobeIcon />, title: "EU-Sourced Parts", desc: "Replacement components come from the same vetted manufacturers as the original install." },
-];
-
 export default function Services() {
+  const { t } = useTranslation();
   const finalCtaRef = useRef(null);
   useReveal([]);
+
+  const SERVICES = [
+    {
+      num: "01",
+      icon: <WrenchIcon size={22} />,
+      title: t("services.svc1Title"),
+      lead: t("services.svc1Lead"),
+      items: [t("services.svc1Item1"), t("services.svc1Item2"), t("services.svc1Item3"), t("services.svc1Item4")],
+    },
+    {
+      num: "02",
+      icon: <DraftIcon size={22} />,
+      title: t("services.svc2Title"),
+      lead: t("services.svc2Lead"),
+      items: [t("services.svc2Item1"), t("services.svc2Item2"), t("services.svc2Item3"), t("services.svc2Item4")],
+    },
+    {
+      num: "03",
+      icon: <HeadsetIcon size={22} />,
+      title: t("services.svc3Title"),
+      lead: t("services.svc3Lead"),
+      items: [t("services.svc3Item1"), t("services.svc3Item2"), t("services.svc3Item3"), t("services.svc3Item4")],
+    },
+  ];
+
+  const INCLUDED = [
+    { icon: "֏", title: t("services.inc1Title"), desc: t("services.inc1Desc") },
+    { icon: <ClockIcon />, title: t("services.inc2Title"), desc: t("services.inc2Desc") },
+    { icon: <ShieldCheckIcon />, title: t("services.inc3Title"), desc: t("services.inc3Desc") },
+    { icon: <GlobeIcon />, title: t("services.inc4Title"), desc: t("services.inc4Desc") },
+  ];
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -70,9 +72,9 @@ export default function Services() {
     <>
       <section className="services-hero">
         <div className="services-hero-inner">
-          <div className="section-tag">Services</div>
-          <h1>Not just a supplier — your build partner from spec to support.</h1>
-          <p className="sub">Three services, one team. No separate contractors to coordinate, no gaps between "we sold it" and "we installed it."</p>
+          <div className="section-tag">{t("services.tag")}</div>
+          <h1>{t("services.title")}</h1>
+          <p className="sub">{t("services.sub")}</p>
         </div>
       </section>
 
@@ -89,7 +91,7 @@ export default function Services() {
                     <li key={item}><span className="check"><CheckIcon size={13} /></span>{item}</li>
                   ))}
                 </ul>
-                <MagnetButton as="button" className="btn-secondary">Ask about this service <ArrowIcon size={16} /></MagnetButton>
+                <MagnetButton as="button" className="btn-secondary">{t("services.askAboutService")} <ArrowIcon size={16} /></MagnetButton>
               </div>
               <div className="feature-visual reveal">
                 <div className="story-panel">
@@ -109,10 +111,10 @@ export default function Services() {
         <div className="container">
           <div className="section-head">
             <div>
-              <div className="section-tag">Every project includes</div>
-              <h2 className="section-title">The baseline, not the upsell.</h2>
+              <div className="section-tag">{t("services.includedTag")}</div>
+              <h2 className="section-title">{t("services.includedTitle")}</h2>
             </div>
-            <p className="section-sub">These aren't add-ons — they're how every job runs by default.</p>
+            <p className="section-sub">{t("services.includedSub")}</p>
           </div>
           <div className="why-grid">
             {INCLUDED.map(item => (
@@ -129,11 +131,11 @@ export default function Services() {
       <section className="block">
         <div className="container">
           <div className="final-cta reveal" id="finalCta" ref={finalCtaRef}>
-            <h2>Not sure which service you need?</h2>
-            <p>Call +374&nbsp;60&nbsp;770&nbsp;700 and describe the project — we'll tell you exactly what it involves.</p>
+            <h2>{t("services.finalCtaTitle")}</h2>
+            <p>{t("services.finalCtaDesc")}</p>
             <div className="cta-row">
-              <MagnetButton as="button" className="btn-primary">Request a Quote <ArrowIcon size={16} /></MagnetButton>
-              <button className="btn-secondary">Call +374 60 770 700</button>
+              <MagnetButton as="button" className="btn-primary">{t("common.requestQuote")} <ArrowIcon size={16} /></MagnetButton>
+              <button className="btn-secondary">{t("common.callUs")}</button>
             </div>
           </div>
         </div>

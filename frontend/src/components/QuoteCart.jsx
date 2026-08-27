@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import gsap from "gsap";
 import { useQuoteCart } from "../context/QuoteCartContext";
 import { CartIcon, ArrowIcon } from "../lib/icons";
@@ -6,6 +7,7 @@ import { CartIcon, ArrowIcon } from "../lib/icons";
 const fmt = n => n.toLocaleString("en-US") + "֏";
 
 export default function QuoteCart() {
+  const { t } = useTranslation();
   const { items, totalCount, totalPrice, removeItem, sendQuote, panelOpen, setPanelOpen, toast, flyEvent, clearFlyEvent } = useQuoteCart();
   const fabRef = useRef(null);
   const panelRef = useRef(null);
@@ -53,12 +55,12 @@ export default function QuoteCart() {
     <>
       <div className="quote-panel" id="quotePanel" ref={panelRef}>
         <div className="quote-panel-head">
-          <h4>Your quote list</h4>
+          <h4>{t("quoteCart.title")}</h4>
           <button aria-label="Close" onClick={() => setPanelOpen(false)}>&times;</button>
         </div>
         <div className="quote-list">
           {items.length === 0 ? (
-            <div className="quote-empty">No products added yet.<br />Browse the catalog and add items to build your quote.</div>
+            <div className="quote-empty">{t("quoteCart.emptyLine1")}<br />{t("quoteCart.emptyLine2")}</div>
           ) : (
             items.map(i => (
               <div className="quote-item" key={i.id}>
@@ -72,16 +74,16 @@ export default function QuoteCart() {
           )}
         </div>
         <div className="quote-panel-foot">
-          <div className="total"><span>Estimated total</span><span>{fmt(totalPrice)}</span></div>
+          <div className="total"><span>{t("quoteCart.estimatedTotal")}</span><span>{fmt(totalPrice)}</span></div>
           <button className="btn-primary" onClick={sendQuote}>
-            Send Quote Request <ArrowIcon size={16} />
+            {t("quoteCart.sendRequest")} <ArrowIcon size={16} />
           </button>
         </div>
       </div>
 
       <button className="quote-fab" ref={fabRef} onClick={() => setPanelOpen(!panelOpen)}>
         <CartIcon />
-        <span className="label">Quote list</span>
+        <span className="label">{t("quoteCart.label")}</span>
         <span className="badge" style={{ display: totalCount > 0 ? "flex" : "none" }}>{totalCount}</span>
       </button>
 

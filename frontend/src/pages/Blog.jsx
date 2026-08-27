@@ -1,13 +1,17 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import gsap from "gsap";
 import useReveal from "../lib/useReveal";
 import { fetchPosts } from "../lib/api";
+import { localized } from "../lib/localized";
 import { ArrowIcon } from "../lib/icons";
 
-const fmtDate = iso => new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
-
 export default function Blog() {
+  const { t, i18n } = useTranslation();
+  const lang = i18n.resolvedLanguage;
+  const fmtDate = iso => new Date(iso).toLocaleDateString(lang === "hy" ? "hy-AM" : "en-US", { month: "short", day: "numeric", year: "numeric" });
+
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("all");
@@ -39,9 +43,9 @@ export default function Blog() {
     <>
       <section className="services-hero">
         <div className="services-hero-inner">
-          <div className="section-tag">Blog</div>
-          <h1>Guides, maintenance tips, and buying advice.</h1>
-          <p className="sub">Practical, no-fluff writing on windows, doors, and building materials — written by the people who install them.</p>
+          <div className="section-tag">{t("blog.tag")}</div>
+          <h1>{t("blog.title")}</h1>
+          <p className="sub">{t("blog.sub")}</p>
         </div>
       </section>
 
@@ -55,7 +59,7 @@ export default function Blog() {
                   className={"filter-tab" + (activeTab === cat ? " active" : "")}
                   onClick={() => setActiveTab(cat)}
                 >
-                  {cat === "all" ? "All" : cat}
+                  {cat === "all" ? t("blog.tabAll") : (lang === "hy" ? (posts.find(p => p.category === cat)?.category_hy || cat) : cat)}
                 </button>
               ))}
             </div>
@@ -65,23 +69,23 @@ export default function Blog() {
             {visible.map(post => (
               <Link className="blog-card reveal" to={`/blog/${post.slug}`} key={post.slug}>
                 <div className="blog-thumb">
-                  <img src={post.cover_url} alt={post.title} loading="lazy" />
-                  <span className="blog-category">{post.category}</span>
+                  <img src={post.cover_url} alt={localized(post, "title", lang)} loading="lazy" />
+                  <span className="blog-category">{localized(post, "category", lang)}</span>
                 </div>
-                <h3>{post.title}</h3>
-                <p>{post.excerpt}</p>
+                <h3>{localized(post, "title", lang)}</h3>
+                <p>{localized(post, "excerpt", lang)}</p>
                 <div className="blog-meta">
                   <span>{fmtDate(post.published_at)}</span>
                 </div>
-                <span className="blog-card-link">Read article <ArrowIcon size={15} /></span>
+                <span className="blog-card-link">{t("common.readArticle")} <ArrowIcon size={15} /></span>
               </Link>
             ))}
           </div>
 
           {!loading && !posts.length && (
             <div className="no-results">
-              <h3>No posts yet.</h3>
-              <p>Check back soon.</p>
+              <h3>{t("blog.noPostsTitle")}</h3>
+              <p>{t("blog.noPostsDesc")}</p>
             </div>
           )}
         </div>

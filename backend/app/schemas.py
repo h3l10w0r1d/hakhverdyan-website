@@ -7,12 +7,15 @@ from pydantic import BaseModel, Field
 class ProductOut(BaseModel):
     id: str
     name: str
+    name_hy: Optional[str] = None
     category: str
     spec: str
+    spec_hy: Optional[str] = None
     price: int
     old_price: Optional[int] = None
     unit: str
     badge: str
+    badge_hy: Optional[str] = None
     is_promo: bool
     icon: str
 
@@ -62,8 +65,11 @@ class QuoteRequestOut(BaseModel):
 class BlogPostOut(BaseModel):
     slug: str
     title: str
+    title_hy: Optional[str] = None
     excerpt: str
+    excerpt_hy: Optional[str] = None
     category: str
+    category_hy: Optional[str] = None
     cover_url: str
     published_at: datetime
 
@@ -73,6 +79,7 @@ class BlogPostOut(BaseModel):
 
 class BlogPostDetailOut(BlogPostOut):
     content: str
+    content_hy: Optional[str] = None
 
 
 class ContactMessageIn(BaseModel):
