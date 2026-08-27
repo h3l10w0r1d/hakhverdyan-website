@@ -163,11 +163,15 @@ export default function Home() {
         <div className="marquee-label">{t("home.marqueeLabel")}</div>
         <div className="marquee-mask">
           <div className="marquee-track logo-track" id="marqueeTrack">
-            {[...PARTNER_LOGOS, ...PARTNER_LOGOS].map((p, i) => (
-              <div className="logo-chip" key={p.name + i}>
-                <img src={p.src} alt={p.name} loading={i < PARTNER_LOGOS.length ? "eager" : "lazy"} />
-              </div>
-            ))}
+            {[...PARTNER_LOGOS, ...PARTNER_LOGOS].map((p, i) => {
+              const Tag = p.url ? "a" : "div";
+              const linkProps = p.url ? { href: p.url, target: "_blank", rel: "noopener noreferrer" } : {};
+              return (
+                <Tag className="logo-chip" key={p.name + i} {...linkProps}>
+                  <img src={p.src} alt={p.name} loading={i < PARTNER_LOGOS.length ? "eager" : "lazy"} />
+                </Tag>
+              );
+            })}
           </div>
         </div>
       </section>
