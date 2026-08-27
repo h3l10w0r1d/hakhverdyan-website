@@ -1,9 +1,12 @@
 import { useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Nav from "./Nav";
 import Footer from "./Footer";
 import QuoteCart from "./QuoteCart";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function Layout() {
   const { pathname } = useLocation();
@@ -32,6 +35,33 @@ export default function Layout() {
     return () => {
       window.removeEventListener("mousemove", onMove);
       ctx.revert();
+    };
+  }, []);
+
+  // Scroll-reveal triggers are positioned against the page's layout at the moment they're created.
+  // Images and async content (product photos, fetched blog/catalog data) keep shifting that layout
+  // after the fact, which silently desyncs ScrollTrigger's cached positions from reality — elements
+  // below the shift point then never reveal. Watch document height and refresh whenever it changes.
+  useEffect(() => {
+    let lastHeight = document.body.scrollHeight;
+    let debounceId;
+
+    const observer = new ResizeObserver(() => {
+      const height = document.body.scrollHeight;
+      if (height === lastHeight) return;
+      lastHeight = height;
+      clearTimeout(debounceId);
+      debounceId = setTimeout(() => ScrollTrigger.refresh(), 150);
+    });
+    observer.observe(document.body);
+
+    const onLoad = () => ScrollTrigger.refresh();
+    window.addEventListener("load", onLoad);
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(debounceId);
+      window.removeEventListener("load", onLoad);
     };
   }, []);
 

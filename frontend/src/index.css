@@ -73,8 +73,26 @@ nav a.nav-link.active{ color:var(--ink); background:var(--grey-50); }
   display:flex; align-items:center; gap:6px;
   background:var(--red); color:#fff; font-weight:600; font-size:14.5px;
   padding:11px 20px; border-radius:999px; border:none; cursor:pointer;
-  box-shadow:0 6px 18px rgba(232,51,42,0.35);
+  box-shadow:0 6px 18px rgba(232,51,42,0.35); white-space:nowrap;
 }
+.nav-right{ display:flex; align-items:center; gap:10px; }
+.nav-burger{
+  display:none; align-items:center; justify-content:center;
+  width:42px; height:42px; border-radius:50%; border:none; background:var(--grey-50);
+  color:var(--ink); cursor:pointer; flex:none;
+}
+.mobile-menu{
+  position:fixed; top:80px; left:16px; right:16px; z-index:99;
+  background:#fff; border:1px solid var(--grey-100); border-radius:24px;
+  box-shadow:0 24px 60px -12px rgba(20,20,30,0.28); padding:10px;
+  display:flex; flex-direction:column; gap:2px;
+}
+.mobile-menu-link{
+  padding:15px 18px; border-radius:15px; font-size:16px; font-weight:600; color:var(--ink);
+  transition:background .2s ease;
+}
+.mobile-menu-link.active{ background:var(--grey-50); color:var(--red); }
+.mobile-menu-cta{ justify-content:center; margin:8px 4px 4px; padding:15px 20px; font-size:15px; }
 
 /* ---------- Buttons ---------- */
 .cta-row{display:flex; align-items:center; gap:16px; margin-bottom:0; flex-wrap:wrap;}
@@ -651,10 +669,21 @@ footer{ position:relative; z-index:1; padding:64px 32px 30px; border-top:1px sol
 
 /* ---------- Responsive ---------- */
 @media (max-width: 980px){
-  .hero-inner{grid-template-columns:1fr; gap:70px;}
-  .hero-visual{height:420px; order:-1;}
+  .hero{ min-height:auto; padding-top:120px; }
+  .hero-inner{grid-template-columns:1fr; gap:44px;}
+  .hero-visual{height:360px; order:-1;}
   .sub{max-width:100%;}
+  /* Floating hero cards keep desktop pixel sizing, which overlaps on a narrower panel — shrink and reposition */
+  .float-card{ padding:10px 12px; gap:8px; }
+  .float-card .ic{ width:30px; height:30px; border-radius:10px; }
+  .float-card .txt-title{ font-size:12px; }
+  .float-card .txt-sub{ font-size:10.5px; }
+  .card-stock{ top:6%; left:-4%; bottom:auto; }
+  .card-rating{ bottom:6%; left:-4%; top:auto; }
+  .badge-promo{ top:6%; right:-4%; left:auto; bottom:auto; padding:8px 12px; font-size:11.5px; }
   nav ul{display:none;}
+  .nav-right .nav-cta{ display:none; }
+  .nav-burger{ display:flex; }
   .story-grid{ grid-template-columns:1fr; gap:50px; }
   .story-visual{ order:-1; height:320px; }
   .feature-row{ grid-template-columns:1fr; gap:40px; margin-bottom:70px; }
@@ -704,4 +733,7 @@ footer{ position:relative; z-index:1; padding:64px 32px 30px; border-top:1px sol
   .blog-grid{ grid-template-columns:1fr; }
   .article-hero{ padding:130px 20px 0; }
   .article-cover{ height:240px; }
+  .process-grid{ grid-template-columns:1fr; row-gap:28px; }
+  .services-hero{ padding:130px 20px 30px; }
+  .contacts-hero{ padding:130px 20px 30px; }
 }
