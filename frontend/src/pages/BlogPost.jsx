@@ -5,6 +5,7 @@ import gsap from "gsap";
 import MagnetButton from "../components/MagnetButton";
 import { fetchPost, fetchPosts } from "../lib/api";
 import { localized } from "../lib/localized";
+import useSEO from "../lib/useSEO";
 import { ArrowIcon } from "../lib/icons";
 
 export default function BlogPost() {
@@ -15,6 +16,11 @@ export default function BlogPost() {
   const { slug } = useParams();
   const navigate = useNavigate();
   const [post, setPost] = useState(null);
+  useSEO({
+    title: post ? localized(post, "title", lang) : undefined,
+    description: post ? localized(post, "excerpt", lang) : undefined,
+    path: `/blog/${slug}`,
+  });
   const [related, setRelated] = useState([]);
   const [notFound, setNotFound] = useState(false);
   const finalCtaRef = useRef(null);

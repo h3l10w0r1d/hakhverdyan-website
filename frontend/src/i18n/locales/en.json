@@ -1,4 +1,30 @@
 {
+  "seo": {
+    "home": {
+      "title": "Hakhverdyan — Aluminum & PVC Profiles, Doors, Facades in Yerevan",
+      "description": "Aluminum & PVC profiles, hardware, glass facades, doors, and sectional gates — sourced, priced, and installed in Yerevan, Armenia. Fixed pricing, 48-hour quotes."
+    },
+    "about": {
+      "title": "About Us — Hakhverdyan Shinmontazh",
+      "description": "Hakhverdyan Shinmontazh: two locations in Yerevan, direct partnerships with Medos, Maco, Arplas, Palram, and Flexidoor, and 500+ projects delivered."
+    },
+    "catalog": {
+      "title": "Catalog — Profiles, Hardware, Sheets, Doors & Facades",
+      "description": "Browse aluminum & PVC profiles, hardware, sheets, doors, gates, and facades — fixed pricing, EU-sourced materials, and 48-hour quotes."
+    },
+    "services": {
+      "title": "Services — Supply, Fabrication & Installation",
+      "description": "From specification to installation: sourcing, fabrication, and full installation support for aluminum, PVC, and glass building systems."
+    },
+    "contacts": {
+      "title": "Contact Us — Hakhverdyan Shinmontazh",
+      "description": "Reach Hakhverdyan Shinmontazh by phone or visit our Yerevan locations at Griboedov 56 or Tevosyan 7/11. Most quotes ready within 48 hours."
+    },
+    "blog": {
+      "title": "Blog — Guides & Buying Advice",
+      "description": "Guides, maintenance tips, and buying advice for aluminum & PVC windows, doors, and facades."
+    }
+  },
   "nav": {
     "about": "About",
     "catalog": "Catalog",

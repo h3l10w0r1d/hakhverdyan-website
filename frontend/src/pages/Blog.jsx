@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import gsap from "gsap";
 import useReveal from "../lib/useReveal";
+import useSEO from "../lib/useSEO";
 import { fetchPosts } from "../lib/api";
 import { localized } from "../lib/localized";
 import { ArrowIcon } from "../lib/icons";
@@ -10,6 +11,7 @@ import { ArrowIcon } from "../lib/icons";
 export default function Blog() {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage;
+  useSEO({ title: t("seo.blog.title"), description: t("seo.blog.description"), path: "/blog" });
   const fmtDate = iso => new Date(iso).toLocaleDateString(lang === "hy" ? "hy-AM" : "en-US", { month: "short", day: "numeric", year: "numeric" });
 
   const [posts, setPosts] = useState([]);

@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import useReveal from "../lib/useReveal";
+import useSEO from "../lib/useSEO";
 import MagnetButton from "../components/MagnetButton";
 import CountUp from "../components/CountUp";
 import { ArrowIcon, CheckIcon, WrenchIcon, ShieldCheckIcon, VennIcon, HeadsetIcon, PinIcon } from "../lib/icons";
@@ -11,6 +12,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function About() {
   const { t } = useTranslation();
+  useSEO({ title: t("seo.about.title"), description: t("seo.about.description"), path: "/about" });
   const finalCtaRef = useRef(null);
 
   useReveal([]);

@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import useReveal from "../lib/useReveal";
+import useSEO from "../lib/useSEO";
 import MagnetButton from "../components/MagnetButton";
 import CountUp from "../components/CountUp";
 import FeaturedProducts from "../components/FeaturedProducts";
@@ -16,6 +17,7 @@ gsap.registerPlugin(ScrollTrigger);
 export default function Home() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  useSEO({ title: t("seo.home.title"), description: t("seo.home.description"), path: "/" });
   const heroVisualRef = useRef(null);
   const finalCtaRef = useRef(null);
 

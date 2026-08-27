@@ -22,4 +22,10 @@ i18n
     interpolation: { escapeValue: false },
   });
 
+function syncHtmlLang(lng) {
+  document.documentElement.lang = lng?.startsWith("hy") ? "hy" : "en";
+}
+syncHtmlLang(i18n.resolvedLanguage);
+i18n.on("languageChanged", syncHtmlLang);
+
 export default i18n;

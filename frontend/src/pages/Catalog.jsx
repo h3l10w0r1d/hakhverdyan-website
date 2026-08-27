@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import gsap from "gsap";
 import useReveal from "../lib/useReveal";
+import useSEO from "../lib/useSEO";
 import MagnetButton from "../components/MagnetButton";
 import ProductCard from "../components/ProductCard";
 import { fetchProducts } from "../lib/api";
@@ -12,6 +13,7 @@ import { ArrowIcon, SearchIcon, GlobeIcon, WrenchIcon, ClockIcon } from "../lib/
 export default function Catalog() {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage;
+  useSEO({ title: t("seo.catalog.title"), description: t("seo.catalog.description"), path: "/catalog" });
   const [searchParams, setSearchParams] = useSearchParams();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);

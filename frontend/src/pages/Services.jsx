@@ -2,11 +2,13 @@ import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import gsap from "gsap";
 import useReveal from "../lib/useReveal";
+import useSEO from "../lib/useSEO";
 import MagnetButton from "../components/MagnetButton";
 import { ArrowIcon, CheckIcon, WrenchIcon, DraftIcon, HeadsetIcon, GlobeIcon, ClockIcon, ShieldCheckIcon } from "../lib/icons";
 
 export default function Services() {
   const { t } = useTranslation();
+  useSEO({ title: t("seo.services.title"), description: t("seo.services.description"), path: "/services" });
   const finalCtaRef = useRef(null);
   useReveal([]);
 

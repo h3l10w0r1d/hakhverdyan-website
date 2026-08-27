@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import gsap from "gsap";
 import useReveal from "../lib/useReveal";
+import useSEO from "../lib/useSEO";
 import MagnetButton from "../components/MagnetButton";
 import { submitContactMessage } from "../lib/api";
 import { ArrowIcon, PhoneIcon, ClockIcon, PinIcon, FacebookIcon, InstagramIcon, WhatsappIcon } from "../lib/icons";
 
 export default function Contacts() {
   const { t } = useTranslation();
+  useSEO({ title: t("seo.contacts.title"), description: t("seo.contacts.description"), path: "/contacts" });
   useReveal([]);
 
   const [form, setForm] = useState({ name: "", phone: "", email: "", message: "" });
