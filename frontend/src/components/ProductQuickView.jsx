@@ -115,31 +115,33 @@ export default function ProductQuickView() {
           )}
         </div>
 
-        <div className="qv-body">
-          <div className="qv-name">{name}</div>
-          <div className="qv-spec">{spec}</div>
-          <div className="qv-trust">
-            <span>{t("catalog.trustPricing")}</span>
-            <span>{t("catalog.trustEu")}</span>
-            <span>{t("catalog.trustInstall")}</span>
-            <span>{t("catalog.trustQuotes")}</span>
+        <div className="qv-panel">
+          <div className="qv-body">
+            <div className="qv-name">{name}</div>
+            <div className="qv-spec">{spec}</div>
+            <div className="qv-trust">
+              <span>{t("catalog.trustPricing")}</span>
+              <span>{t("catalog.trustEu")}</span>
+              <span>{t("catalog.trustInstall")}</span>
+              <span>{t("catalog.trustQuotes")}</span>
+            </div>
+            <div className="product-price-row">
+              {product.old_price && <span className="product-price-old">{fmt(product.old_price)}</span>}
+              <span className="product-price">{fmt(product.price)}</span>
+              <span className="product-unit">{product.unit}</span>
+            </div>
           </div>
-          <div className="product-price-row">
-            {product.old_price && <span className="product-price-old">{fmt(product.old_price)}</span>}
-            <span className="product-price">{fmt(product.price)}</span>
-            <span className="product-unit">{product.unit}</span>
-          </div>
-        </div>
 
-        <div className="qv-footer">
-          <div className="qty-stepper">
-            <button aria-label="Decrease" onClick={() => setQty(q => Math.max(1, q - 1))}>−</button>
-            <span>{qty}</span>
-            <button aria-label="Increase" onClick={() => setQty(q => Math.min(99, q + 1))}>+</button>
+          <div className="qv-footer">
+            <div className="qty-stepper">
+              <button aria-label="Decrease" onClick={() => setQty(q => Math.max(1, q - 1))}>−</button>
+              <span>{qty}</span>
+              <button aria-label="Increase" onClick={() => setQty(q => Math.min(99, q + 1))}>+</button>
+            </div>
+            <button className={"add-quote-btn" + (added ? " added" : "")} onClick={handleAdd}>
+              {added ? t("common.added") : (<><PlusIcon />{t("common.addToQuote")}</>)}
+            </button>
           </div>
-          <button className={"add-quote-btn" + (added ? " added" : "")} onClick={handleAdd}>
-            {added ? t("common.added") : (<><PlusIcon />{t("common.addToQuote")}</>)}
-          </button>
         </div>
       </div>
     </div>
