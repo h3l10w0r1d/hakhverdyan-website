@@ -8,6 +8,7 @@ import useSEO from "../lib/useSEO";
 import MagnetButton from "../components/MagnetButton";
 import CountUp from "../components/CountUp";
 import FeaturedProducts from "../components/FeaturedProducts";
+import PARTNER_LOGOS from "../lib/partnerLogos";
 import {
   ArrowIcon, CheckIcon, StarIcon, GlobeIcon, WrenchIcon, ClockIcon,
 } from "../lib/icons";
@@ -161,11 +162,11 @@ export default function Home() {
       <section className="marquee-section">
         <div className="marquee-label">{t("home.marqueeLabel")}</div>
         <div className="marquee-mask">
-          <div className="marquee-track" id="marqueeTrack">
-            {Array.from({ length: 2 }).map((_, i) => (
-              <span key={i}>
-                MEDOS&nbsp;&nbsp;&nbsp;&nbsp;ALCOTEK&nbsp;&nbsp;&nbsp;&nbsp;MARGA CIPTA&nbsp;&nbsp;&nbsp;&nbsp;MACROLUX&nbsp;&nbsp;&nbsp;&nbsp;DONJOY&nbsp;&nbsp;&nbsp;&nbsp;AR STEEL&nbsp;&nbsp;&nbsp;&nbsp;DORMAKABA&nbsp;&nbsp;&nbsp;&nbsp;FLEXIDOOR&nbsp;&nbsp;&nbsp;&nbsp;ALUMINCO&nbsp;&nbsp;&nbsp;&nbsp;PALRAM&nbsp;&nbsp;&nbsp;&nbsp;PLASTILUX&nbsp;&nbsp;&nbsp;&nbsp;COMUNELLO GROUP
-              </span>
+          <div className="marquee-track logo-track" id="marqueeTrack">
+            {[...PARTNER_LOGOS, ...PARTNER_LOGOS].map((p, i) => (
+              <div className="logo-chip" key={p.name + i}>
+                <img src={p.src} alt={p.name} loading={i < PARTNER_LOGOS.length ? "eager" : "lazy"} />
+              </div>
             ))}
           </div>
         </div>

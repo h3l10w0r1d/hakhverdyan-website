@@ -231,6 +231,18 @@ nav a.nav-link.active{ color:var(--ink); background:var(--grey-50); }
 .marquee-track{display:flex; width:max-content; gap:64px;}
 .marquee-track span{ font-family:'Space Grotesk', sans-serif; font-size:22px; font-weight:600; color:var(--grey-400); white-space:nowrap; }
 .marquee-mask{overflow:hidden; mask-image:linear-gradient(to right, transparent, black 10%, black 90%, transparent);}
+.logo-track{ gap:22px; align-items:center; }
+.logo-chip{
+  display:flex; align-items:center; justify-content:center; flex:none;
+  width:132px; height:60px; padding:12px 18px; background:#fff;
+  border:1px solid var(--grey-100); border-radius:14px;
+  filter:grayscale(1); opacity:0.6; transition:filter .25s ease, opacity .25s ease;
+}
+.logo-chip:hover{ filter:grayscale(0); opacity:1; }
+.logo-chip img{ max-width:100%; max-height:100%; object-fit:contain; }
+@media (max-width:640px){
+  .logo-chip{ width:108px; height:50px; padding:10px 14px; }
+}
 
 /* ---------- Scroll cue ---------- */
 .scroll-cue{
