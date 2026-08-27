@@ -1,16 +1,19 @@
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useQuoteCart } from "../context/QuoteCartContext";
+import { useProductQuickView } from "../context/ProductQuickViewContext";
 import { PlusIcon } from "../lib/icons";
 import { productPhoto } from "../lib/productPhotos";
 import { localized } from "../lib/localized";
 
 const fmt = n => n.toLocaleString("en-US") + "֏";
+const INTERACTIVE_SELECTOR = ".qty-stepper, .add-quote-btn";
 
 export default function ProductCard({ product, reveal = true }) {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage;
   const { addItem } = useQuoteCart();
+  const { openQuickView, hoverIntent, cancelHoverIntent } = useProductQuickView();
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
   const thumbRef = useRef(null);
@@ -23,12 +26,22 @@ export default function ProductCard({ product, reveal = true }) {
     setTimeout(() => setAdded(false), 1100);
   }
 
+  function handleCardClick(e) {
+    if (e.target.closest(INTERACTIVE_SELECTOR)) return;
+    openQuickView(product);
+  }
+
   const name = localized(product, "name", lang);
   const spec = localized(product, "spec", lang);
   const badge = localized(product, "badge", lang);
 
   return (
-    <div className={"product-card" + (reveal ? " reveal" : "")}>
+    <div
+      className={"product-card" + (reveal ? " reveal" : "")}
+      onClick={handleCardClick}
+      onMouseEnter={() => hoverIntent(product)}
+      onMouseLeave={cancelHoverIntent}
+    >
       <div className="product-thumb" ref={thumbRef}>
         <img className="product-photo" src={productPhoto(product.icon)} alt={name} loading="lazy" />
         <span className={"product-badge" + (product.is_promo ? " promo" : "")}>{badge}</span>

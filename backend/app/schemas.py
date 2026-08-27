@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import List, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, EmailStr, Field
 
 
 class ProductOut(BaseModel):
@@ -30,10 +30,11 @@ class QuoteItemIn(BaseModel):
 
 class QuoteRequestIn(BaseModel):
     items: List[QuoteItemIn]
-    name: Optional[str] = None
-    phone: Optional[str] = None
-    email: Optional[str] = None
-    note: Optional[str] = None
+    name: str = Field(..., min_length=1, max_length=120)
+    phone: str = Field(..., min_length=4, max_length=40)
+    email: EmailStr
+    note: Optional[str] = Field(None, max_length=2000)
+    lang: Optional[str] = "en"
 
 
 class QuoteItemOut(BaseModel):
@@ -47,16 +48,27 @@ class QuoteItemOut(BaseModel):
         from_attributes = True
 
 
+class EmailLogOut(BaseModel):
+    to_email: str
+    subject: str
+    body: str
+    sent_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
 class QuoteRequestOut(BaseModel):
     id: int
     created_at: datetime
-    name: Optional[str] = None
-    phone: Optional[str] = None
-    email: Optional[str] = None
+    name: str
+    phone: str
+    email: str
     note: Optional[str] = None
     total: int
     status: str
     items: List[QuoteItemOut]
+    confirmation_email: Optional[EmailLogOut] = None
 
     class Config:
         from_attributes = True

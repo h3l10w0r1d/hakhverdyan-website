@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { submitQuote } from "../lib/api";
 
 const CART_KEY = "hakhverdyan_quote_v1";
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const QuoteCartContext = createContext(null);
 
 function loadCart() {
@@ -15,9 +16,14 @@ function loadCart() {
 }
 
 export function QuoteCartProvider({ children }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [items, setItems] = useState(loadCart);
   const [panelOpen, setPanelOpen] = useState(false);
+  const [step, setStep] = useState("cart"); // 'cart' | 'form' | 'success'
+  const [form, setForm] = useState({ name: "", email: "", phone: "", note: "" });
+  const [formErrors, setFormErrors] = useState({});
+  const [submitting, setSubmitting] = useState(false);
+  const [confirmation, setConfirmation] = useState(null);
   const [toast, setToast] = useState(null);
   const [flyEvent, setFlyEvent] = useState(null); // { fromRect } — consumed by the FAB for the fly-to-cart animation
 
@@ -27,8 +33,8 @@ export function QuoteCartProvider({ children }) {
 
   useEffect(() => {
     if (!toast) return;
-    const t = setTimeout(() => setToast(null), 3200);
-    return () => clearTimeout(t);
+    const id = setTimeout(() => setToast(null), 3200);
+    return () => clearTimeout(id);
   }, [toast]);
 
   const totalCount = useMemo(() => items.reduce((a, i) => a + i.qty, 0), [items]);
@@ -49,26 +55,71 @@ export function QuoteCartProvider({ children }) {
     setItems(prev => prev.filter(i => i.id !== id));
   }
 
-  async function sendQuote() {
+  function goToForm() {
     if (!items.length) {
       setToast(t("quoteCart.addFirstProduct"));
       return;
     }
+    setStep("form");
+  }
+
+  function backToCart() {
+    setStep("cart");
+  }
+
+  function updateForm(field, value) {
+    setForm(f => ({ ...f, [field]: value }));
+    setFormErrors(e => (e[field] ? { ...e, [field]: undefined } : e));
+  }
+
+  function validateForm() {
+    const errors = {};
+    if (!form.name.trim()) errors.name = t("quoteCart.errRequired");
+    if (!form.phone.trim()) errors.phone = t("quoteCart.errRequired");
+    if (!form.email.trim()) errors.email = t("quoteCart.errRequired");
+    else if (!EMAIL_RE.test(form.email.trim())) errors.email = t("quoteCart.errEmail");
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  }
+
+  async function submitBooking() {
+    if (!validateForm()) return;
+    setSubmitting(true);
     try {
-      const payload = { items: items.map(i => ({ product_id: i.id, qty: i.qty })) };
+      const payload = {
+        items: items.map(i => ({ product_id: i.id, qty: i.qty })),
+        name: form.name.trim(),
+        email: form.email.trim(),
+        phone: form.phone.trim(),
+        note: form.note.trim() || undefined,
+        lang: i18n.resolvedLanguage,
+      };
       const result = await submitQuote(payload);
-      setToast(t("quoteCart.sentToast", { id: result.id }));
+      setConfirmation(result);
       setItems([]);
-      setPanelOpen(false);
-    } catch (err) {
+      setStep("success");
+    } catch {
       setToast(t("quoteCart.errorToast"));
+    } finally {
+      setSubmitting(false);
     }
+  }
+
+  function finishBooking() {
+    setPanelOpen(false);
+    setStep("cart");
+    setForm({ name: "", email: "", phone: "", note: "" });
+    setFormErrors({});
+    setConfirmation(null);
   }
 
   const value = {
     items, totalCount, totalPrice,
-    addItem, removeItem, sendQuote,
+    addItem, removeItem,
     panelOpen, setPanelOpen,
+    step, goToForm, backToCart,
+    form, updateForm, formErrors, submitting, submitBooking, finishBooking,
+    confirmation,
     toast, setToast,
     flyEvent, clearFlyEvent: () => setFlyEvent(null),
   };
