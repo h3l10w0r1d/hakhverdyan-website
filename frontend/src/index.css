@@ -28,6 +28,21 @@ a{text-decoration:none; color:inherit;}
 ul{list-style:none;}
 button{font-family:inherit;}
 
+/* Neither 'Inter' nor 'Space Grotesk' has Armenian glyphs, so Armenian text was
+   silently rendering in the browser's default system font instead — which sits
+   visibly larger than either of them at the same declared size. Use a real
+   Armenian-supporting face for Armenian, sitewide, rather than patching every
+   font-size individually. Even with a proper face, Noto Sans Armenian still runs
+   visibly bigger than Space Grotesk/Inter at an identical px size (it's just a
+   larger-appearing design), and every font-size in this file is an absolute px
+   value rather than rem — so there's no single variable to rescale. `zoom` scales
+   the whole rendering (text, icons, spacing) together under :lang(hy), which is
+   also what keeps Armenian's longer words from wrapping as awkwardly as they did
+   at full size. */
+html:lang(hy){ zoom:0.84; }
+html:lang(hy) body{ font-family:'Noto Sans Armenian', sans-serif; }
+html:lang(hy) h1, html:lang(hy) h2, html:lang(hy) h3, html:lang(hy) .display{ font-family:'Noto Sans Armenian', sans-serif; }
+
 /* ---------- Background texture ---------- */
 .bg-field{ position:fixed; inset:0; z-index:-2; background:var(--white); overflow:hidden; }
 .blob{ position:absolute; border-radius:50%; filter:blur(60px); opacity:0.55; }
@@ -167,21 +182,6 @@ nav a.nav-link.active{ color:var(--ink); background:var(--grey-50); }
 .headline .line span{display:inline-block; will-change:transform;}
 .headline .accent{color:var(--red); position:relative; white-space:nowrap;}
 .sub{ font-size:18px; line-height:1.6; color:var(--grey-600); max-width:490px; margin-bottom:36px; font-weight:400; }
-
-/* ---------- Armenian heading sizes ----------
-   'Space Grotesk' has no Armenian glyphs, so Armenian headings silently render in
-   the browser's default system sans-serif instead — which sits visibly larger than
-   Space Grotesk at the same declared size. Scale headings down under :lang(hy) to
-   compensate until the display font itself gets real Armenian coverage. */
-:lang(hy) .headline{ font-size:clamp(32px, 3.8vw, 55px); }
-:lang(hy) .section-title{ font-size:clamp(23px, 2.6vw, 34px); }
-:lang(hy) .promo h3{ font-size:clamp(20px, 2.5vw, 29px); }
-:lang(hy) .final-cta h2{ font-size:clamp(23px, 3.3vw, 39px); }
-:lang(hy) .cat-hero h1{ font-size:clamp(28px, 3.3vw, 44px); }
-:lang(hy) .about-hero h1{ font-size:clamp(31px, 4.1vw, 52px); }
-:lang(hy) .services-hero h1{ font-size:clamp(28px, 3.3vw, 44px); }
-:lang(hy) .feature-copy h3{ font-size:clamp(21px, 2.3vw, 30px); }
-:lang(hy) .article-hero h1{ font-size:clamp(25px, 3.3vw, 38px); }
 
 .stats-row{display:flex; gap:38px; flex-wrap:wrap;}
 .stat{display:flex; flex-direction:column;}
