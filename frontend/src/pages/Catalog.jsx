@@ -6,6 +6,7 @@ import useReveal from "../lib/useReveal";
 import useSEO from "../lib/useSEO";
 import MagnetButton from "../components/MagnetButton";
 import ProductCard from "../components/ProductCard";
+import Select from "../components/admin/Select";
 import { fetchProducts } from "../lib/api";
 import { localized } from "../lib/localized";
 import { ArrowIcon, SearchIcon, GlobeIcon, WrenchIcon, ClockIcon } from "../lib/icons";
@@ -112,12 +113,17 @@ export default function Catalog() {
                 onChange={e => setSearch(e.target.value)}
               />
             </label>
-            <select className="sort-select" value={sort} onChange={e => setSort(e.target.value)}>
-              <option value="default">{t("catalog.sortFeatured")}</option>
-              <option value="price-asc">{t("catalog.sortPriceAsc")}</option>
-              <option value="price-desc">{t("catalog.sortPriceDesc")}</option>
-              <option value="name-asc">{t("catalog.sortNameAsc")}</option>
-            </select>
+            <Select
+              className="sort-select"
+              value={sort}
+              onChange={setSort}
+              options={[
+                { value: "default", label: t("catalog.sortFeatured") },
+                { value: "price-asc", label: t("catalog.sortPriceAsc") },
+                { value: "price-desc", label: t("catalog.sortPriceDesc") },
+                { value: "name-asc", label: t("catalog.sortNameAsc") },
+              ]}
+            />
           </div>
 
           <div className="trust-strip">
