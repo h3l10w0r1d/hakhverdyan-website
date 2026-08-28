@@ -922,3 +922,125 @@ footer{ position:relative; z-index:1; padding:64px 32px 30px; border-top:1px sol
   .services-hero{ padding:130px 20px 30px; }
   .contacts-hero{ padding:130px 20px 30px; }
 }
+
+/* ================= Admin panel ================= */
+.admin-shell{ display:flex; min-height:100vh; background:var(--grey-50); }
+.admin-shell-loading{ min-height:100vh; }
+.admin-sidebar{
+  width:230px; flex:none; background:var(--ink); color:#fff;
+  display:flex; flex-direction:column; padding:24px 16px; position:sticky; top:0; height:100vh;
+}
+.admin-sidebar-logo{
+  display:flex; align-items:center; gap:8px; font-family:'Space Grotesk',sans-serif; font-weight:700;
+  font-size:15px; letter-spacing:-0.01em; padding:0 8px 24px;
+}
+.admin-sidebar-logo .dot{ width:8px; height:8px; border-radius:50%; background:var(--red); flex:none; }
+.admin-nav{ display:flex; flex-direction:column; gap:2px; }
+.admin-nav-link{ padding:11px 12px; border-radius:10px; font-size:14px; font-weight:500; color:rgba(255,255,255,0.65); transition:background .2s ease, color .2s ease; }
+.admin-nav-link:hover{ background:rgba(255,255,255,0.06); color:#fff; }
+.admin-nav-link.active{ background:var(--red); color:#fff; }
+.admin-sidebar-foot{ margin-top:auto; padding-top:16px; border-top:1px solid rgba(255,255,255,0.1); }
+.admin-sidebar-user{ font-size:12.5px; color:rgba(255,255,255,0.55); padding:0 8px 10px; overflow-wrap:anywhere; }
+.admin-logout-btn{
+  width:100%; background:rgba(255,255,255,0.08); color:#fff; border:none; border-radius:10px;
+  padding:10px 12px; font-size:13.5px; font-weight:600; cursor:pointer; transition:background .2s ease;
+}
+.admin-logout-btn:hover{ background:rgba(255,255,255,0.16); }
+.admin-main{ flex:1; padding:36px 40px; min-width:0; }
+.admin-page-title{ font-family:'Space Grotesk',sans-serif; font-size:26px; font-weight:700; margin-bottom:22px; }
+.admin-page-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:22px; gap:16px; flex-wrap:wrap; }
+.admin-page-head .admin-page-title{ margin-bottom:0; }
+
+.admin-card{ background:#fff; border:1px solid var(--grey-100); border-radius:var(--radius-md); overflow:hidden; }
+.admin-empty{ padding:48px 20px; text-align:center; color:var(--grey-400); font-size:14px; }
+.admin-error-banner{
+  background:#fdeceb; color:var(--red); padding:12px 16px; border-radius:12px; font-size:13.5px; font-weight:600; margin-bottom:16px;
+}
+
+.admin-table{ width:100%; border-collapse:collapse; font-size:13.5px; }
+.admin-table th{
+  text-align:left; font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.03em;
+  color:var(--grey-400); padding:14px 20px; border-bottom:1px solid var(--grey-100);
+}
+.admin-table td{ padding:14px 20px; border-bottom:1px solid var(--grey-50); vertical-align:top; }
+.admin-table tbody tr:last-child td{ border-bottom:none; }
+.admin-table-row-clickable{ cursor:pointer; transition:background .15s ease; }
+.admin-table-row-clickable:hover{ background:var(--grey-50); }
+.admin-table-title{ font-weight:700; color:var(--ink); }
+.admin-table-sub{ font-size:12px; color:var(--grey-400); margin-top:2px; }
+.admin-table-message{ max-width:360px; color:var(--grey-600); }
+.admin-table-actions{ display:flex; gap:8px; }
+.admin-table-detail-row td{ background:var(--grey-50); padding:0 20px 20px; }
+.admin-booking-detail{ display:flex; flex-direction:column; gap:14px; padding-top:6px; max-width:520px; }
+.admin-booking-items{ display:flex; flex-direction:column; gap:4px; }
+.admin-booking-item{ display:flex; justify-content:space-between; font-size:13px; color:var(--grey-600); }
+.admin-booking-note{ font-size:13px; background:#fff; border:1px solid var(--grey-100); border-radius:10px; padding:10px 12px; }
+
+.admin-badge{
+  display:inline-block; font-size:11.5px; font-weight:700; text-transform:capitalize;
+  padding:4px 10px; border-radius:999px; background:var(--grey-100); color:var(--grey-600);
+}
+.admin-badge.status-new{ background:#fdeceb; color:var(--red); }
+.admin-badge.status-contacted, .admin-badge.status-replied{ background:#fff4de; color:#a3690a; }
+.admin-badge.status-closed{ background:#e9f9ee; color:#1e9e4e; }
+.admin-badge.status-spam{ background:var(--grey-100); color:var(--grey-400); }
+
+.admin-stat-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:16px; }
+.admin-stat-link{ color:inherit; }
+.admin-stat-card{ background:#fff; border:1px solid var(--grey-100); border-radius:var(--radius-md); padding:20px 22px; transition:border-color .2s ease, transform .2s ease; }
+.admin-stat-link:hover .admin-stat-card{ border-color:var(--grey-800); transform:translateY(-2px); }
+.admin-stat-value{ font-family:'Space Grotesk',sans-serif; font-size:30px; font-weight:700; }
+.admin-stat-label{ font-size:13px; color:var(--grey-600); margin-top:4px; }
+
+.admin-btn{
+  display:inline-flex; align-items:center; gap:6px; font-family:inherit; font-size:13.5px; font-weight:600;
+  padding:9px 16px; border-radius:10px; border:1px solid var(--grey-200); background:#fff; color:var(--ink);
+  cursor:pointer; transition:all .2s ease; white-space:nowrap;
+}
+.admin-btn:hover{ border-color:var(--grey-800); background:var(--grey-50); }
+.admin-btn:disabled{ opacity:0.6; cursor:not-allowed; }
+.admin-btn-primary{ background:var(--red); border-color:var(--red); color:#fff; }
+.admin-btn-primary:hover{ background:var(--red-dark); border-color:var(--red-dark); }
+.admin-btn-danger{ color:var(--red); border-color:#f3d4d3; }
+.admin-btn-danger:hover{ background:#fdeceb; border-color:var(--red); }
+.admin-btn-sm{ padding:7px 12px; font-size:12.5px; }
+
+.admin-form-row{ display:flex; gap:14px; flex-wrap:wrap; }
+.admin-form-row .quote-field{ flex:1; min-width:160px; }
+.admin-checkbox-field{ display:flex; align-items:center; gap:8px; font-size:13.5px; font-weight:600; color:var(--ink); }
+.admin-checkbox-field input{ width:16px; height:16px; }
+
+.admin-modal-backdrop{
+  position:fixed; inset:0; z-index:600; background:rgba(15,15,18,0.5); backdrop-filter:blur(3px);
+  display:flex; align-items:center; justify-content:center; padding:24px; overflow-y:auto;
+}
+.admin-modal{
+  background:#fff; border-radius:var(--radius-lg); width:100%; max-width:620px; max-height:88vh;
+  display:flex; flex-direction:column; box-shadow:0 40px 80px -20px rgba(10,10,15,0.5); overflow:hidden;
+}
+.admin-modal-head{ display:flex; align-items:center; justify-content:space-between; padding:18px 22px; border-bottom:1px solid var(--grey-100); flex:none; }
+.admin-modal-head h2{ font-family:'Space Grotesk',sans-serif; font-size:18px; font-weight:700; }
+.admin-modal-close{ background:none; border:none; font-size:22px; color:var(--grey-400); cursor:pointer; line-height:1; }
+.admin-modal-body{ padding:20px 22px; overflow-y:auto; display:flex; flex-direction:column; gap:14px; }
+.admin-modal-foot{ display:flex; justify-content:flex-end; gap:10px; padding:16px 22px; border-top:1px solid var(--grey-100); flex:none; }
+
+.admin-login-screen{ min-height:100vh; display:flex; align-items:center; justify-content:center; background:var(--grey-50); padding:24px; }
+.admin-login-card{
+  width:100%; max-width:380px; background:#fff; border:1px solid var(--grey-100); border-radius:var(--radius-lg);
+  padding:32px 28px; display:flex; flex-direction:column; gap:16px; box-shadow:0 30px 60px -20px rgba(10,10,15,0.15);
+}
+.admin-login-logo{
+  display:flex; align-items:center; gap:8px; font-family:'Space Grotesk',sans-serif; font-weight:700;
+  font-size:15px; letter-spacing:-0.01em; color:var(--ink); margin-bottom:4px;
+}
+.admin-login-logo .dot{ width:8px; height:8px; border-radius:50%; background:var(--red); }
+.admin-login-card h1{ font-family:'Space Grotesk',sans-serif; font-size:21px; font-weight:700; margin-bottom:4px; }
+.admin-login-error{ font-size:13px; color:var(--red); background:#fdeceb; padding:9px 12px; border-radius:10px; }
+
+@media (max-width: 860px){
+  .admin-sidebar{ width:76px; padding:20px 10px; }
+  .admin-sidebar-logo-text, .admin-sidebar-user{ display:none; }
+  .admin-nav-link{ text-align:center; font-size:11px; padding:10px 4px; }
+  .admin-main{ padding:24px 18px; }
+  .admin-table-message{ max-width:180px; }
+}

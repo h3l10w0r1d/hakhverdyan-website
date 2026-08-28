@@ -3,3 +3,5 @@ uvicorn[standard]
 sqlalchemy
 pydantic
 email-validator
+bcrypt
+pyjwt

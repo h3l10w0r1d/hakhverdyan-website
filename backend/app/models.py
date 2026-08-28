@@ -7,6 +7,16 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from .database import Base
 
 
+class AdminUser(Base):
+    __tablename__ = "admin_users"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    email: Mapped[str] = mapped_column(String, unique=True, nullable=False, index=True)
+    password_hash: Mapped[str] = mapped_column(String, nullable=False)
+    name: Mapped[str] = mapped_column(String, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+
+
 class Product(Base):
     __tablename__ = "products"
 
@@ -36,6 +46,7 @@ class QuoteRequest(Base):
     note: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     total: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     status: Mapped[str] = mapped_column(String, nullable=False, default="new")
+    admin_note: Mapped[Optional[str]] = mapped_column(String, nullable=True)
 
     items: Mapped[list["QuoteRequestItem"]] = relationship(
         back_populates="quote_request", cascade="all, delete-orphan"

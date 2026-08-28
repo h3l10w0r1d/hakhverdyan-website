@@ -4,6 +4,65 @@ from typing import List, Optional
 from pydantic import BaseModel, EmailStr, Field
 
 
+class AdminLoginIn(BaseModel):
+    email: EmailStr
+    password: str = Field(..., min_length=1)
+
+
+class AdminOut(BaseModel):
+    id: int
+    email: str
+    name: str
+
+    class Config:
+        from_attributes = True
+
+
+class TokenOut(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    admin: AdminOut
+
+
+class ProductIn(BaseModel):
+    id: str = Field(..., min_length=1, max_length=60)
+    name: str = Field(..., min_length=1, max_length=200)
+    name_hy: Optional[str] = None
+    category: str = Field(..., min_length=1, max_length=60)
+    spec: str = Field(..., min_length=1, max_length=300)
+    spec_hy: Optional[str] = None
+    price: int = Field(..., ge=0)
+    old_price: Optional[int] = Field(None, ge=0)
+    unit: str = Field(..., min_length=1, max_length=20)
+    badge: str = "In stock"
+    badge_hy: Optional[str] = None
+    is_promo: bool = False
+    icon: str = "box"
+
+
+class ProductUpdate(BaseModel):
+    name: Optional[str] = Field(None, min_length=1, max_length=200)
+    name_hy: Optional[str] = None
+    category: Optional[str] = Field(None, min_length=1, max_length=60)
+    spec: Optional[str] = Field(None, min_length=1, max_length=300)
+    spec_hy: Optional[str] = None
+    price: Optional[int] = Field(None, ge=0)
+    old_price: Optional[int] = Field(None, ge=0)
+    unit: Optional[str] = Field(None, min_length=1, max_length=20)
+    badge: Optional[str] = None
+    badge_hy: Optional[str] = None
+    is_promo: Optional[bool] = None
+    icon: Optional[str] = None
+
+
+class StatusUpdateIn(BaseModel):
+    status: str = Field(..., min_length=1, max_length=30)
+
+
+class AdminNoteIn(BaseModel):
+    admin_note: Optional[str] = Field(None, max_length=2000)
+
+
 class ProductOut(BaseModel):
     id: str
     name: str
@@ -67,6 +126,7 @@ class QuoteRequestOut(BaseModel):
     note: Optional[str] = None
     total: int
     status: str
+    admin_note: Optional[str] = None
     items: List[QuoteItemOut]
     confirmation_email: Optional[EmailLogOut] = None
 

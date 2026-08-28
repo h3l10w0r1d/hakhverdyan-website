@@ -1,5 +1,3 @@
-from typing import List
-
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
@@ -51,8 +49,3 @@ def create_quote(payload: QuoteRequestIn, db: Session = Depends(get_db)):
     result = QuoteRequestOut.model_validate(quote)
     result.confirmation_email = EmailLogOut.model_validate(email_log)
     return result
-
-
-@router.get("", response_model=List[QuoteRequestOut])
-def list_quotes(db: Session = Depends(get_db)):
-    return db.query(QuoteRequest).order_by(QuoteRequest.created_at.desc()).all()

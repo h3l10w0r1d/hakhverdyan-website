@@ -1,5 +1,3 @@
-from typing import List
-
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
@@ -17,8 +15,3 @@ def create_contact_message(payload: ContactMessageIn, db: Session = Depends(get_
     db.commit()
     db.refresh(msg)
     return msg
-
-
-@router.get("", response_model=List[ContactMessageOut])
-def list_contact_messages(db: Session = Depends(get_db)):
-    return db.query(ContactMessage).order_by(ContactMessage.created_at.desc()).all()
