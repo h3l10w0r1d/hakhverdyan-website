@@ -138,9 +138,9 @@ export default function Home() {
 
           <div className="hero-visual" ref={heroVisualRef}>
             <div className="panel">
-              <div className="panel-grid"></div>
+              <img className="panel-photo" src="/hero/facade-render.jpg" alt="" />
+              <div className="panel-shade"></div>
               <div className="panel-glow"></div>
-              <div className="panel-frame"><span></span><span></span><span></span><span></span></div>
             </div>
             <div className="float-card card-stock">
               <div className="ic"><CheckIcon size={18} /></div>
