@@ -5,3 +5,4 @@ pydantic
 email-validator
 bcrypt
 pyjwt
+psycopg2-binary
