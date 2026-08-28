@@ -23,7 +23,9 @@ export default function MultiImageDropzone({ value, onChange }) {
     setError("");
     try {
       const dataUrls = await Promise.all(list.map(resizeToDataUrl));
-      onChange([...images, ...dataUrls]);
+      // Functional update: picking a second photo before the first one
+      // finishes resizing must not overwrite it with a stale base array.
+      onChange(prev => [...(prev || []), ...dataUrls]);
     } catch {
       setError("Couldn't read that image — try another file.");
     }
@@ -36,7 +38,7 @@ export default function MultiImageDropzone({ value, onChange }) {
   }
 
   function removeAt(index) {
-    onChange(images.filter((_, i) => i !== index));
+    onChange(prev => (prev || []).filter((_, i) => i !== index));
   }
 
   return (

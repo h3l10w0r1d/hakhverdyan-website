@@ -70,7 +70,7 @@ export default function AdminProducts() {
   }
 
   function updateField(field, value) {
-    setForm(f => ({ ...f, [field]: value }));
+    setForm(f => ({ ...f, [field]: typeof value === "function" ? value(f[field]) : value }));
   }
 
   async function onSubmit(e) {
