@@ -1,10 +1,12 @@
 import { useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import gsap from "gsap";
 import useReveal from "../lib/useReveal";
 import useSEO from "../lib/useSEO";
 import MagnetButton from "../components/MagnetButton";
-import { ArrowIcon, CheckIcon, WrenchIcon, DraftIcon, HeadsetIcon, GlobeIcon, ClockIcon, ShieldCheckIcon } from "../lib/icons";
+import { ArrowIcon, CheckIcon, GlobeIcon, ClockIcon, ShieldCheckIcon } from "../lib/icons";
+import { SERVICES_META } from "../lib/servicesData";
 
 export default function Services() {
   const { t } = useTranslation();
@@ -12,29 +14,12 @@ export default function Services() {
   const finalCtaRef = useRef(null);
   useReveal([]);
 
-  const SERVICES = [
-    {
-      num: "01",
-      icon: <WrenchIcon size={22} />,
-      title: t("services.svc1Title"),
-      lead: t("services.svc1Lead"),
-      items: [t("services.svc1Item1"), t("services.svc1Item2"), t("services.svc1Item3"), t("services.svc1Item4")],
-    },
-    {
-      num: "02",
-      icon: <DraftIcon size={22} />,
-      title: t("services.svc2Title"),
-      lead: t("services.svc2Lead"),
-      items: [t("services.svc2Item1"), t("services.svc2Item2"), t("services.svc2Item3"), t("services.svc2Item4")],
-    },
-    {
-      num: "03",
-      icon: <HeadsetIcon size={22} />,
-      title: t("services.svc3Title"),
-      lead: t("services.svc3Lead"),
-      items: [t("services.svc3Item1"), t("services.svc3Item2"), t("services.svc3Item3"), t("services.svc3Item4")],
-    },
-  ];
+  const SERVICES = SERVICES_META.map(meta => ({
+    ...meta,
+    title: t(`services.${meta.keyPrefix}Title`),
+    lead: t(`services.${meta.keyPrefix}Lead`),
+    items: [1, 2, 3, 4].map(n => t(`services.${meta.keyPrefix}Item${n}`)),
+  }));
 
   const INCLUDED = [
     { icon: "֏", title: t("services.inc1Title"), desc: t("services.inc1Desc") },
@@ -49,10 +34,6 @@ export default function Services() {
       tl.from(".services-hero .section-tag", { opacity: 0, y: 14, duration: 0.6 }, 0.1)
         .from(".services-hero h1", { opacity: 0, y: 22, duration: 0.8 }, 0.2)
         .from(".services-hero .sub", { opacity: 0, y: 16, duration: 0.7 }, 0.35);
-
-      gsap.utils.toArray(".feature-panel-glow").forEach((glow, i) => {
-        gsap.to(glow, { x: i % 2 === 0 ? 30 : -30, y: -20, duration: 4 + i, ease: "sine.inOut", yoyo: true, repeat: -1 });
-      });
     });
 
     const onCtaMove = e => {
@@ -93,17 +74,14 @@ export default function Services() {
                     <li key={item}><span className="check"><CheckIcon size={13} /></span>{item}</li>
                   ))}
                 </ul>
-                <MagnetButton as="button" className="btn-secondary">{t("services.askAboutService")} <ArrowIcon size={16} /></MagnetButton>
-              </div>
-              <div className="feature-visual reveal">
-                <div className="story-panel">
-                  <div className="story-panel-grid"></div>
-                  <div className="story-panel-glow feature-panel-glow"></div>
-                  <div className="story-panel-mark" style={{ display: "flex", alignItems: "center", justifyContent: "center", transform: "translate(-50%,-50%) scale(3.2)" }}>
-                    {svc.icon}
-                  </div>
+                <div className="cta-row">
+                  <MagnetButton as="button" className="btn-secondary">{t("services.askAboutService")} <ArrowIcon size={16} /></MagnetButton>
+                  <Link className="feature-more-link" to={`/services/${svc.slug}`}>{t("services.learnMore")} <ArrowIcon size={15} /></Link>
                 </div>
               </div>
+              <Link className="feature-visual reveal" to={`/services/${svc.slug}`}>
+                <img src={svc.image} alt={svc.title} loading="lazy" />
+              </Link>
             </div>
           ))}
         </div>

@@ -13,6 +13,7 @@ import AdminLayout from "./components/admin/AdminLayout";
 const About = lazyWithReload(() => import("./pages/About"));
 const Catalog = lazyWithReload(() => import("./pages/Catalog"));
 const Services = lazyWithReload(() => import("./pages/Services"));
+const ServiceDetail = lazyWithReload(() => import("./pages/ServiceDetail"));
 const Contacts = lazyWithReload(() => import("./pages/Contacts"));
 const Blog = lazyWithReload(() => import("./pages/Blog"));
 const BlogPost = lazyWithReload(() => import("./pages/BlogPost"));
@@ -49,6 +50,7 @@ export default function App() {
                     <Route path="/about" element={<About />} />
                     <Route path="/catalog" element={<Catalog />} />
                     <Route path="/services" element={<Services />} />
+                    <Route path="/services/:slug" element={<ServiceDetail />} />
                     <Route path="/contacts" element={<Contacts />} />
                     <Route path="/blog" element={<Blog />} />
                     <Route path="/blog/:slug" element={<BlogPost />} />
