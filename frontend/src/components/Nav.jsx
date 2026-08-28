@@ -32,7 +32,7 @@ export default function Nav() {
     <header>
       <div className="nav-inner" id="navInner">
         <Link className="logo" to="/">
-          <span className="dot"></span>HAKHVERDYAN
+          <img className="logo-mark" src="/brand/logo-icon.png" alt="" width="20" height="28" />HAKHVERDYAN
         </Link>
         <nav>
           <ul>

@@ -10,7 +10,7 @@ export default function Footer() {
       <div className="container">
         <div className="footer-grid">
           <div className="footer-brand">
-            <Link className="logo" to="/"><span className="dot"></span>HAKHVERDYAN</Link>
+            <Link className="logo" to="/"><img className="logo-mark" src="/brand/logo-icon.png" alt="" width="20" height="28" />HAKHVERDYAN</Link>
             <p>{t("footer.tagline")}</p>
           </div>
           <div className="footer-col">
