@@ -4,15 +4,20 @@ import gsap from "gsap";
 import useReveal from "../lib/useReveal";
 import useSEO from "../lib/useSEO";
 import MagnetButton from "../components/MagnetButton";
+import PhoneInput from "../components/PhoneInput";
 import { submitContactMessage } from "../lib/api";
-import { ArrowIcon, PhoneIcon, ClockIcon, PinIcon, FacebookIcon, InstagramIcon, WhatsappIcon } from "../lib/icons";
+import { loadSavedContact, saveContact } from "../lib/userPrefs";
+import { ArrowIcon, PhoneIcon, ClockIcon, PinIcon, FacebookIcon, InstagramIcon, TiktokIcon, WhatsappIcon } from "../lib/icons";
 
 export default function Contacts() {
   const { t } = useTranslation();
   useSEO({ title: t("seo.contacts.title"), description: t("seo.contacts.description"), path: "/contacts" });
   useReveal([]);
 
-  const [form, setForm] = useState({ name: "", phone: "", email: "", message: "" });
+  const [form, setForm] = useState(() => {
+    const saved = loadSavedContact();
+    return { name: saved?.name || "", phone: saved?.phone || "", email: saved?.email || "", message: "" };
+  });
   const [status, setStatus] = useState(null); // { type: 'success' | 'error', text }
   const [submitting, setSubmitting] = useState(false);
 
@@ -47,7 +52,8 @@ export default function Contacts() {
     try {
       const result = await submitContactMessage(form);
       setStatus({ type: "success", text: t("contacts.successMsg", { id: result.id }) });
-      setForm({ name: "", phone: "", email: "", message: "" });
+      saveContact({ name: form.name, phone: form.phone, email: form.email });
+      setForm(f => ({ ...f, message: "" }));
     } catch (err) {
       setStatus({ type: "error", text: t("contacts.errSubmit") });
     } finally {
@@ -94,9 +100,10 @@ export default function Contacts() {
               </div>
 
               <div className="footer-social">
-                <a href="#" aria-label="Facebook"><FacebookIcon /></a>
-                <a href="#" aria-label="Instagram"><InstagramIcon /></a>
-                <a href="#" aria-label="WhatsApp"><WhatsappIcon /></a>
+                <a href="https://www.facebook.com/share/1ERgBgZy4H/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><FacebookIcon /></a>
+                <a href="https://www.instagram.com/hakhverdyan.holding" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><InstagramIcon /></a>
+                <a href="https://www.tiktok.com/@hakhverdyan.holding" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><TiktokIcon /></a>
+                <a href="https://wa.me/37460770700" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><WhatsappIcon /></a>
               </div>
             </div>
 
@@ -108,7 +115,7 @@ export default function Contacts() {
                 </div>
                 <div className="form-field">
                   <label htmlFor="phone">{t("contacts.formPhone")}</label>
-                  <input id="phone" type="tel" value={form.phone} onChange={e => updateField("phone", e.target.value)} placeholder={t("contacts.formPhonePlaceholder")} />
+                  <PhoneInput id="phone" value={form.phone} onChange={v => updateField("phone", v)} placeholder={t("contacts.formPhonePlaceholder")} />
                 </div>
                 <div className="form-field full">
                   <label htmlFor="email">{t("contacts.formEmail")}</label>

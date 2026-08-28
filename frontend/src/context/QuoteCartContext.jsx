@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { submitQuote } from "../lib/api";
+import { loadSavedContact, saveContact } from "../lib/userPrefs";
 
 const CART_KEY = "hakhverdyan_quote_v1";
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -15,12 +16,17 @@ function loadCart() {
   }
 }
 
+function loadForm() {
+  const saved = loadSavedContact();
+  return { name: saved?.name || "", email: saved?.email || "", phone: saved?.phone || "", note: "" };
+}
+
 export function QuoteCartProvider({ children }) {
   const { t, i18n } = useTranslation();
   const [items, setItems] = useState(loadCart);
   const [panelOpen, setPanelOpen] = useState(false);
   const [step, setStep] = useState("cart"); // 'cart' | 'form' | 'success'
-  const [form, setForm] = useState({ name: "", email: "", phone: "", note: "" });
+  const [form, setForm] = useState(loadForm);
   const [formErrors, setFormErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [confirmation, setConfirmation] = useState(null);
@@ -95,6 +101,7 @@ export function QuoteCartProvider({ children }) {
         lang: i18n.resolvedLanguage,
       };
       const result = await submitQuote(payload);
+      saveContact({ name: form.name.trim(), email: form.email.trim(), phone: form.phone.trim() });
       setConfirmation(result);
       setItems([]);
       setStep("success");
@@ -108,7 +115,7 @@ export function QuoteCartProvider({ children }) {
   function finishBooking() {
     setPanelOpen(false);
     setStep("cart");
-    setForm({ name: "", email: "", phone: "", note: "" });
+    setForm(f => ({ ...f, note: "" }));
     setFormErrors({});
     setConfirmation(null);
   }

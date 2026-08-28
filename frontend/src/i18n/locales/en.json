@@ -277,7 +277,11 @@
     "inc4Title": "EU-Sourced Parts",
     "inc4Desc": "Replacement components come from the same vetted manufacturers as the original install.",
     "finalCtaTitle": "Not sure which service you need?",
-    "finalCtaDesc": "Call +374 60 770 700 and describe the project — we'll tell you exactly what it involves."
+    "finalCtaDesc": "Call +374 60 770 700 and describe the project — we'll tell you exactly what it involves.",
+    "learnMore": "Learn more",
+    "backToServices": "Back to services",
+    "otherServices": "Other services",
+    "notFoundTitle": "That service doesn't exist."
   },
   "contacts": {
     "tag": "Contacts",
@@ -292,7 +296,7 @@
     "formName": "Name *",
     "formNamePlaceholder": "Your name",
     "formPhone": "Phone",
-    "formPhonePlaceholder": "+374 XX XXX XXX",
+    "formPhonePlaceholder": "XX XXX XXX",
     "formEmail": "Email",
     "formEmailPlaceholder": "you@example.com",
     "formMessage": "Message *",
@@ -356,5 +360,10 @@
     "moreOn": "More on {{category}}",
     "minRead": "{{count}} min read",
     "haveProject": "Have a project in mind?"
+  },
+  "countrySelect": {
+    "label": "Country code",
+    "searchPlaceholder": "Search country or code…",
+    "noMatches": "No matches"
   }
 }

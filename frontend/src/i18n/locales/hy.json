@@ -277,7 +277,11 @@
     "inc4Title": "Եվրոպական ծագման մասեր",
     "inc4Desc": "Փոխարինող բաղադրիչները գալիս են նույն ստուգված արտադրողներից, ինչ սկզբնական տեղադրումը։",
     "finalCtaTitle": "Վստահ չե՞ք, թե որ ծառայությունն է անհրաժեշտ։",
-    "finalCtaDesc": "Զանգահարեք +374 60 770 700 և նկարագրեք նախագիծը — մենք ճշգրիտ կասենք, ինչ է անհրաժեշտ։"
+    "finalCtaDesc": "Զանգահարեք +374 60 770 700 և նկարագրեք նախագիծը — մենք ճշգրիտ կասենք, ինչ է անհրաժեշտ։",
+    "learnMore": "Իմանալ ավելին",
+    "backToServices": "Վերադառնալ ծառայություններին",
+    "otherServices": "Այլ ծառայություններ",
+    "notFoundTitle": "Այդպիսի ծառայություն գոյություն չունի:"
   },
   "contacts": {
     "tag": "Կոնտակտներ",
@@ -292,7 +296,7 @@
     "formName": "Անուն *",
     "formNamePlaceholder": "Ձեր անունը",
     "formPhone": "Հեռախոս",
-    "formPhonePlaceholder": "+374 XX XXX XXX",
+    "formPhonePlaceholder": "XX XXX XXX",
     "formEmail": "Էլ. փոստ",
     "formEmailPlaceholder": "you@example.com",
     "formMessage": "Հաղորդագրություն *",
@@ -356,5 +360,10 @@
     "moreOn": "Ավելին «{{category}}» թեմայով",
     "minRead": "{{count}} րոպե ընթերցում",
     "haveProject": "Ունե՞ք նախագիծ մտքում։"
+  },
+  "countrySelect": {
+    "label": "Երկրի կոդ",
+    "searchPlaceholder": "Փնտրել երկիր կամ կոդ…",
+    "noMatches": "Արդյունք չկա"
   }
 }
