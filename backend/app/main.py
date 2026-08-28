@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from .auth import hash_password
 from .database import Base, engine, SessionLocal
 from .migrations import run_migrations
-from .models import AdminUser, Product, BlogPost, Partner
+from .models import AdminUser, Product, ProductImage, BlogPost, Partner
 from .seed_data import PRODUCTS, BLOG_POSTS, PARTNERS
 from .routers import (
     products, quotes, contact, blog, partners,
@@ -23,6 +23,21 @@ def seed_products():
             for index, item in enumerate(PRODUCTS):
                 db.add(Product(**item, sort_order=index))
             db.commit()
+    finally:
+        db.close()
+
+
+def backfill_product_images():
+    # Products created before the multi-image gallery only have a single
+    # `image` column. Give each one a matching product_images row so the
+    # gallery isn't empty for existing catalog entries.
+    db = SessionLocal()
+    try:
+        has_images = {pid for (pid,) in db.query(ProductImage.product_id).distinct()}
+        for product in db.query(Product).filter(Product.image.isnot(None), Product.image != "").all():
+            if product.id not in has_images:
+                db.add(ProductImage(product_id=product.id, url=product.image, sort_order=0))
+        db.commit()
     finally:
         db.close()
 
@@ -67,6 +82,7 @@ def seed_admin():
 async def lifespan(app: FastAPI):
     Base.metadata.create_all(bind=engine)
     run_migrations(engine, Base)
+    backfill_product_images()
     seed_products()
     seed_blog_posts()
     seed_partners()

@@ -1,7 +1,9 @@
 from datetime import datetime
-from typing import List, Optional
+from typing import Annotated, List, Optional
 
 from pydantic import BaseModel, EmailStr, Field
+
+ImageUrl = Annotated[str, Field(max_length=2_000_000)]
 
 
 class AdminLoginIn(BaseModel):
@@ -38,7 +40,7 @@ class ProductIn(BaseModel):
     badge_hy: Optional[str] = None
     is_promo: bool = False
     icon: str = "box"
-    image: Optional[str] = Field(None, max_length=2_000_000)
+    images: List[ImageUrl] = Field(default_factory=list, max_length=20)
 
 
 class ProductUpdate(BaseModel):
@@ -54,7 +56,7 @@ class ProductUpdate(BaseModel):
     badge_hy: Optional[str] = None
     is_promo: Optional[bool] = None
     icon: Optional[str] = None
-    image: Optional[str] = Field(None, max_length=2_000_000)
+    images: Optional[List[ImageUrl]] = Field(None, max_length=20)
 
 
 class StatusUpdateIn(BaseModel):
@@ -80,6 +82,7 @@ class ProductOut(BaseModel):
     is_promo: bool
     icon: str
     image: Optional[str] = None
+    images: List[str] = []
     sort_order: int = 0
 
     class Config:

@@ -3,7 +3,7 @@ import {
   adminListProducts, adminCreateProduct, adminUpdateProduct, adminDeleteProduct, adminReorderProducts,
 } from "../../lib/adminApi";
 import Select from "../../components/admin/Select";
-import ImageDropzone from "../../components/admin/ImageDropzone";
+import MultiImageDropzone from "../../components/admin/MultiImageDropzone";
 import DragHandleIcon from "../../components/admin/DragHandleIcon";
 import useDragReorder from "../../lib/useDragReorder";
 import { productPhoto } from "../../lib/productPhotos";
@@ -19,7 +19,7 @@ const ICON_OPTIONS = ICONS.map(i => ({ value: i, label: i }));
 
 const EMPTY = {
   id: "", name: "", name_hy: "", category: "profiles", spec: "", spec_hy: "",
-  price: "", old_price: "", unit: "/ m", badge: "In stock", badge_hy: "", is_promo: false, icon: "box", image: null,
+  price: "", old_price: "", unit: "/ m", badge: "In stock", badge_hy: "", is_promo: false, icon: "box", images: [],
 };
 
 export default function AdminProducts() {
@@ -60,7 +60,7 @@ export default function AdminProducts() {
       id: p.id, name: p.name, name_hy: p.name_hy || "", category: p.category,
       spec: p.spec, spec_hy: p.spec_hy || "", price: p.price, old_price: p.old_price ?? "",
       unit: p.unit, badge: p.badge, badge_hy: p.badge_hy || "", is_promo: p.is_promo, icon: p.icon,
-      image: p.image || null,
+      images: p.images && p.images.length > 0 ? p.images : (p.image ? [p.image] : []),
     });
   }
 
@@ -176,8 +176,8 @@ export default function AdminProducts() {
             </div>
             <div className="admin-modal-body">
               <label className="quote-field">
-                <span>Photo</span>
-                <ImageDropzone value={form.image} onChange={img => updateField("image", img)} />
+                <span>Photos</span>
+                <MultiImageDropzone value={form.images} onChange={imgs => updateField("images", imgs)} />
               </label>
 
               {!editingId && (

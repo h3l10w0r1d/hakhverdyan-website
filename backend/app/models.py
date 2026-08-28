@@ -36,6 +36,25 @@ class Product(Base):
     image: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     sort_order: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
 
+    product_images: Mapped[list["ProductImage"]] = relationship(
+        back_populates="product", cascade="all, delete-orphan", order_by="ProductImage.sort_order"
+    )
+
+    @property
+    def images(self) -> list[str]:
+        return [img.url for img in self.product_images]
+
+
+class ProductImage(Base):
+    __tablename__ = "product_images"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    product_id: Mapped[str] = mapped_column(ForeignKey("products.id", ondelete="CASCADE"), index=True, nullable=False)
+    url: Mapped[str] = mapped_column(String, nullable=False)
+    sort_order: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+
+    product: Mapped["Product"] = relationship(back_populates="product_images")
+
 
 class QuoteRequest(Base):
     __tablename__ = "quote_requests"
