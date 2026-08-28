@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import gsap from "gsap";
 import MagnetButton from "../components/MagnetButton";
 import useSEO from "../lib/useSEO";
+import { useQuoteCart } from "../context/QuoteCartContext";
 import { ArrowIcon, CheckIcon } from "../lib/icons";
 import { SERVICES_META } from "../lib/servicesData";
 
@@ -11,6 +12,7 @@ export default function ServiceDetail() {
   const { t } = useTranslation();
   const { slug } = useParams();
   const navigate = useNavigate();
+  const { setPanelOpen } = useQuoteCart();
   const finalCtaRef = useRef(null);
 
   const meta = SERVICES_META.find(s => s.slug === slug);
@@ -18,7 +20,12 @@ export default function ServiceDetail() {
     ...meta,
     title: t(`services.${meta.keyPrefix}Title`),
     lead: t(`services.${meta.keyPrefix}Lead`),
-    items: [1, 2, 3, 4].map(n => t(`services.${meta.keyPrefix}Item${n}`)),
+    intro: t(`services.${meta.keyPrefix}Intro`),
+    outro: t(`services.${meta.keyPrefix}Outro`),
+    items: [1, 2, 3, 4].map(n => ({
+      title: t(`services.${meta.keyPrefix}Item${n}`),
+      desc: t(`services.${meta.keyPrefix}Item${n}Desc`),
+    })),
   };
   const others = meta ? SERVICES_META.filter(s => s.slug !== slug) : [];
 
@@ -90,11 +97,28 @@ export default function ServiceDetail() {
       <section className="block" style={{ paddingTop: 0 }}>
         <div className="container">
           <div className="article-body">
-            <ul className="feature-list" style={{ maxWidth: 720, margin: "0 auto 40px" }}>
+            <p>{service.intro}</p>
+
+            <ul className="feature-list feature-list-detailed">
               {service.items.map(item => (
-                <li key={item}><span className="check"><CheckIcon size={13} /></span>{item}</li>
+                <li key={item.title}>
+                  <span className="check"><CheckIcon size={13} /></span>
+                  <div>
+                    <div className="feature-list-item-title">{item.title}</div>
+                    <p className="feature-list-item-desc">{item.desc}</p>
+                  </div>
+                </li>
               ))}
             </ul>
+
+            <p>{service.outro}</p>
+
+            <div className="service-ask-cta">
+              <span>{t("services.askAboutThis")}</span>
+              <Link className="feature-more-link" to={`/contacts?service=${encodeURIComponent(service.title)}`}>
+                {t("services.askAboutService")} <ArrowIcon size={15} />
+              </Link>
+            </div>
           </div>
 
           <div className="related-posts">
@@ -120,8 +144,8 @@ export default function ServiceDetail() {
             <h2>{t("services.finalCtaTitle")}</h2>
             <p>{t("services.finalCtaDesc")}</p>
             <div className="cta-row">
-              <MagnetButton as="button" className="btn-primary">{t("common.requestQuote")} <ArrowIcon size={16} /></MagnetButton>
-              <button className="btn-secondary">{t("common.callUs")}</button>
+              <MagnetButton as="button" className="btn-primary" onClick={() => setPanelOpen(true)}>{t("common.requestQuote")} <ArrowIcon size={16} /></MagnetButton>
+              <a className="btn-secondary" href="tel:+37460770700">{t("common.callUs")}</a>
             </div>
           </div>
         </div>

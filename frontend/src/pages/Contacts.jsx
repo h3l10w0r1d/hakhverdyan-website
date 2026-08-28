@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import gsap from "gsap";
 import useReveal from "../lib/useReveal";
@@ -13,10 +14,18 @@ export default function Contacts() {
   const { t } = useTranslation();
   useSEO({ title: t("seo.contacts.title"), description: t("seo.contacts.description"), path: "/contacts" });
   useReveal([]);
+  const [searchParams] = useSearchParams();
 
   const [form, setForm] = useState(() => {
     const saved = loadSavedContact();
-    return { name: saved?.name || "", phone: saved?.phone || "", email: saved?.email || "", message: "" };
+    const service = searchParams.get("service");
+    const subject = searchParams.get("subject");
+    const message = service
+      ? t("contacts.serviceInquiryPrefill", { service })
+      : subject === "careers"
+        ? t("contacts.careersPrefill")
+        : "";
+    return { name: saved?.name || "", phone: saved?.phone || "", email: saved?.email || "", message };
   });
   const [status, setStatus] = useState(null); // { type: 'success' | 'error', text }
   const [submitting, setSubmitting] = useState(false);

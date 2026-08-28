@@ -19,7 +19,7 @@ export default function Footer() {
               <li><Link to="/about">{t("footer.aboutUs")}</Link></li>
               <li><Link to="/services">{t("nav.services")}</Link></li>
               <li><Link to="/blog">{t("footer.blog")}</Link></li>
-              <li><a href="#">{t("footer.careers")}</a></li>
+              <li><Link to="/contacts?subject=careers">{t("footer.careers")}</Link></li>
             </ul>
           </div>
           <div className="footer-col">

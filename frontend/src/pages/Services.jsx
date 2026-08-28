@@ -1,15 +1,18 @@
 import { useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import gsap from "gsap";
 import useReveal from "../lib/useReveal";
 import useSEO from "../lib/useSEO";
 import MagnetButton from "../components/MagnetButton";
+import { useQuoteCart } from "../context/QuoteCartContext";
 import { ArrowIcon, CheckIcon, GlobeIcon, ClockIcon, ShieldCheckIcon } from "../lib/icons";
 import { SERVICES_META } from "../lib/servicesData";
 
 export default function Services() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { setPanelOpen } = useQuoteCart();
   useSEO({ title: t("seo.services.title"), description: t("seo.services.description"), path: "/services" });
   const finalCtaRef = useRef(null);
   useReveal([]);
@@ -75,7 +78,7 @@ export default function Services() {
                   ))}
                 </ul>
                 <div className="cta-row">
-                  <MagnetButton as="button" className="btn-secondary">{t("services.askAboutService")} <ArrowIcon size={16} /></MagnetButton>
+                  <MagnetButton as="button" className="btn-secondary" onClick={() => navigate(`/contacts?service=${encodeURIComponent(svc.title)}`)}>{t("services.askAboutService")} <ArrowIcon size={16} /></MagnetButton>
                   <Link className="feature-more-link" to={`/services/${svc.slug}`}>{t("services.learnMore")} <ArrowIcon size={15} /></Link>
                 </div>
               </div>
@@ -114,8 +117,8 @@ export default function Services() {
             <h2>{t("services.finalCtaTitle")}</h2>
             <p>{t("services.finalCtaDesc")}</p>
             <div className="cta-row">
-              <MagnetButton as="button" className="btn-primary">{t("common.requestQuote")} <ArrowIcon size={16} /></MagnetButton>
-              <button className="btn-secondary">{t("common.callUs")}</button>
+              <MagnetButton as="button" className="btn-primary" onClick={() => setPanelOpen(true)}>{t("common.requestQuote")} <ArrowIcon size={16} /></MagnetButton>
+              <a className="btn-secondary" href="tel:+37460770700">{t("common.callUs")}</a>
             </div>
           </div>
         </div>

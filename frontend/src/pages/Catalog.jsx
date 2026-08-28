@@ -9,11 +9,13 @@ import ProductCard from "../components/ProductCard";
 import Select from "../components/admin/Select";
 import { fetchProducts } from "../lib/api";
 import { localized } from "../lib/localized";
+import { useQuoteCart } from "../context/QuoteCartContext";
 import { ArrowIcon, SearchIcon, GlobeIcon, WrenchIcon, ClockIcon } from "../lib/icons";
 
 export default function Catalog() {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage;
+  const { setPanelOpen } = useQuoteCart();
   useSEO({ title: t("seo.catalog.title"), description: t("seo.catalog.description"), path: "/catalog" });
   const [searchParams, setSearchParams] = useSearchParams();
   const [products, setProducts] = useState([]);
@@ -173,8 +175,8 @@ export default function Catalog() {
             <h2>{t("catalog.finalCtaTitle")}</h2>
             <p>{t("catalog.finalCtaDesc")}</p>
             <div className="cta-row">
-              <MagnetButton as="button" className="btn-primary">{t("common.requestQuote")} <ArrowIcon size={16} /></MagnetButton>
-              <button className="btn-secondary">{t("common.callUs")}</button>
+              <MagnetButton as="button" className="btn-primary" onClick={() => setPanelOpen(true)}>{t("common.requestQuote")} <ArrowIcon size={16} /></MagnetButton>
+              <a className="btn-secondary" href="tel:+37460770700">{t("common.callUs")}</a>
             </div>
           </div>
         </div>

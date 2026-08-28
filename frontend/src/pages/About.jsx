@@ -6,12 +6,14 @@ import useReveal from "../lib/useReveal";
 import useSEO from "../lib/useSEO";
 import MagnetButton from "../components/MagnetButton";
 import CountUp from "../components/CountUp";
+import { useQuoteCart } from "../context/QuoteCartContext";
 import { ArrowIcon, CheckIcon, WrenchIcon, ShieldCheckIcon, VennIcon, HeadsetIcon, PinIcon } from "../lib/icons";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function About() {
   const { t } = useTranslation();
+  const { setPanelOpen } = useQuoteCart();
   useSEO({ title: t("seo.about.title"), description: t("seo.about.description"), path: "/about" });
   const finalCtaRef = useRef(null);
 
@@ -236,8 +238,8 @@ export default function About() {
             <h2>{t("about.finalCtaTitle")}</h2>
             <p>{t("about.finalCtaDesc")}</p>
             <div className="cta-row">
-              <MagnetButton as="button" className="btn-primary">{t("common.requestQuote")} <ArrowIcon size={16} /></MagnetButton>
-              <button className="btn-secondary">{t("common.callUs")}</button>
+              <MagnetButton as="button" className="btn-primary" onClick={() => setPanelOpen(true)}>{t("common.requestQuote")} <ArrowIcon size={16} /></MagnetButton>
+              <a className="btn-secondary" href="tel:+37460770700">{t("common.callUs")}</a>
             </div>
           </div>
         </div>

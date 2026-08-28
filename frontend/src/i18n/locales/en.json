@@ -281,7 +281,26 @@
     "learnMore": "Learn more",
     "backToServices": "Back to services",
     "otherServices": "Other services",
-    "notFoundTitle": "That service doesn't exist."
+    "notFoundTitle": "That service doesn't exist.",
+    "svc1Intro": "Every installation starts with a site visit, not a guess. Our crews measure openings to the millimeter, check structural tolerances, and flag anything that could cause a fit issue before a single profile is cut. From there, assembly follows the same sequence on every job — anchor, align, seal, finish — so the result holds up the same whether it's a single balcony door or a full glass facade.",
+    "svc1Item1Desc": "We verify every opening on site before fabrication starts, so the profiles that arrive are the profiles that fit.",
+    "svc1Item2Desc": "Frames go in plumb and square, anchored to load-bearing points rated for local wind and seismic conditions.",
+    "svc1Item3Desc": "Every joint is sealed against water, air, and thermal bridging — the difference between a window that looks good and one that performs for 20 years.",
+    "svc1Item4Desc": "We remove all packaging and debris, then walk the site with you so nothing gets signed off unseen.",
+    "svc1Outro": "Whether it's a single balcony door or a 40-unit residential complex, the same crew structure and quality checks apply — no shortcuts for smaller jobs, no schedule slippage for larger ones.",
+    "svc2Intro": "Before we quote a single project, someone reviews it. That means checking structural loads against the building's actual specifications, confirming which profile series and glass makeup fit the opening, and running the numbers so the price you see at the end matches the price you pay. It's the step most suppliers skip — and the reason their quotes tend to change halfway through the job.",
+    "svc2Item1Desc": "We check wind, snow, and seismic loads against the opening size before recommending a profile series, not after.",
+    "svc2Item2Desc": "Aluminum, PVC, or a hybrid system — the choice comes down to thermal performance, budget, and structural limits, not which one we have in stock.",
+    "svc2Item3Desc": "Every project gets scaled drawings your architect or contractor can sign off on, down to the anchor points.",
+    "svc2Item4Desc": "The quote reflects the actual specification, so it doesn't move once fabrication starts.",
+    "svc2Outro": "This review happens whether you're speccing a single apartment renovation or a multi-building development — the same rigor either way, because a bad spec costs the same to fix regardless of project size.",
+    "svc3Intro": "Hardware wears. Seals age. A hinge that closed perfectly on installation day can start dragging two years later. Our after-sales team handles exactly that — scheduled check-ins, parts sourced from the same manufacturers as the original install, and a phone line that gets answered by someone who can actually solve the problem, not just log a ticket.",
+    "svc3Item1Desc": "Regular check-ups catch worn seals, misaligned hardware, and drainage issues before they turn into leaks.",
+    "svc3Item2Desc": "We source replacement handles, hinges, and rollers from the same EU manufacturers as your original installation, so fit and finish match.",
+    "svc3Item3Desc": "A window that won't close or a door that's dragging gets diagnosed and fixed on site, usually in a single visit.",
+    "svc3Item4Desc": "Existing clients get a direct line, not a general support queue.",
+    "svc3Outro": "Support doesn't come with an expiration date tied to the warranty period — if you installed with us five years ago and something needs attention, the same team picks up the phone.",
+    "askAboutThis": "Have a question about this service?"
   },
   "contacts": {
     "tag": "Contacts",
@@ -315,7 +334,9 @@
     "loc2Name": "Tevosyan Location",
     "loc2Addr": "Tevosyan 7/11 st., Yerevan, Armenia",
     "hoursWeek": "Mon–Fri 9:00–18:00",
-    "hoursSat": "Sat 9:00–16:00"
+    "hoursSat": "Sat 9:00–16:00",
+    "serviceInquiryPrefill": "I'm interested in {{service}}. Could you tell me more about pricing and timelines?",
+    "careersPrefill": "I'd like to ask about job openings at Hakhverdyan Holding."
   },
   "quoteCart": {
     "label": "Quote list",

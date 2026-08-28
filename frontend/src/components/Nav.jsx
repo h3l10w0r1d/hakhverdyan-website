@@ -4,12 +4,14 @@ import { useTranslation } from "react-i18next";
 import gsap from "gsap";
 import MagnetButton from "./MagnetButton";
 import LanguageSwitch from "./LanguageSwitch";
+import { useQuoteCart } from "../context/QuoteCartContext";
 
 export default function Nav() {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const menuRef = useRef(null);
   const location = useLocation();
+  const { setPanelOpen } = useQuoteCart();
 
   const LINKS = [
     { to: "/about", label: t("nav.about") },
@@ -47,7 +49,7 @@ export default function Nav() {
         </nav>
         <div className="nav-right">
           <LanguageSwitch />
-          <MagnetButton as="button" className="nav-cta">{t("nav.requestQuote")}</MagnetButton>
+          <MagnetButton as="button" className="nav-cta" onClick={() => setPanelOpen(true)}>{t("nav.requestQuote")}</MagnetButton>
           <button className="nav-burger" aria-label={open ? "Close menu" : "Open menu"} onClick={() => setOpen(o => !o)}>
             {open ? (
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
@@ -66,7 +68,7 @@ export default function Nav() {
             </NavLink>
           ))}
           <LanguageSwitch className="mobile-menu-lang" align="center" />
-          <MagnetButton as="button" className="nav-cta mobile-menu-cta">{t("nav.requestQuote")}</MagnetButton>
+          <MagnetButton as="button" className="nav-cta mobile-menu-cta" onClick={() => setPanelOpen(true)}>{t("nav.requestQuote")}</MagnetButton>
         </div>
       )}
     </header>

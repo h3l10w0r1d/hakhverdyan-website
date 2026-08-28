@@ -712,6 +712,19 @@ footer{ position:relative; z-index:1; padding:64px 32px 30px; border-top:1px sol
   width:24px; height:24px; border-radius:50%; background:var(--grey-50); color:var(--red);
   display:flex; align-items:center; justify-content:center; flex:none;
 }
+
+.feature-list-detailed{ gap:22px; margin-bottom:8px; }
+.feature-list-detailed li{ align-items:flex-start; }
+.feature-list-detailed li .check{ margin-top:2px; }
+.feature-list-item-title{ font-size:15.5px; font-weight:700; color:var(--ink); margin-bottom:4px; }
+.feature-list-item-desc{ font-size:14px; color:var(--grey-600); line-height:1.6; margin:0; }
+
+.service-ask-cta{
+  display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
+  padding:20px 24px; border-radius:var(--radius-md); background:var(--grey-50); border:1px solid var(--grey-100);
+  margin:32px 0 40px;
+}
+.service-ask-cta span{ font-size:15px; font-weight:600; color:var(--ink); }
 .feature-visual{
   position:relative; display:block; height:400px; border-radius:var(--radius-xl); overflow:hidden;
   box-shadow:0 30px 60px -20px rgba(20,20,25,0.25);

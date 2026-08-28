@@ -9,6 +9,7 @@ import MagnetButton from "../components/MagnetButton";
 import CountUp from "../components/CountUp";
 import FeaturedProducts from "../components/FeaturedProducts";
 import { fetchPartners } from "../lib/api";
+import { useQuoteCart } from "../context/QuoteCartContext";
 import {
   ArrowIcon, GlobeIcon, WrenchIcon, ClockIcon,
 } from "../lib/icons";
@@ -18,6 +19,7 @@ gsap.registerPlugin(ScrollTrigger);
 export default function Home() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { setPanelOpen } = useQuoteCart();
   useSEO({ title: t("seo.home.title"), description: t("seo.home.description"), path: "/" });
   const finalCtaRef = useRef(null);
   const [partners, setPartners] = useState([]);
@@ -123,7 +125,7 @@ export default function Home() {
             </h1>
             <p className="sub">{t("home.sub")}</p>
             <div className="cta-row">
-              <MagnetButton as="button" className="btn-primary">{t("home.getFreeQuote")} <ArrowIcon size={16} /></MagnetButton>
+              <MagnetButton as="button" className="btn-primary" onClick={() => setPanelOpen(true)}>{t("home.getFreeQuote")} <ArrowIcon size={16} /></MagnetButton>
               <button className="btn-secondary" onClick={() => navigate("/catalog")}>{t("home.browseCatalog")}</button>
             </div>
             <div className="stats-row">
@@ -399,8 +401,8 @@ export default function Home() {
             <h2>{t("home.finalCtaTitle")}</h2>
             <p>{t("home.finalCtaDesc")}</p>
             <div className="cta-row">
-              <MagnetButton as="button" className="btn-primary">{t("common.requestQuote")} <ArrowIcon size={16} /></MagnetButton>
-              <button className="btn-secondary">{t("common.callUs")}</button>
+              <MagnetButton as="button" className="btn-primary" onClick={() => setPanelOpen(true)}>{t("common.requestQuote")} <ArrowIcon size={16} /></MagnetButton>
+              <a className="btn-secondary" href="tel:+37460770700">{t("common.callUs")}</a>
             </div>
           </div>
         </div>

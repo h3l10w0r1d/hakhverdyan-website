@@ -6,6 +6,7 @@ import MagnetButton from "../components/MagnetButton";
 import { fetchPost, fetchPosts } from "../lib/api";
 import { localized } from "../lib/localized";
 import useSEO from "../lib/useSEO";
+import { useQuoteCart } from "../context/QuoteCartContext";
 import { ArrowIcon } from "../lib/icons";
 
 export default function BlogPost() {
@@ -15,6 +16,7 @@ export default function BlogPost() {
 
   const { slug } = useParams();
   const navigate = useNavigate();
+  const { setPanelOpen } = useQuoteCart();
   const [post, setPost] = useState(null);
   useSEO({
     title: post ? localized(post, "title", lang) : undefined,
@@ -141,8 +143,8 @@ export default function BlogPost() {
             <h2>{t("blog.haveProject")}</h2>
             <p>{t("home.finalCtaDesc")}</p>
             <div className="cta-row">
-              <MagnetButton as="button" className="btn-primary">{t("common.requestQuote")} <ArrowIcon size={16} /></MagnetButton>
-              <button className="btn-secondary">{t("common.callUs")}</button>
+              <MagnetButton as="button" className="btn-primary" onClick={() => setPanelOpen(true)}>{t("common.requestQuote")} <ArrowIcon size={16} /></MagnetButton>
+              <a className="btn-secondary" href="tel:+37460770700">{t("common.callUs")}</a>
             </div>
           </div>
         </div>
