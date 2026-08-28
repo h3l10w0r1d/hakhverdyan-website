@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import {
   adminListProducts, adminCreateProduct, adminUpdateProduct, adminDeleteProduct,
 } from "../../lib/adminApi";
+import Select from "../../components/admin/Select";
+import ImageDropzone from "../../components/admin/ImageDropzone";
+import { productPhoto } from "../../lib/productPhotos";
 
 const CATEGORIES = ["profiles", "hardware", "sheets", "doors", "facades"];
 const ICONS = [
@@ -9,10 +12,12 @@ const ICONS = [
   "layers", "sheen", "polycarbonate", "door-split", "door-flush",
   "gate", "gate-insulated", "facade-grid", "facade-frameless", "box",
 ];
+const CATEGORY_OPTIONS = CATEGORIES.map(c => ({ value: c, label: c[0].toUpperCase() + c.slice(1) }));
+const ICON_OPTIONS = ICONS.map(i => ({ value: i, label: i }));
 
 const EMPTY = {
   id: "", name: "", name_hy: "", category: "profiles", spec: "", spec_hy: "",
-  price: "", old_price: "", unit: "/ m", badge: "In stock", badge_hy: "", is_promo: false, icon: "box",
+  price: "", old_price: "", unit: "/ m", badge: "In stock", badge_hy: "", is_promo: false, icon: "box", image: null,
 };
 
 export default function AdminProducts() {
@@ -41,6 +46,7 @@ export default function AdminProducts() {
       id: p.id, name: p.name, name_hy: p.name_hy || "", category: p.category,
       spec: p.spec, spec_hy: p.spec_hy || "", price: p.price, old_price: p.old_price ?? "",
       unit: p.unit, badge: p.badge, badge_hy: p.badge_hy || "", is_promo: p.is_promo, icon: p.icon,
+      image: p.image || null,
     });
   }
 
@@ -109,12 +115,13 @@ export default function AdminProducts() {
           <table className="admin-table">
             <thead>
               <tr>
-                <th>Name</th><th>Category</th><th>Price</th><th>Badge</th><th>Promo</th><th></th>
+                <th></th><th>Name</th><th>Category</th><th>Price</th><th>Badge</th><th>Promo</th><th></th>
               </tr>
             </thead>
             <tbody>
               {products.map(p => (
                 <tr key={p.id}>
+                  <td><img className="admin-table-thumb" src={p.image || productPhoto(p.icon)} alt="" /></td>
                   <td>
                     <div className="admin-table-title">{p.name}</div>
                     <div className="admin-table-sub">{p.id}</div>
@@ -142,6 +149,11 @@ export default function AdminProducts() {
               <button type="button" className="admin-modal-close" onClick={closeForm}>&times;</button>
             </div>
             <div className="admin-modal-body">
+              <label className="quote-field">
+                <span>Photo</span>
+                <ImageDropzone value={form.image} onChange={img => updateField("image", img)} />
+              </label>
+
               {!editingId && (
                 <label className="quote-field">
                   <span>ID (slug, unique)</span>
@@ -171,15 +183,11 @@ export default function AdminProducts() {
               <div className="admin-form-row">
                 <label className="quote-field">
                   <span>Category</span>
-                  <select value={form.category} onChange={e => updateField("category", e.target.value)}>
-                    {CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
-                  </select>
+                  <Select value={form.category} onChange={v => updateField("category", v)} options={CATEGORY_OPTIONS} />
                 </label>
                 <label className="quote-field">
                   <span>Icon / photo group</span>
-                  <select value={form.icon} onChange={e => updateField("icon", e.target.value)}>
-                    {ICONS.map(i => <option key={i} value={i}>{i}</option>)}
-                  </select>
+                  <Select value={form.icon} onChange={v => updateField("icon", v)} options={ICON_OPTIONS} />
                 </label>
               </div>
               <div className="admin-form-row">

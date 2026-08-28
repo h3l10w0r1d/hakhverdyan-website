@@ -10,7 +10,7 @@ from .models import AdminUser, Product, BlogPost
 from .seed_data import PRODUCTS, BLOG_POSTS
 from .routers import (
     products, quotes, contact, blog,
-    admin_auth, admin_products, admin_quotes, admin_messages, admin_stats,
+    admin_auth, admin_products, admin_quotes, admin_messages, admin_stats, admin_analytics,
 )
 
 
@@ -79,6 +79,7 @@ app.include_router(admin_products.router)
 app.include_router(admin_quotes.router)
 app.include_router(admin_messages.router)
 app.include_router(admin_stats.router)
+app.include_router(admin_analytics.router)
 
 
 @app.get("/api/health")

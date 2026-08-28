@@ -58,7 +58,7 @@ export default function ProductQuickView() {
 
   if (!product) return null;
 
-  const photos = productPhotos(product.icon);
+  const photos = product.image ? [product.image, ...productPhotos(product.icon)] : productPhotos(product.icon);
   const name = localized(product, "name", lang);
   const spec = localized(product, "spec", lang);
   const badge = localized(product, "badge", lang);

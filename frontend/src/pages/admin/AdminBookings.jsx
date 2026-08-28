@@ -1,7 +1,12 @@
 import { Fragment, useEffect, useState } from "react";
 import { adminListQuotes, adminUpdateQuoteStatus, adminUpdateQuoteNote } from "../../lib/adminApi";
+import Select from "../../components/admin/Select";
 
-const STATUSES = ["new", "contacted", "closed"];
+const STATUS_OPTIONS = [
+  { value: "new", label: "New" },
+  { value: "contacted", label: "Contacted" },
+  { value: "closed", label: "Closed" },
+];
 const fmt = n => n.toLocaleString("en-US") + "֏";
 const fmtDate = iso => new Date(iso).toLocaleString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
 
@@ -86,9 +91,7 @@ export default function AdminBookings() {
                           <div className="admin-form-row">
                             <label className="quote-field">
                               <span>Status</span>
-                              <select value={q.status} onChange={e => changeStatus(q.id, e.target.value)}>
-                                {STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
-                              </select>
+                              <Select value={q.status} onChange={v => changeStatus(q.id, v)} options={STATUS_OPTIONS} />
                             </label>
                           </div>
 

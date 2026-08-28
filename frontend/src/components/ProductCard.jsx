@@ -43,7 +43,7 @@ export default function ProductCard({ product, reveal = true }) {
       onMouseLeave={cancelHoverIntent}
     >
       <div className="product-thumb" ref={thumbRef}>
-        <img className="product-photo" src={productPhoto(product.icon)} alt={name} loading="lazy" />
+        <img className="product-photo" src={product.image || productPhoto(product.icon)} alt={name} loading="lazy" />
         <span className={"product-badge" + (product.is_promo ? " promo" : "")}>{badge}</span>
       </div>
       <div className="product-name">{name}</div>

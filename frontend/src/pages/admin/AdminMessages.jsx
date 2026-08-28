@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
 import { adminListMessages, adminUpdateMessageStatus } from "../../lib/adminApi";
+import Select from "../../components/admin/Select";
 
-const STATUSES = ["new", "replied", "spam"];
+const STATUS_OPTIONS = [
+  { value: "new", label: "New" },
+  { value: "replied", label: "Replied" },
+  { value: "spam", label: "Spam" },
+];
 const fmtDate = iso => new Date(iso).toLocaleString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
 
 export default function AdminMessages() {
@@ -43,9 +48,7 @@ export default function AdminMessages() {
                   </td>
                   <td className="admin-table-message">{m.message}</td>
                   <td>
-                    <select value={m.status} onChange={e => changeStatus(m.id, e.target.value)}>
-                      {STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
-                    </select>
+                    <Select value={m.status} onChange={v => changeStatus(m.id, v)} options={STATUS_OPTIONS} className="adm-select-sm" />
                   </td>
                 </tr>
               ))}

@@ -33,6 +33,7 @@ class Product(Base):
     badge_hy: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     is_promo: Mapped[bool] = mapped_column(Boolean, default=False)
     icon: Mapped[str] = mapped_column(String, nullable=False, default="box")
+    image: Mapped[Optional[str]] = mapped_column(String, nullable=True)
 
 
 class QuoteRequest(Base):

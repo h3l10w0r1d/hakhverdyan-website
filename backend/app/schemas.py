@@ -38,6 +38,7 @@ class ProductIn(BaseModel):
     badge_hy: Optional[str] = None
     is_promo: bool = False
     icon: str = "box"
+    image: Optional[str] = Field(None, max_length=2_000_000)
 
 
 class ProductUpdate(BaseModel):
@@ -53,6 +54,7 @@ class ProductUpdate(BaseModel):
     badge_hy: Optional[str] = None
     is_promo: Optional[bool] = None
     icon: Optional[str] = None
+    image: Optional[str] = Field(None, max_length=2_000_000)
 
 
 class StatusUpdateIn(BaseModel):
@@ -77,6 +79,7 @@ class ProductOut(BaseModel):
     badge_hy: Optional[str] = None
     is_promo: bool
     icon: str
+    image: Optional[str] = None
 
     class Config:
         from_attributes = True
