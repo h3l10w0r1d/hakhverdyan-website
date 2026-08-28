@@ -10,7 +10,7 @@ import CountUp from "../components/CountUp";
 import FeaturedProducts from "../components/FeaturedProducts";
 import { fetchPartners } from "../lib/api";
 import {
-  ArrowIcon, CheckIcon, StarIcon, GlobeIcon, WrenchIcon, ClockIcon,
+  ArrowIcon, GlobeIcon, WrenchIcon, ClockIcon,
 } from "../lib/icons";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -53,8 +53,7 @@ export default function Home() {
         .from(".eyebrow", { opacity: 0, y: 14, duration: 0.7 }, 0)
         .from(".hero .sub", { opacity: 0, y: 18, duration: 0.8 }, 0.5)
         .from(".hero .cta-row > *", { opacity: 0, y: 18, duration: 0.7, stagger: 0.1 }, 0.63)
-        .from(".hero-trust-chip", { opacity: 0, y: 14, duration: 0.6, stagger: 0.1 }, 0.72)
-        .from(".hero .stat", { opacity: 0, y: 16, duration: 0.6, stagger: 0.08 }, 0.8);
+        .from(".hero .stat", { opacity: 0, y: 16, duration: 0.6, stagger: 0.08 }, 0.72);
 
       // Slow continuous drift keeps the photo from feeling like a static poster.
       gsap.to(".hero-photo-card img", { scale: 1.1, duration: 14, ease: "sine.inOut", yoyo: true, repeat: -1, delay: 1.9 });
@@ -126,10 +125,6 @@ export default function Home() {
             <div className="cta-row">
               <MagnetButton as="button" className="btn-primary">{t("home.getFreeQuote")} <ArrowIcon size={16} /></MagnetButton>
               <button className="btn-secondary" onClick={() => navigate("/catalog")}>{t("home.browseCatalog")}</button>
-            </div>
-            <div className="hero-trust-row">
-              <div className="hero-trust-chip"><CheckIcon size={15} /><strong>{t("home.inStock")}</strong>&nbsp;{t("home.inStockItem")}</div>
-              <div className="hero-trust-chip"><StarIcon size={15} /><strong>{t("home.rating")}</strong>&nbsp;{t("home.ratingSub")}</div>
             </div>
             <div className="stats-row">
               <div className="stat"><CountUp target={500} suffix="+" /><div className="label">{t("home.statProjects")}</div></div>
