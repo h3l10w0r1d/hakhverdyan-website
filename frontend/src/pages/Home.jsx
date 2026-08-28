@@ -19,7 +19,6 @@ export default function Home() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   useSEO({ title: t("seo.home.title"), description: t("seo.home.description"), path: "/" });
-  const heroVisualRef = useRef(null);
   const finalCtaRef = useRef(null);
 
   const CATEGORIES = [
@@ -39,19 +38,20 @@ export default function Home() {
     const ctx = gsap.context(() => {
       gsap.set(".headline .line span", { yPercent: 110, opacity: 0 });
 
+      gsap.set(".hero-bg-photo", { scale: 1.12 });
+
       const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
-      tl.to(".headline .line span", { yPercent: 0, opacity: 1, duration: 1, stagger: 0.12 }, 0.1)
+      tl.from(".hero-bg-shade", { opacity: 0, duration: 1.2, ease: "power2.out" }, 0)
+        .to(".hero-bg-photo", { scale: 1.04, duration: 2.2, ease: "power2.out" }, 0)
+        .to(".headline .line span", { yPercent: 0, opacity: 1, duration: 1, stagger: 0.12 }, 0.1)
         .from(".eyebrow", { opacity: 0, y: 14, duration: 0.7 }, 0)
         .from(".hero .sub", { opacity: 0, y: 18, duration: 0.8 }, 0.5)
         .from(".hero .cta-row > *", { opacity: 0, y: 18, duration: 0.7, stagger: 0.1 }, 0.63)
-        .from(".hero .stat", { opacity: 0, y: 16, duration: 0.6, stagger: 0.08 }, 0.75)
-        .from(".hero-visual .panel", { opacity: 0, scale: 0.92, duration: 1.1, ease: "power3.out" }, 0.2)
-        .from(".float-card, .badge-promo", { opacity: 0, scale: 0.8, duration: 0.7, stagger: 0.15, ease: "back.out(1.7)" }, 0.85);
+        .from(".hero-trust-chip", { opacity: 0, y: 14, duration: 0.6, stagger: 0.1 }, 0.72)
+        .from(".hero .stat", { opacity: 0, y: 16, duration: 0.6, stagger: 0.08 }, 0.8);
 
-      gsap.to(".card-stock", { y: -14, duration: 2.6, ease: "sine.inOut", yoyo: true, repeat: -1 });
-      gsap.to(".card-rating", { y: 12, duration: 3.1, ease: "sine.inOut", yoyo: true, repeat: -1, delay: 0.3 });
-      gsap.to(".badge-promo", { y: -10, rotate: 2, duration: 2.4, ease: "sine.inOut", yoyo: true, repeat: -1, delay: 0.5 });
-      gsap.to(".panel-glow", { x: 30, y: 20, duration: 4, ease: "sine.inOut", yoyo: true, repeat: -1 });
+      // Slow continuous drift keeps the background photo from feeling like a static poster.
+      gsap.to(".hero-bg-photo", { scale: 1.1, duration: 14, ease: "sine.inOut", yoyo: true, repeat: -1, delay: 2.2 });
       gsap.to(".scroll-cue .stick i", { top: "100%", duration: 1.4, ease: "power2.inOut", repeat: -1 });
       gsap.to("#marqueeTrack", { xPercent: -50, duration: 16, ease: "none", repeat: -1 });
       gsap.to("#promoMarquee", { xPercent: -50, duration: 18, ease: "none", repeat: -1 });
@@ -64,13 +64,6 @@ export default function Home() {
         ScrollTrigger.create({ trigger: step, start: "top 70%", onEnter: () => step.classList.add("active") })
       );
     });
-
-    function onMouseMove(e) {
-      const relX = (e.clientX / window.innerWidth - 0.5) * 14;
-      const relY = (e.clientY / window.innerHeight - 0.5) * 14;
-      gsap.to(heroVisualRef.current, { rotateY: relX, rotateX: -relY, duration: 0.8, ease: "power2.out", transformPerspective: 900 });
-    }
-    window.addEventListener("mousemove", onMouseMove);
 
     const catCards = gsap.utils.toArray(".cat-card");
     const catCardHandlers = catCards.map(card => {
@@ -101,7 +94,6 @@ export default function Home() {
     finalCtaRef.current?.addEventListener("mousemove", onCtaMove);
 
     return () => {
-      window.removeEventListener("mousemove", onMouseMove);
       catCardHandlers.forEach(({ card, onMove, onLeave, onClick }) => {
         card.removeEventListener("mousemove", onMove);
         card.removeEventListener("mouseleave", onLeave);
@@ -116,6 +108,10 @@ export default function Home() {
   return (
     <>
       <section className="hero" id="hero">
+        <div className="hero-bg">
+          <img className="hero-bg-photo" src="/hero/facade-render.jpg" alt="" />
+          <div className="hero-bg-shade"></div>
+        </div>
         <div className="hero-inner">
           <div className="hero-copy">
             <div className="eyebrow"><span className="pip">{t("home.eyebrowPip")}</span> {t("home.eyebrow")}</div>
@@ -129,30 +125,14 @@ export default function Home() {
               <MagnetButton as="button" className="btn-primary">{t("home.getFreeQuote")} <ArrowIcon size={16} /></MagnetButton>
               <button className="btn-secondary" onClick={() => navigate("/catalog")}>{t("home.browseCatalog")}</button>
             </div>
+            <div className="hero-trust-row">
+              <div className="hero-trust-chip"><CheckIcon size={15} /><strong>{t("home.inStock")}</strong>&nbsp;{t("home.inStockItem")}</div>
+              <div className="hero-trust-chip"><StarIcon size={15} /><strong>{t("home.rating")}</strong>&nbsp;{t("home.ratingSub")}</div>
+            </div>
             <div className="stats-row">
               <div className="stat"><CountUp target={500} suffix="+" /><div className="label">{t("home.statProjects")}</div></div>
               <div className="stat"><CountUp target={15} suffix="+" /><div className="label">{t("home.statYears")}</div></div>
               <div className="stat"><CountUp target={48} suffix="h" /><div className="label">{t("home.statTurnaround")}</div></div>
-            </div>
-          </div>
-
-          <div className="hero-visual" ref={heroVisualRef}>
-            <div className="panel">
-              <img className="panel-photo" src="/hero/facade-render.jpg" alt="" />
-              <div className="panel-shade"></div>
-              <div className="panel-glow"></div>
-            </div>
-            <div className="float-card card-stock">
-              <div className="ic"><CheckIcon size={18} /></div>
-              <div><div className="txt-title">{t("home.inStock")}</div><div className="txt-sub">{t("home.inStockItem")}</div></div>
-            </div>
-            <div className="float-card card-rating">
-              <div className="ic"><StarIcon size={18} /></div>
-              <div><div className="txt-title">{t("home.rating")}</div><div className="txt-sub">{t("home.ratingSub")}</div></div>
-            </div>
-            <div className="badge-promo">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M12 2v20M2 12h20" /></svg>
-              {t("home.promoBadge")}
             </div>
           </div>
         </div>

@@ -169,6 +169,14 @@ export function WhatsappIcon({ size = 16 }) {
   );
 }
 
+export function TiktokIcon({ size = 16 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M16.6 3h-3.2v12.4a2.8 2.8 0 11-2-2.68V9.6a5.9 5.9 0 104.9 5.82V9.34a7.4 7.4 0 004.1 1.24V7.36a4.1 4.1 0 01-3.8-4.36z" />
+    </svg>
+  );
+}
+
 // Product-thumbnail icon set, keyed by the `icon` field coming back from the API.
 const PRODUCT_ICONS = {
   aluminum: (

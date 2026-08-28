@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { FacebookIcon, InstagramIcon, WhatsappIcon } from "../lib/icons";
+import { FacebookIcon, InstagramIcon, WhatsappIcon, TiktokIcon } from "../lib/icons";
 
 export default function Footer() {
   const { t } = useTranslation();
@@ -45,9 +45,10 @@ export default function Footer() {
         <div className="footer-bottom">
           <div>{t("footer.copyright")}</div>
           <div className="footer-social">
-            <a href="#" aria-label="Facebook"><FacebookIcon /></a>
-            <a href="#" aria-label="Instagram"><InstagramIcon /></a>
-            <a href="#" aria-label="WhatsApp"><WhatsappIcon /></a>
+            <a href="https://www.facebook.com/share/1ERgBgZy4H/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><FacebookIcon /></a>
+            <a href="https://www.instagram.com/hakhverdyan.holding" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><InstagramIcon /></a>
+            <a href="https://www.tiktok.com/@hakhverdyan.holding" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><TiktokIcon /></a>
+            <a href="https://wa.me/37460770700" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><WhatsappIcon /></a>
           </div>
         </div>
       </div>
