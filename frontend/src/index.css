@@ -79,7 +79,7 @@ header{ position:fixed; top:0; left:0; right:0; z-index:100; display:flex; justi
   box-shadow:0 8px 30px rgba(20,20,30,0.06);
 }
 .logo{ font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:19px; letter-spacing:-0.01em; display:flex; align-items:center; gap:8px; }
-.logo-mark{ height:24px; width:auto; display:block; flex:none; }
+.logo-mark{ height:46px; width:auto; display:block; flex:none; }
 nav ul{display:flex; gap:6px; align-items:center;}
 nav a.nav-link{ font-size:14.5px; font-weight:500; color:var(--grey-600); padding:9px 16px; border-radius:999px; transition:color .25s ease, background .25s ease; }
 nav a.nav-link:hover{color:var(--ink); background:var(--grey-50);}
@@ -874,7 +874,7 @@ footer{ position:relative; z-index:1; padding:64px 32px 30px; border-top:1px sol
   header{ padding:16px 14px; }
   .nav-inner{ padding:8px 8px 8px 16px; }
   .logo{ font-size:16.5px; gap:6px; }
-  .logo-mark{ height:20px; }
+  .logo-mark{ height:38px; }
   .nav-right{ gap:6px; }
   .nav-right > .lang-switch .lang-switch-trigger{ padding:8px 9px; gap:0; }
   .nav-right > .lang-switch .lang-switch-trigger .lang-code{ display:none; }
