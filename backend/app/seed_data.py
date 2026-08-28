@@ -7,6 +7,24 @@ _DOOR_PHOTO = "https://images.unsplash.com/photo-1734360659832-6ec810b0334e?w=12
 _GATE_PHOTO = "https://images.unsplash.com/photo-1785102742384-123dd05c1465?w=1200&q=70&fm=jpg&fit=crop"
 _FACADE_PHOTO = "https://images.unsplash.com/photo-1745015446589-7ee6f702d8c1?w=1200&q=70&fm=jpg&fit=crop"
 
+PARTNERS = [
+    {"name": "Medos", "logo": "/logos/medos.jpg", "url": "https://medos.pl/en/home/"},
+    {"name": "Alcotek", "logo": "/logos/alcotek.png", "url": "https://alcotek.ru/en/"},
+    {"name": "Marga Cipta", "logo": "/logos/marga-cipta.jpg", "url": "https://www.margacipta.com/"},
+    {"name": "Macrolux", "logo": "/logos/macrolux.png", "url": "https://macroluxusa.com/"},
+    {"name": "Arplas", "logo": "/logos/arplas.png", "url": "https://arplas.am/"},
+    {"name": "AR Steel", "logo": "/logos/ar-steel.png", "url": None},
+    {"name": "Donjoy", "logo": "/logos/donjoy.jpg", "url": None},
+    {"name": "dormakaba", "logo": "/logos/dormakaba.jpg", "url": "https://www.dormakaba.com/us-en"},
+    {"name": "Flexidoor", "logo": "/logos/flexidoor.png", "url": "https://flexidoor.pt/"},
+    {"name": "Maco", "logo": "/logos/maco.jpg", "url": None},
+    {"name": "Maxprof", "logo": "/logos/maxprof.png", "url": None},
+    {"name": "Aluminco", "logo": "/logos/aluminco.jpg", "url": "https://aluminco.com/"},
+    {"name": "Palram", "logo": "/logos/palram.png", "url": "https://www.palram.com/"},
+    {"name": "Plastilux", "logo": "/logos/plastilux.jpg", "url": None},
+    {"name": "Comunello Group", "logo": "/logos/comunello-group.jpg", "url": "https://www.comunello.com/"},
+]
+
 BLOG_POSTS = [
     {
         "slug": "aluminum-vs-pvc-windows",

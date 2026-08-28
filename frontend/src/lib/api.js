@@ -38,3 +38,7 @@ export function fetchPosts({ category } = {}) {
 export function fetchPost(slug) {
   return request(`/api/posts/${slug}`);
 }
+
+export function fetchPartners() {
+  return request("/api/partners");
+}

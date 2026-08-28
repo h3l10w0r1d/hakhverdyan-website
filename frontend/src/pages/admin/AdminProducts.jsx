@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import {
-  adminListProducts, adminCreateProduct, adminUpdateProduct, adminDeleteProduct,
+  adminListProducts, adminCreateProduct, adminUpdateProduct, adminDeleteProduct, adminReorderProducts,
 } from "../../lib/adminApi";
 import Select from "../../components/admin/Select";
 import ImageDropzone from "../../components/admin/ImageDropzone";
+import DragHandleIcon from "../../components/admin/DragHandleIcon";
+import useDragReorder from "../../lib/useDragReorder";
 import { productPhoto } from "../../lib/productPhotos";
 
 const CATEGORIES = ["profiles", "hardware", "sheets", "doors", "facades"];
@@ -34,6 +36,18 @@ export default function AdminProducts() {
   }
 
   useEffect(load, []);
+
+  async function persistOrder(nextProducts) {
+    setProducts(nextProducts);
+    try {
+      await adminReorderProducts(nextProducts.map(p => p.id));
+    } catch {
+      setError("Couldn't save the new order — reloading.");
+      load();
+    }
+  }
+
+  const { dragIndex, overIndex, onDragStart, onDragOver, onDrop, onDragEnd } = useDragReorder(products, persistOrder);
 
   function openCreate() {
     setEditingId(null);
@@ -112,15 +126,27 @@ export default function AdminProducts() {
         ) : products.length === 0 ? (
           <div className="admin-empty">No products yet.</div>
         ) : (
-          <table className="admin-table">
+          <table className="admin-table admin-table-reorderable">
             <thead>
               <tr>
-                <th></th><th>Name</th><th>Category</th><th>Price</th><th>Badge</th><th>Promo</th><th></th>
+                <th></th><th></th><th>Name</th><th>Category</th><th>Price</th><th>Badge</th><th>Promo</th><th></th>
               </tr>
             </thead>
             <tbody>
-              {products.map(p => (
-                <tr key={p.id}>
+              {products.map((p, i) => (
+                <tr
+                  key={p.id}
+                  draggable
+                  onDragStart={onDragStart(i)}
+                  onDragOver={onDragOver(i)}
+                  onDrop={onDrop}
+                  onDragEnd={onDragEnd}
+                  className={
+                    (dragIndex === i ? "admin-row-dragging" : "") +
+                    (overIndex === i && dragIndex !== i ? " admin-row-drop-target" : "")
+                  }
+                >
+                  <td className="admin-drag-handle" title="Drag to reorder"><DragHandleIcon /></td>
                   <td><img className="admin-table-thumb" src={p.image || productPhoto(p.icon)} alt="" /></td>
                   <td>
                     <div className="admin-table-title">{p.name}</div>

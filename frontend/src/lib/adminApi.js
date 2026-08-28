@@ -50,6 +50,26 @@ export const adminUpdateProduct = (id, payload) =>
   request(`/api/admin/products/${id}`, { method: "PUT", body: JSON.stringify(payload) });
 export const adminDeleteProduct = id =>
   request(`/api/admin/products/${id}`, { method: "DELETE" });
+export const adminReorderProducts = ids =>
+  request("/api/admin/products/reorder", { method: "PUT", body: JSON.stringify({ ids }) });
+
+export const adminListPosts = () => request("/api/admin/posts");
+export const adminCreatePost = payload =>
+  request("/api/admin/posts", { method: "POST", body: JSON.stringify(payload) });
+export const adminUpdatePost = (slug, payload) =>
+  request(`/api/admin/posts/${slug}`, { method: "PUT", body: JSON.stringify(payload) });
+export const adminDeletePost = slug =>
+  request(`/api/admin/posts/${slug}`, { method: "DELETE" });
+
+export const adminListPartners = () => request("/api/admin/partners");
+export const adminCreatePartner = payload =>
+  request("/api/admin/partners", { method: "POST", body: JSON.stringify(payload) });
+export const adminUpdatePartner = (id, payload) =>
+  request(`/api/admin/partners/${id}`, { method: "PUT", body: JSON.stringify(payload) });
+export const adminDeletePartner = id =>
+  request(`/api/admin/partners/${id}`, { method: "DELETE" });
+export const adminReorderPartners = ids =>
+  request("/api/admin/partners/reorder", { method: "PUT", body: JSON.stringify({ ids }) });
 
 export const adminListQuotes = () => request("/api/admin/quotes");
 export const adminUpdateQuoteStatus = (id, status) =>

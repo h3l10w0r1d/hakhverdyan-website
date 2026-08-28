@@ -20,6 +20,8 @@ const BlogPost = lazyWithReload(() => import("./pages/BlogPost"));
 const AdminLogin = lazyWithReload(() => import("./pages/admin/AdminLogin"));
 const AdminDashboard = lazyWithReload(() => import("./pages/admin/AdminDashboard"));
 const AdminProducts = lazyWithReload(() => import("./pages/admin/AdminProducts"));
+const AdminBlog = lazyWithReload(() => import("./pages/admin/AdminBlog"));
+const AdminPartners = lazyWithReload(() => import("./pages/admin/AdminPartners"));
 const AdminBookings = lazyWithReload(() => import("./pages/admin/AdminBookings"));
 const AdminMessages = lazyWithReload(() => import("./pages/admin/AdminMessages"));
 
@@ -36,6 +38,8 @@ export default function App() {
                   <Route path="/admin" element={<AdminLayout />}>
                     <Route index element={<AdminDashboard />} />
                     <Route path="products" element={<AdminProducts />} />
+                    <Route path="blog" element={<AdminBlog />} />
+                    <Route path="partners" element={<AdminPartners />} />
                     <Route path="bookings" element={<AdminBookings />} />
                     <Route path="messages" element={<AdminMessages />} />
                   </Route>

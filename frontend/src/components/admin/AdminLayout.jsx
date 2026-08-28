@@ -4,6 +4,8 @@ import { useAdminAuth } from "../../context/AdminAuthContext";
 const LINKS = [
   { to: "/admin", label: "Dashboard", end: true },
   { to: "/admin/products", label: "Products" },
+  { to: "/admin/blog", label: "Blog" },
+  { to: "/admin/partners", label: "Partners" },
   { to: "/admin/bookings", label: "Bookings" },
   { to: "/admin/messages", label: "Messages" },
 ];

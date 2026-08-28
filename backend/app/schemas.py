@@ -80,9 +80,18 @@ class ProductOut(BaseModel):
     is_promo: bool
     icon: str
     image: Optional[str] = None
+    sort_order: int = 0
 
     class Config:
         from_attributes = True
+
+
+class ReorderIn(BaseModel):
+    ids: List[str] = Field(..., min_length=1)
+
+
+class PartnerReorderIn(BaseModel):
+    ids: List[int] = Field(..., min_length=1)
 
 
 class QuoteItemIn(BaseModel):
@@ -155,6 +164,59 @@ class BlogPostOut(BaseModel):
 class BlogPostDetailOut(BlogPostOut):
     content: str
     content_hy: Optional[str] = None
+
+
+class BlogPostIn(BaseModel):
+    slug: str = Field(..., min_length=1, max_length=120, pattern=r"^[a-z0-9\-]+$")
+    title: str = Field(..., min_length=1, max_length=300)
+    title_hy: Optional[str] = None
+    excerpt: str = Field(..., min_length=1, max_length=500)
+    excerpt_hy: Optional[str] = None
+    content: str = Field(..., min_length=1)
+    content_hy: Optional[str] = None
+    category: str = Field(..., min_length=1, max_length=60)
+    category_hy: Optional[str] = None
+    cover_url: str = Field(..., max_length=2_000_000)
+    published_at: datetime
+
+
+class BlogPostUpdate(BaseModel):
+    title: Optional[str] = Field(None, min_length=1, max_length=300)
+    title_hy: Optional[str] = None
+    excerpt: Optional[str] = Field(None, min_length=1, max_length=500)
+    excerpt_hy: Optional[str] = None
+    content: Optional[str] = Field(None, min_length=1)
+    content_hy: Optional[str] = None
+    category: Optional[str] = Field(None, min_length=1, max_length=60)
+    category_hy: Optional[str] = None
+    cover_url: Optional[str] = Field(None, max_length=2_000_000)
+    published_at: Optional[datetime] = None
+
+
+class PartnerOut(BaseModel):
+    id: int
+    name: str
+    logo: str
+    url: Optional[str] = None
+    sort_order: int
+    active: bool
+
+    class Config:
+        from_attributes = True
+
+
+class PartnerIn(BaseModel):
+    name: str = Field(..., min_length=1, max_length=120)
+    logo: str = Field(..., min_length=1, max_length=2_000_000)
+    url: Optional[str] = Field(None, max_length=500)
+    active: bool = True
+
+
+class PartnerUpdate(BaseModel):
+    name: Optional[str] = Field(None, min_length=1, max_length=120)
+    logo: Optional[str] = Field(None, min_length=1, max_length=2_000_000)
+    url: Optional[str] = Field(None, max_length=500)
+    active: Optional[bool] = None
 
 
 class ContactMessageIn(BaseModel):

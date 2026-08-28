@@ -6,11 +6,13 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from .auth import hash_password
 from .database import Base, engine, SessionLocal
-from .models import AdminUser, Product, BlogPost
-from .seed_data import PRODUCTS, BLOG_POSTS
+from .migrations import run_migrations
+from .models import AdminUser, Product, BlogPost, Partner
+from .seed_data import PRODUCTS, BLOG_POSTS, PARTNERS
 from .routers import (
-    products, quotes, contact, blog,
+    products, quotes, contact, blog, partners,
     admin_auth, admin_products, admin_quotes, admin_messages, admin_stats, admin_analytics,
+    admin_partners, admin_blog,
 )
 
 
@@ -18,8 +20,8 @@ def seed_products():
     db = SessionLocal()
     try:
         if db.query(Product).count() == 0:
-            for item in PRODUCTS:
-                db.add(Product(**item))
+            for index, item in enumerate(PRODUCTS):
+                db.add(Product(**item, sort_order=index))
             db.commit()
     finally:
         db.close()
@@ -31,6 +33,17 @@ def seed_blog_posts():
         if db.query(BlogPost).count() == 0:
             for item in BLOG_POSTS:
                 db.add(BlogPost(**item))
+            db.commit()
+    finally:
+        db.close()
+
+
+def seed_partners():
+    db = SessionLocal()
+    try:
+        if db.query(Partner).count() == 0:
+            for index, item in enumerate(PARTNERS):
+                db.add(Partner(**item, sort_order=index))
             db.commit()
     finally:
         db.close()
@@ -53,8 +66,10 @@ def seed_admin():
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     Base.metadata.create_all(bind=engine)
+    run_migrations(engine, Base)
     seed_products()
     seed_blog_posts()
+    seed_partners()
     seed_admin()
     yield
 
@@ -74,8 +89,11 @@ app.include_router(products.router)
 app.include_router(quotes.router)
 app.include_router(contact.router)
 app.include_router(blog.router)
+app.include_router(partners.router)
 app.include_router(admin_auth.router)
 app.include_router(admin_products.router)
+app.include_router(admin_partners.router)
+app.include_router(admin_blog.router)
 app.include_router(admin_quotes.router)
 app.include_router(admin_messages.router)
 app.include_router(admin_stats.router)

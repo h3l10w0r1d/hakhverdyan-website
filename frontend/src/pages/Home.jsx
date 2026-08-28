@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import gsap from "gsap";
@@ -8,7 +8,7 @@ import useSEO from "../lib/useSEO";
 import MagnetButton from "../components/MagnetButton";
 import CountUp from "../components/CountUp";
 import FeaturedProducts from "../components/FeaturedProducts";
-import PARTNER_LOGOS from "../lib/partnerLogos";
+import { fetchPartners } from "../lib/api";
 import {
   ArrowIcon, CheckIcon, StarIcon, GlobeIcon, WrenchIcon, ClockIcon,
 } from "../lib/icons";
@@ -20,6 +20,11 @@ export default function Home() {
   const navigate = useNavigate();
   useSEO({ title: t("seo.home.title"), description: t("seo.home.description"), path: "/" });
   const finalCtaRef = useRef(null);
+  const [partners, setPartners] = useState([]);
+
+  useEffect(() => {
+    fetchPartners().then(setPartners).catch(() => setPartners([]));
+  }, []);
 
   const CATEGORIES = [
     { cat: "profiles", title: t("home.cat1Title"), desc: t("home.cat1Desc"),
@@ -38,11 +43,12 @@ export default function Home() {
     const ctx = gsap.context(() => {
       gsap.set(".headline .line span", { yPercent: 110, opacity: 0 });
 
-      gsap.set(".hero-bg-photo", { scale: 1.12 });
+      gsap.set(".hero-photo-card", { opacity: 0, y: 30 });
+      gsap.set(".hero-photo-card img", { scale: 1.15 });
 
       const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
-      tl.from(".hero-bg-shade", { opacity: 0, duration: 1.2, ease: "power2.out" }, 0)
-        .to(".hero-bg-photo", { scale: 1.04, duration: 2.2, ease: "power2.out" }, 0)
+      tl.to(".hero-photo-card", { opacity: 1, y: 0, duration: 1, ease: "power3.out" }, 0.1)
+        .to(".hero-photo-card img", { scale: 1.04, duration: 1.8, ease: "power2.out" }, 0.1)
         .to(".headline .line span", { yPercent: 0, opacity: 1, duration: 1, stagger: 0.12 }, 0.1)
         .from(".eyebrow", { opacity: 0, y: 14, duration: 0.7 }, 0)
         .from(".hero .sub", { opacity: 0, y: 18, duration: 0.8 }, 0.5)
@@ -50,8 +56,8 @@ export default function Home() {
         .from(".hero-trust-chip", { opacity: 0, y: 14, duration: 0.6, stagger: 0.1 }, 0.72)
         .from(".hero .stat", { opacity: 0, y: 16, duration: 0.6, stagger: 0.08 }, 0.8);
 
-      // Slow continuous drift keeps the background photo from feeling like a static poster.
-      gsap.to(".hero-bg-photo", { scale: 1.1, duration: 14, ease: "sine.inOut", yoyo: true, repeat: -1, delay: 2.2 });
+      // Slow continuous drift keeps the photo from feeling like a static poster.
+      gsap.to(".hero-photo-card img", { scale: 1.1, duration: 14, ease: "sine.inOut", yoyo: true, repeat: -1, delay: 1.9 });
       gsap.to(".scroll-cue .stick i", { top: "100%", duration: 1.4, ease: "power2.inOut", repeat: -1 });
       gsap.to("#marqueeTrack", { xPercent: -50, duration: 16, ease: "none", repeat: -1 });
       gsap.to("#promoMarquee", { xPercent: -50, duration: 18, ease: "none", repeat: -1 });
@@ -108,10 +114,6 @@ export default function Home() {
   return (
     <>
       <section className="hero" id="hero">
-        <div className="hero-bg">
-          <img className="hero-bg-photo" src="/hero/facade-render.jpg" alt="" />
-          <div className="hero-bg-shade"></div>
-        </div>
         <div className="hero-inner">
           <div className="hero-copy">
             <div className="eyebrow"><span className="pip">{t("home.eyebrowPip")}</span> {t("home.eyebrow")}</div>
@@ -135,6 +137,12 @@ export default function Home() {
               <div className="stat"><CountUp target={48} suffix="h" /><div className="label">{t("home.statTurnaround")}</div></div>
             </div>
           </div>
+          <div className="hero-photo">
+            <div className="hero-photo-glow"></div>
+            <div className="hero-photo-card">
+              <img src="/hero/facade-render.jpg" alt="" />
+            </div>
+          </div>
         </div>
         <div className="scroll-cue"><span>{t("home.scroll")}</span><div className="stick"><i></i></div></div>
       </section>
@@ -143,12 +151,12 @@ export default function Home() {
         <div className="marquee-label">{t("home.marqueeLabel")}</div>
         <div className="marquee-mask">
           <div className="marquee-track logo-track" id="marqueeTrack">
-            {[...PARTNER_LOGOS, ...PARTNER_LOGOS].map((p, i) => {
+            {[...partners, ...partners].map((p, i) => {
               const Tag = p.url ? "a" : "div";
               const linkProps = p.url ? { href: p.url, target: "_blank", rel: "noopener noreferrer" } : {};
               return (
-                <Tag className="logo-chip" key={p.name + i} {...linkProps}>
-                  <img src={p.src} alt={p.name} loading={i < PARTNER_LOGOS.length ? "eager" : "lazy"} />
+                <Tag className="logo-chip" key={p.id + "-" + i} {...linkProps}>
+                  <img src={p.logo} alt={p.name} loading={i < partners.length ? "eager" : "lazy"} />
                 </Tag>
               );
             })}

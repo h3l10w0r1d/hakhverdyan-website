@@ -58,7 +58,9 @@ export default function ProductQuickView() {
 
   if (!product) return null;
 
-  const photos = product.image ? [product.image, ...productPhotos(product.icon)] : productPhotos(product.icon);
+  // A real uploaded photo replaces the generic category stock shots entirely —
+  // mixing an actual product photo with unrelated stock images was confusing.
+  const photos = product.image ? [product.image] : productPhotos(product.icon);
   const name = localized(product, "name", lang);
   const spec = localized(product, "spec", lang);
   const badge = localized(product, "badge", lang);

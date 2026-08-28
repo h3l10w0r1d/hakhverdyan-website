@@ -13,7 +13,7 @@ router = APIRouter(prefix="/api/products", tags=["products"])
 
 @router.get("", response_model=List[ProductOut])
 def list_products(category: Optional[str] = None, q: Optional[str] = None, db: Session = Depends(get_db)):
-    stmt = select(Product)
+    stmt = select(Product).order_by(Product.sort_order, Product.name)
     if category and category != "all":
         stmt = stmt.where(Product.category == category)
     products = db.execute(stmt).scalars().all()
