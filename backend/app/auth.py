@@ -10,9 +10,14 @@ from sqlalchemy.orm import Session
 from .database import get_db
 from .models import AdminUser
 
-# Falls back to a fixed dev-only value so local/dev runs work out of the box —
-# production MUST set a real JWT_SECRET env var (Vercel project settings).
-JWT_SECRET = os.environ.get("JWT_SECRET", "dev-insecure-secret-change-me")
+# Falls back to a fixed dev-only value so local/dev runs work out of the box.
+# On Vercel, a missing JWT_SECRET fails startup instead of silently signing
+# tokens with a public, guessable secret.
+JWT_SECRET = os.environ.get("JWT_SECRET")
+if not JWT_SECRET:
+    if os.environ.get("VERCEL"):
+        raise RuntimeError("JWT_SECRET environment variable must be set in production")
+    JWT_SECRET = "dev-insecure-secret-change-me"
 JWT_ALGORITHM = "HS256"
 TOKEN_TTL = timedelta(days=7)
 

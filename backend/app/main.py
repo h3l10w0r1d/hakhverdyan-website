@@ -65,10 +65,16 @@ def seed_partners():
 
 
 def seed_admin():
-    # Dev-only fallback credentials — production must set ADMIN_EMAIL/ADMIN_PASSWORD
-    # env vars before first boot (the seed only runs once, when the table is empty).
-    email = os.environ.get("ADMIN_EMAIL", "admin@hakhverdyan.am").lower()
-    password = os.environ.get("ADMIN_PASSWORD", "changeme123")
+    # Dev-only fallback credentials. On Vercel, missing ADMIN_EMAIL/ADMIN_PASSWORD
+    # fails startup instead of silently seeding a guessable admin account.
+    email = os.environ.get("ADMIN_EMAIL")
+    password = os.environ.get("ADMIN_PASSWORD")
+    if not email or not password:
+        if os.environ.get("VERCEL"):
+            raise RuntimeError("ADMIN_EMAIL and ADMIN_PASSWORD environment variables must be set in production")
+        email = email or "admin@hakhverdyan.am"
+        password = password or "changeme123"
+    email = email.lower()
     db = SessionLocal()
     try:
         if db.query(AdminUser).count() == 0:
@@ -95,7 +101,10 @@ app = FastAPI(title="Hakhverdyan API", lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
-    allow_origin_regex=r"https://.*\.vercel\.app",
+    # Scoped to this project's own deployments (production alias + preview
+    # URLs, which are always "hakhverdyan-frontend-<hash>-<team>.vercel.app")
+    # rather than any vercel.app subdomain, which anyone can register for free.
+    allow_origin_regex=r"https://hakhverdyan-frontend[a-z0-9\-]*\.vercel\.app",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

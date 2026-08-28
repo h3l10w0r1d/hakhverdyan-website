@@ -7,6 +7,18 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from .database import Base
 
 
+class RateLimitBucket(Base):
+    # Fixed-window request counter, keyed by e.g. "login:203.0.113.4" or
+    # "contact:203.0.113.4". Backs check_rate_limit() in app/ratelimit.py —
+    # a DB-backed counter since serverless functions share no in-memory state.
+    __tablename__ = "rate_limit_buckets"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    key: Mapped[str] = mapped_column(String, unique=True, nullable=False, index=True)
+    window_start: Mapped[datetime] = mapped_column(DateTime, nullable=False)
+    count: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+
+
 class AdminUser(Base):
     __tablename__ = "admin_users"
 

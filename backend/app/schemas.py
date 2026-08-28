@@ -224,8 +224,8 @@ class PartnerUpdate(BaseModel):
 
 class ContactMessageIn(BaseModel):
     name: str = Field(..., min_length=1, max_length=200)
-    phone: Optional[str] = None
-    email: Optional[str] = None
+    phone: Optional[str] = Field(None, max_length=40)
+    email: Optional[EmailStr] = None
     message: str = Field(..., min_length=1, max_length=4000)
 
 
