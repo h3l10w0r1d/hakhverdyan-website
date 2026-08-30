@@ -1,6 +1,8 @@
 // Small, hand-drawn icon set shared across product thumbnails, value cards, and trust chips.
 // Each icon takes { size = 20 } and renders an inline SVG using currentColor.
 
+import { cloneElement } from "react";
+
 export function ArrowIcon({ size = 14 }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -257,4 +259,31 @@ const PRODUCT_ICONS = {
 
 export function ProductIcon({ name }) {
   return PRODUCT_ICONS[name] || PRODUCT_ICONS.box;
+}
+
+// Catalog filter-tab icon set, keyed by category id (matches backend category ids).
+const CATEGORY_ICONS = {
+  all: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"><rect x="3" y="3" width="8" height="8" rx="1.2" /><rect x="13" y="3" width="8" height="8" rx="1.2" /><rect x="3" y="13" width="8" height="8" rx="1.2" /><rect x="13" y="13" width="8" height="8" rx="1.2" /></svg>
+  ),
+  profiles: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"><path d="M4 4h16v6H10v10H4V4z" /></svg>
+  ),
+  hardware: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><rect x="4" y="3" width="12" height="18" rx="1" /><circle cx="13" cy="12" r="1.4" fill="currentColor" stroke="none" /></svg>
+  ),
+  sheets: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"><path d="M4 8l8-4 8 4-8 4-8-4z" /><path d="M4 12l8 4 8-4" /><path d="M4 16l8 4 8-4" /></svg>
+  ),
+  doors: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="8" height="18" rx="1" /><rect x="13" y="3" width="8" height="18" rx="1" /></svg>
+  ),
+  facades: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="4" y="2" width="16" height="20" rx="1" /><path d="M4 9h16M4 15h16M12 2v20" /></svg>
+  ),
+};
+
+export function CategoryIcon({ id, size = 18 }) {
+  const icon = CATEGORY_ICONS[id] || PRODUCT_ICONS.box;
+  return cloneElement(icon, { width: size, height: size });
 }

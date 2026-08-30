@@ -406,11 +406,13 @@ footer{ position:relative; z-index:1; padding:64px 32px 30px; border-top:1px sol
 .footer-social a:hover{ background:var(--red); border-color:var(--red); color:#fff; }
 
 /* ---------- Filter tabs / search / sort (catalog) ---------- */
-.filter-tabs{ display:flex; gap:10px; flex-wrap:wrap; }
+.filter-tabs{ display:flex; gap:12px; flex-wrap:wrap; }
 .filter-tab{
-  padding:10px 18px; border-radius:var(--radius-sm); border:1.5px solid var(--grey-200); font-size:13.5px; font-weight:600;
+  display:flex; align-items:center; gap:10px;
+  padding:14px 22px; border-radius:var(--radius-md); border:1.5px solid var(--grey-200); font-size:15px; font-weight:600;
   color:var(--grey-600); cursor:pointer; transition:all .25s ease; background:#fff;
 }
+.filter-tab svg{ flex:none; }
 .filter-tab:hover{ border-color:var(--grey-800); color:var(--ink); }
 .filter-tab.active{ background:var(--ink); border-color:var(--ink); color:#fff; }
 .filter-bar{

@@ -10,7 +10,7 @@ import Select from "../components/admin/Select";
 import { fetchProducts, fetchCategories } from "../lib/api";
 import { localized } from "../lib/localized";
 import { useQuoteCart } from "../context/QuoteCartContext";
-import { ArrowIcon, SearchIcon, GlobeIcon, WrenchIcon, ClockIcon } from "../lib/icons";
+import { ArrowIcon, SearchIcon, GlobeIcon, WrenchIcon, ClockIcon, CategoryIcon } from "../lib/icons";
 
 export default function Catalog() {
   const { t, i18n } = useTranslation();
@@ -148,6 +148,7 @@ export default function Catalog() {
                   className={"filter-tab" + (activeTab === tab.key ? " active" : "")}
                   onClick={() => selectTab(tab.key)}
                 >
+                  <CategoryIcon id={tab.key} size={18} />
                   {tab.label}
                 </button>
               ))}
