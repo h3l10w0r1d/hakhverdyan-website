@@ -114,7 +114,7 @@ export default function Home() {
     <>
       <section className="hero" id="hero">
         <div className="hero-bg">
-          <img className="hero-bg-photo" src="/hero/facade-render.jpg" alt="" />
+          <img className="hero-bg-photo" src="/hero/hero-glass-doors.jpg" alt="" />
           <div className="hero-bg-shade"></div>
         </div>
         <div className="hero-inner">

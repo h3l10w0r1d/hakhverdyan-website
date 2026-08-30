@@ -174,7 +174,7 @@ nav a.nav-link.active{ color:var(--ink); background:var(--grey-50); }
 /* ---------- Hero ---------- */
 .hero{ position:relative; z-index:1; min-height:100vh; display:flex; align-items:center; padding:150px 32px 60px; overflow:hidden; }
 .hero-bg{ position:absolute; inset:0; z-index:0; background:var(--grey-800); }
-.hero-bg-photo{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:62% 38%; }
+.hero-bg-photo{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:58% 48%; }
 .hero-bg-shade{
   position:absolute; inset:0;
   background:linear-gradient(100deg, rgba(18,18,20,0.94) 0%, rgba(18,18,20,0.84) 32%, rgba(18,18,20,0.48) 58%, rgba(18,18,20,0.14) 88%);
@@ -996,7 +996,7 @@ footer{ position:relative; z-index:1; padding:64px 32px 30px; border-top:1px sol
 /* ---------- Responsive ---------- */
 @media (max-width: 980px){
   .hero{ min-height:auto; padding:120px 20px 50px; }
-  .hero-bg-photo{ object-position:70% 38%; }
+  .hero-bg-photo{ object-position:65% 48%; }
   .hero-copy{ max-width:100%; }
   .sub{max-width:100%;}
   .hero .sub{max-width:100%;}
