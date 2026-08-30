@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional
 
-from sqlalchemy import DateTime, ForeignKey, Integer, String, Boolean
+from sqlalchemy import DateTime, Float, ForeignKey, Integer, String, Boolean
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .database import Base
@@ -60,6 +60,9 @@ class Product(Base):
     icon: Mapped[str] = mapped_column(String, nullable=False, default="box")
     image: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     sort_order: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+    # Null = not tracked (e.g. made-to-order items) and always shown. A tracked
+    # count of 0 hides the product from the public site until restocked.
+    stock_qty: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
 
     product_images: Mapped[list["ProductImage"]] = relationship(
         back_populates="product", cascade="all, delete-orphan", order_by="ProductImage.sort_order"
@@ -219,4 +222,6 @@ class Location(Base):
     name_hy: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     address: Mapped[str] = mapped_column(String, nullable=False)
     address_hy: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+    lat: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    lng: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
     sort_order: Mapped[int] = mapped_column(Integer, nullable=False, default=0)

@@ -197,6 +197,7 @@ nav a.nav-link.active{ color:var(--ink); background:var(--grey-50); }
 .headline .accent{color:var(--red); position:relative; white-space:nowrap;}
 .sub{ font-size:18px; line-height:1.6; color:var(--grey-600); max-width:490px; margin-bottom:36px; font-weight:400; }
 
+.hero .cta-row{ margin-bottom:20px; }
 .stats-row{display:flex; gap:38px; flex-wrap:wrap;}
 .stat{display:flex; flex-direction:column;}
 .stat .num{ font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:30px; color:var(--ink); display:flex; align-items:baseline; gap:2px; }

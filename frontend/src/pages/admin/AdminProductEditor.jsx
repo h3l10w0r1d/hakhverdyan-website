@@ -18,7 +18,7 @@ const ICON_OPTIONS = ICONS.map(i => ({ value: i, label: i }));
 const EMPTY = {
   id: "", name: "", name_hy: "", category: "", spec: "", spec_hy: "",
   description: "", description_hy: "", price: "", old_price: "", unit: "/ m",
-  badge: "In stock", badge_hy: "", is_promo: false, icon: "box", images: [],
+  badge: "In stock", badge_hy: "", is_promo: false, icon: "box", images: [], stock_qty: null,
 };
 
 export default function AdminProductEditor() {
@@ -60,6 +60,7 @@ export default function AdminProductEditor() {
           price: p.price, old_price: p.old_price ?? "",
           unit: p.unit, badge: p.badge, badge_hy: p.badge_hy || "", is_promo: p.is_promo, icon: p.icon,
           images: p.images && p.images.length > 0 ? p.images : (p.image ? [p.image] : []),
+          stock_qty: p.stock_qty ?? null,
         });
       })
       .catch(() => setError("Couldn't load product."))
@@ -108,6 +109,7 @@ export default function AdminProductEditor() {
         description: form.description || null,
         description_hy: form.description_hy || null,
         badge_hy: form.badge_hy || null,
+        stock_qty: form.stock_qty === null || form.stock_qty === "" ? null : Number(form.stock_qty),
       };
       if (isNew) {
         await adminCreateProduct(payload);
@@ -251,6 +253,23 @@ export default function AdminProductEditor() {
                   <input value={form.badge_hy} onChange={e => updateField("badge_hy", e.target.value)} />
                 </label>
               </div>
+              <label className="admin-checkbox-field">
+                <input
+                  type="checkbox" checked={form.stock_qty !== null}
+                  onChange={e => updateField("stock_qty", e.target.checked ? "0" : null)}
+                />
+                <span>Track inventory</span>
+              </label>
+              {form.stock_qty !== null && (
+                <label className="quote-field">
+                  <span>Quantity in stock</span>
+                  <input
+                    type="number" min="0" value={form.stock_qty}
+                    onChange={e => updateField("stock_qty", e.target.value)} required
+                  />
+                  <div className="quote-field-hint">Hidden from the site automatically when this hits 0. Leave "Track inventory" off for made-to-order items.</div>
+                </label>
+              )}
               <label className="quote-field">
                 <span>Fallback icon</span>
                 <Select value={form.icon} onChange={v => updateField("icon", v)} options={ICON_OPTIONS} />

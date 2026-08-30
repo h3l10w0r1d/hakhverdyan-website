@@ -81,7 +81,7 @@ export default function AdminProducts() {
           <table className={"admin-table" + (isFiltered ? "" : " admin-table-reorderable")}>
             <thead>
               <tr>
-                <th></th><th></th><th>Name</th><th>Category</th><th>Price</th><th>Badge</th><th>Promo</th><th></th>
+                <th></th><th></th><th>Name</th><th>Category</th><th>Price</th><th>Badge</th><th>Stock</th><th>Promo</th><th></th>
               </tr>
             </thead>
             <tbody>
@@ -112,6 +112,15 @@ export default function AdminProducts() {
                   <td>{categoryLabel(p.category)}</td>
                   <td>{p.price.toLocaleString("en-US")}֏ {p.unit}</td>
                   <td>{p.badge}</td>
+                  <td>
+                    {p.stock_qty === null ? (
+                      <span className="admin-table-sub">Unlimited</span>
+                    ) : p.stock_qty === 0 ? (
+                      <span className="admin-badge status-new">Out of stock</span>
+                    ) : (
+                      `${p.stock_qty} in stock`
+                    )}
+                  </td>
                   <td>{p.is_promo ? "Yes" : "—"}</td>
                   <td className="admin-table-actions">
                     <button className="admin-btn admin-btn-sm admin-btn-danger" onClick={e => onDelete(e, p.id)}>Delete</button>

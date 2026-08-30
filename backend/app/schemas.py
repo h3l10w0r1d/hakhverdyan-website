@@ -58,6 +58,7 @@ class ProductIn(BaseModel):
     badge_hy: Optional[str] = None
     is_promo: bool = False
     icon: str = "box"
+    stock_qty: Optional[int] = Field(None, ge=0)
     images: List[ImageUrl] = Field(default_factory=list, max_length=20)
 
 
@@ -76,6 +77,7 @@ class ProductUpdate(BaseModel):
     badge_hy: Optional[str] = None
     is_promo: Optional[bool] = None
     icon: Optional[str] = None
+    stock_qty: Optional[int] = Field(None, ge=0)
     images: Optional[List[ImageUrl]] = Field(None, max_length=20)
 
 
@@ -106,6 +108,7 @@ class ProductOut(BaseModel):
     image: Optional[str] = None
     images: List[str] = []
     sort_order: int = 0
+    stock_qty: Optional[int] = None
 
     class Config:
         from_attributes = True
@@ -334,6 +337,8 @@ class LocationOut(BaseModel):
     name_hy: Optional[str] = None
     address: str
     address_hy: Optional[str] = None
+    lat: Optional[float] = None
+    lng: Optional[float] = None
     sort_order: int
 
     class Config:
@@ -345,6 +350,8 @@ class LocationIn(BaseModel):
     name_hy: Optional[str] = None
     address: str = Field(..., min_length=1, max_length=300)
     address_hy: Optional[str] = None
+    lat: Optional[float] = Field(None, ge=-90, le=90)
+    lng: Optional[float] = Field(None, ge=-180, le=180)
 
 
 class LocationUpdate(BaseModel):
@@ -352,6 +359,8 @@ class LocationUpdate(BaseModel):
     name_hy: Optional[str] = None
     address: Optional[str] = Field(None, min_length=1, max_length=300)
     address_hy: Optional[str] = None
+    lat: Optional[float] = Field(None, ge=-90, le=90)
+    lng: Optional[float] = Field(None, ge=-180, le=180)
 
 
 class LocationReorderIn(BaseModel):

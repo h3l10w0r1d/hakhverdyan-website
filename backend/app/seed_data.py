@@ -19,10 +19,12 @@ LOCATIONS = [
     {
         "name": "Griboedov Location", "name_hy": "Գրիբոեդովի մասնաճյուղ",
         "address": "Griboedov 56 st., Yerevan, Armenia", "address_hy": "Գրիբոեդովի փող. 56, Երևան, Հայաստան",
+        "lat": 40.210984, "lng": 44.512744,
     },
     {
         "name": "Tevosyan Location", "name_hy": "Թևոսյանի մասնաճյուղ",
         "address": "Tevosyan 7/11 st., Yerevan, Armenia", "address_hy": "Թևոսյանի փող. 7/11, Երևան, Հայաստան",
+        "lat": 40.187378, "lng": 44.579255,
     },
 ]
 

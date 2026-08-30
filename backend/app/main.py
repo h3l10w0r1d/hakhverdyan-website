@@ -86,6 +86,22 @@ def seed_locations():
         db.close()
 
 
+def backfill_location_coords():
+    # Locations created before the lat/lng columns existed have no map
+    # coordinates yet — fill them in from seed data by matching name, once.
+    db = SessionLocal()
+    try:
+        by_name = {item["name"]: item for item in LOCATIONS}
+        for location in db.query(Location).filter(Location.lat.is_(None)).all():
+            seed = by_name.get(location.name)
+            if seed:
+                location.lat = seed["lat"]
+                location.lng = seed["lng"]
+        db.commit()
+    finally:
+        db.close()
+
+
 def seed_site_settings():
     db = SessionLocal()
     try:
@@ -133,6 +149,7 @@ async def lifespan(app: FastAPI):
     seed_partners()
     seed_categories()
     seed_locations()
+    backfill_location_coords()
     seed_site_settings()
     seed_admin()
     yield
