@@ -47,7 +47,7 @@ def seed_blog_posts():
     try:
         if db.query(BlogPost).count() == 0:
             for item in BLOG_POSTS:
-                db.add(BlogPost(**item))
+                db.add(BlogPost(**item, status="published"))
             db.commit()
     finally:
         db.close()

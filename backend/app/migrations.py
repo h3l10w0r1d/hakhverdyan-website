@@ -11,6 +11,9 @@ _COLUMN_DDL = {
     ("products", "sort_order"): "INTEGER NOT NULL DEFAULT 0",
     ("products", "image"): "TEXT",
     ("quote_requests", "customer_id"): "INTEGER",
+    # Existing posts were already live, so they backfill as published — only
+    # posts created after this migration default to draft (see BlogPost.status).
+    ("blog_posts", "status"): "TEXT NOT NULL DEFAULT 'published'",
 }
 
 

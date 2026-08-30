@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import gsap from "gsap";
 import useSEO from "../lib/useSEO";
 import MagnetButton from "../components/MagnetButton";
 import PhoneInput from "../components/PhoneInput";
+import AuthVisual from "../components/AuthVisual";
 import { useCustomerAuth } from "../context/CustomerAuthContext";
 import { ArrowIcon } from "../lib/icons";
 
@@ -20,6 +22,19 @@ export default function Register() {
   useEffect(() => {
     if (isAuthenticated) navigate("/account", { replace: true });
   }, [isAuthenticated, navigate]);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.set(".auth-visual-photo", { scale: 1.1 });
+      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+      tl.to(".auth-visual-photo", { scale: 1, duration: 1.6, ease: "power2.out" }, 0)
+        .from(".auth-visual-logo", { opacity: 0, y: -12, duration: 0.6 }, 0.1)
+        .from(".auth-visual-copy > *", { opacity: 0, y: 16, duration: 0.6, stagger: 0.08 }, 0.25)
+        .from(".auth-visual-stats", { opacity: 0, y: 14, duration: 0.6 }, 0.5)
+        .from(".auth-panel > *", { opacity: 0, y: 16, duration: 0.6, stagger: 0.08 }, 0.2);
+    });
+    return () => ctx.revert();
+  }, []);
 
   function updateField(key, value) {
     setForm(f => ({ ...f, [key]: value }));
@@ -50,28 +65,34 @@ export default function Register() {
   }
 
   return (
-    <section className="block auth-block">
-      <div className="container">
-        <div className="auth-wrap">
+    <section className="auth-split-page">
+      <AuthVisual
+        title={t("auth.visualRegisterTitle")}
+        sub={t("auth.visualRegisterSub")}
+        bullets={[t("auth.visualBullet1"), t("auth.visualBullet2"), t("auth.visualBullet3")]}
+      />
+
+      <div className="auth-form-col">
+        <div className="auth-panel">
           <div className="auth-head">
             <div className="section-tag">{t("auth.tag")}</div>
             <h1>{t("auth.registerHeading")}</h1>
             <p className="sub">{t("auth.registerSub")}</p>
           </div>
-          <form className="contact-form auth-form" onSubmit={handleSubmit}>
+          <form className="auth-form" onSubmit={handleSubmit}>
+            <div className="form-field full">
+              <label htmlFor="name">{t("auth.name")}</label>
+              <input id="name" type="text" required autoComplete="name" value={form.name} onChange={e => updateField("name", e.target.value)} />
+            </div>
+            <div className="form-field full">
+              <label htmlFor="email">{t("auth.email")}</label>
+              <input id="email" type="email" required autoComplete="email" value={form.email} onChange={e => updateField("email", e.target.value)} />
+            </div>
+            <div className="form-field full">
+              <label htmlFor="phone">{t("auth.phoneOptional")}</label>
+              <PhoneInput id="phone" value={form.phone} onChange={v => updateField("phone", v)} />
+            </div>
             <div className="form-row">
-              <div className="form-field full">
-                <label htmlFor="name">{t("auth.name")}</label>
-                <input id="name" type="text" required autoComplete="name" value={form.name} onChange={e => updateField("name", e.target.value)} />
-              </div>
-              <div className="form-field full">
-                <label htmlFor="email">{t("auth.email")}</label>
-                <input id="email" type="email" required autoComplete="email" value={form.email} onChange={e => updateField("email", e.target.value)} />
-              </div>
-              <div className="form-field full">
-                <label htmlFor="phone">{t("auth.phoneOptional")}</label>
-                <PhoneInput id="phone" value={form.phone} onChange={v => updateField("phone", v)} />
-              </div>
               <div className="form-field">
                 <label htmlFor="password">{t("auth.password")}</label>
                 <input

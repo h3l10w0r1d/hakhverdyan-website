@@ -429,6 +429,13 @@
     "quoteTotal": "Total",
     "statusNew": "New",
     "statusContacted": "Contacted",
-    "statusClosed": "Closed"
+    "statusClosed": "Closed",
+    "visualLoginTitle": "Every quote, one place.",
+    "visualLoginSub": "Log back in to check on requests, update your details, and pick up right where you left off.",
+    "visualRegisterTitle": "Track every project from spec to delivery.",
+    "visualRegisterSub": "Create an account to save your details, request quotes faster, and see the full history of everything you've ordered.",
+    "visualBullet1": "See every quote you've requested",
+    "visualBullet2": "Save your details for faster checkout",
+    "visualBullet3": "One login for every future project"
   }
 }

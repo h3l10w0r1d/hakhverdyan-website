@@ -126,6 +126,26 @@ class BlogPost(Base):
     category_hy: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     cover_url: Mapped[str] = mapped_column(String, nullable=False)
     published_at: Mapped[datetime] = mapped_column(DateTime, nullable=False)
+    status: Mapped[str] = mapped_column(String, nullable=False, default="draft")
+
+    post_tags: Mapped[list["BlogPostTag"]] = relationship(
+        back_populates="post", cascade="all, delete-orphan", order_by="BlogPostTag.sort_order"
+    )
+
+    @property
+    def tags(self) -> list[str]:
+        return [t.tag for t in self.post_tags]
+
+
+class BlogPostTag(Base):
+    __tablename__ = "blog_post_tags"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    post_slug: Mapped[str] = mapped_column(ForeignKey("blog_posts.slug", ondelete="CASCADE"), index=True, nullable=False)
+    tag: Mapped[str] = mapped_column(String, nullable=False)
+    sort_order: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+
+    post: Mapped["BlogPost"] = relationship(back_populates="post_tags")
 
 
 class EmailLog(Base):

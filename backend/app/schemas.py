@@ -208,6 +208,8 @@ class BlogPostOut(BaseModel):
     category_hy: Optional[str] = None
     cover_url: str
     published_at: datetime
+    status: str = "published"
+    tags: List[str] = []
 
     class Config:
         from_attributes = True
@@ -230,6 +232,8 @@ class BlogPostIn(BaseModel):
     category_hy: Optional[str] = None
     cover_url: str = Field(..., max_length=2_000_000)
     published_at: datetime
+    status: str = Field("draft", pattern=r"^(draft|published)$")
+    tags: List[str] = Field(default_factory=list, max_length=20)
 
 
 class BlogPostUpdate(BaseModel):
@@ -243,6 +247,8 @@ class BlogPostUpdate(BaseModel):
     category_hy: Optional[str] = None
     cover_url: Optional[str] = Field(None, max_length=2_000_000)
     published_at: Optional[datetime] = None
+    status: Optional[str] = Field(None, pattern=r"^(draft|published)$")
+    tags: Optional[List[str]] = Field(None, max_length=20)
 
 
 class PartnerOut(BaseModel):

@@ -10,6 +10,7 @@ import { ProductQuickViewProvider } from "./context/ProductQuickViewContext";
 import { AdminAuthProvider } from "./context/AdminAuthContext";
 import { CustomerAuthProvider } from "./context/CustomerAuthContext";
 import AdminLayout from "./components/admin/AdminLayout";
+import RequireAdmin from "./components/admin/RequireAdmin";
 
 const About = lazyWithReload(() => import("./pages/About"));
 const Catalog = lazyWithReload(() => import("./pages/Catalog"));
@@ -31,6 +32,7 @@ const AdminBookings = lazyWithReload(() => import("./pages/admin/AdminBookings")
 const AdminMessages = lazyWithReload(() => import("./pages/admin/AdminMessages"));
 const AdminSettings = lazyWithReload(() => import("./pages/admin/AdminSettings"));
 const AdminAccount = lazyWithReload(() => import("./pages/admin/AdminAccount"));
+const AdminBlogEditor = lazyWithReload(() => import("./pages/admin/AdminBlogEditor"));
 
 export default function App() {
   return (
@@ -43,6 +45,10 @@ export default function App() {
                 <Suspense fallback={<PageLoader />}>
                   <Routes>
                     <Route path="/admin/login" element={<AdminLogin />} />
+                    <Route element={<RequireAdmin />}>
+                      <Route path="/admin/blog/new" element={<AdminBlogEditor />} />
+                      <Route path="/admin/blog/:slug/edit" element={<AdminBlogEditor />} />
+                    </Route>
                     <Route path="/admin" element={<AdminLayout />}>
                       <Route index element={<AdminDashboard />} />
                       <Route path="products" element={<AdminProducts />} />
