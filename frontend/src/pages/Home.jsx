@@ -44,21 +44,19 @@ export default function Home() {
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.set(".headline .line span", { yPercent: 110, opacity: 0 });
-
-      gsap.set(".hero-photo-card", { opacity: 0, y: 30 });
-      gsap.set(".hero-photo-card img", { scale: 1.15 });
+      gsap.set(".hero-bg-photo", { scale: 1.12 });
 
       const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
-      tl.to(".hero-photo-card", { opacity: 1, y: 0, duration: 1, ease: "power3.out" }, 0.1)
-        .to(".hero-photo-card img", { scale: 1.04, duration: 1.8, ease: "power2.out" }, 0.1)
+      tl.from(".hero-bg-shade", { opacity: 0, duration: 1.2, ease: "power2.out" }, 0)
+        .to(".hero-bg-photo", { scale: 1.04, duration: 2.2, ease: "power2.out" }, 0)
         .to(".headline .line span", { yPercent: 0, opacity: 1, duration: 1, stagger: 0.12 }, 0.1)
         .from(".eyebrow", { opacity: 0, y: 14, duration: 0.7 }, 0)
         .from(".hero .sub", { opacity: 0, y: 18, duration: 0.8 }, 0.5)
         .from(".hero .cta-row > *", { opacity: 0, y: 18, duration: 0.7, stagger: 0.1 }, 0.63)
         .from(".hero .stat", { opacity: 0, y: 16, duration: 0.6, stagger: 0.08 }, 0.72);
 
-      // Slow continuous drift keeps the photo from feeling like a static poster.
-      gsap.to(".hero-photo-card img", { scale: 1.1, duration: 14, ease: "sine.inOut", yoyo: true, repeat: -1, delay: 1.9 });
+      // Slow continuous drift keeps the background photo from feeling like a static poster.
+      gsap.to(".hero-bg-photo", { scale: 1.1, duration: 14, ease: "sine.inOut", yoyo: true, repeat: -1, delay: 2.2 });
       gsap.to(".scroll-cue .stick i", { top: "100%", duration: 1.4, ease: "power2.inOut", repeat: -1 });
       gsap.to("#marqueeTrack", { xPercent: -50, duration: 16, ease: "none", repeat: -1 });
       gsap.to("#promoMarquee", { xPercent: -50, duration: 18, ease: "none", repeat: -1 });
@@ -115,6 +113,10 @@ export default function Home() {
   return (
     <>
       <section className="hero" id="hero">
+        <div className="hero-bg">
+          <img className="hero-bg-photo" src="/hero/facade-render.jpg" alt="" />
+          <div className="hero-bg-shade"></div>
+        </div>
         <div className="hero-inner">
           <div className="hero-copy">
             <div className="eyebrow"><span className="pip">{t("home.eyebrowPip")}</span> {t("home.eyebrow")}</div>
@@ -132,12 +134,6 @@ export default function Home() {
               <div className="stat"><CountUp target={500} suffix="+" /><div className="label">{t("home.statProjects")}</div></div>
               <div className="stat"><CountUp target={15} suffix="+" /><div className="label">{t("home.statYears")}</div></div>
               <div className="stat"><CountUp target={48} suffix="h" /><div className="label">{t("home.statTurnaround")}</div></div>
-            </div>
-          </div>
-          <div className="hero-photo">
-            <div className="hero-photo-glow"></div>
-            <div className="hero-photo-card">
-              <img src="/hero/facade-render.jpg" alt="" />
             </div>
           </div>
         </div>
