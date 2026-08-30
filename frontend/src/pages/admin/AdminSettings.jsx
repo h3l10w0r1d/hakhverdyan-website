@@ -7,7 +7,7 @@ import {
 import DragHandleIcon from "../../components/admin/DragHandleIcon";
 import useDragReorder from "../../lib/useDragReorder";
 
-const EMPTY_LOCATION = { name: "", name_hy: "", address: "", address_hy: "" };
+const EMPTY_LOCATION = { name: "", name_hy: "", address: "", address_hy: "", lat: "", lng: "" };
 const EMPTY_CATEGORY = { id: "", label: "", label_hy: "" };
 
 function SiteSettingsForm() {
@@ -133,7 +133,10 @@ function LocationsSection() {
 
   function openEdit(l) {
     setEditingId(l.id);
-    setForm({ name: l.name, name_hy: l.name_hy || "", address: l.address, address_hy: l.address_hy || "" });
+    setForm({
+      name: l.name, name_hy: l.name_hy || "", address: l.address, address_hy: l.address_hy || "",
+      lat: l.lat ?? "", lng: l.lng ?? "",
+    });
   }
 
   function closeForm() {
@@ -146,7 +149,11 @@ function LocationsSection() {
     setSaving(true);
     setError("");
     try {
-      const payload = { ...form, name_hy: form.name_hy || null, address_hy: form.address_hy || null };
+      const payload = {
+        ...form, name_hy: form.name_hy || null, address_hy: form.address_hy || null,
+        lat: form.lat === "" ? null : Number(form.lat),
+        lng: form.lng === "" ? null : Number(form.lng),
+      };
       if (editingId) await adminUpdateLocation(editingId, payload);
       else await adminCreateLocation(payload);
       closeForm();
@@ -239,6 +246,25 @@ function LocationsSection() {
                   <input value={form.address_hy} onChange={e => setForm(f => ({ ...f, address_hy: e.target.value }))} />
                 </label>
               </div>
+              <div className="admin-form-row">
+                <label className="quote-field">
+                  <span>Latitude</span>
+                  <input
+                    type="number" step="any" placeholder="e.g. 40.210984"
+                    value={form.lat} onChange={e => setForm(f => ({ ...f, lat: e.target.value }))}
+                  />
+                </label>
+                <label className="quote-field">
+                  <span>Longitude</span>
+                  <input
+                    type="number" step="any" placeholder="e.g. 44.512744"
+                    value={form.lng} onChange={e => setForm(f => ({ ...f, lng: e.target.value }))}
+                  />
+                </label>
+              </div>
+              <p className="quote-field-hint">
+                Look up the address on <a href="https://yandex.com/maps/" target="_blank" rel="noopener noreferrer">Yandex Maps</a> and copy the coordinates shown in the sidebar. Leave blank to show a placeholder instead of a map.
+              </p>
             </div>
             <div className="admin-modal-foot">
               <button type="button" className="admin-btn" onClick={closeForm}>Cancel</button>

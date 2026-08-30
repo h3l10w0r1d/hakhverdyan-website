@@ -6,6 +6,7 @@ import useReveal from "../lib/useReveal";
 import useSEO from "../lib/useSEO";
 import MagnetButton from "../components/MagnetButton";
 import PhoneInput from "../components/PhoneInput";
+import YandexMap from "../components/YandexMap";
 import { submitContactMessage, fetchSettings, fetchLocations } from "../lib/api";
 import { loadSavedContact, saveContact } from "../lib/userPrefs";
 import { localized } from "../lib/localized";
@@ -171,10 +172,7 @@ export default function Contacts() {
           <div className="locations-grid">
             {locations.map(loc => (
               <div className="location-card reveal" key={loc.id}>
-                <div className="location-map">
-                  <div className="location-map-grid"></div>
-                  <span className="pin"><PinIcon /></span>
-                </div>
+                <YandexMap lat={loc.lat} lng={loc.lng} label={localized(loc, "name", lang)} />
                 <h3>{localized(loc, "name", lang)}</h3>
                 <div className="addr">{localized(loc, "address", lang)}</div>
                 <div className="meta">

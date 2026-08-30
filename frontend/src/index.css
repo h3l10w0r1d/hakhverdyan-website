@@ -976,7 +976,7 @@ footer{ position:relative; z-index:1; padding:64px 32px 30px; border-top:1px sol
 .locations-grid{ display:grid; grid-template-columns:1fr 1fr; gap:20px; }
 .location-card{ border:1px solid var(--grey-100); border-radius:var(--radius-lg); padding:28px; display:flex; flex-direction:column; gap:18px; }
 .location-map{
-  height:150px; border-radius:16px; background:linear-gradient(155deg,var(--grey-800),#14161a 70%);
+  height:220px; border-radius:16px; background:linear-gradient(155deg,var(--grey-800),#14161a 70%);
   position:relative; overflow:hidden; display:flex; align-items:center; justify-content:center;
 }
 .location-map-grid{
@@ -987,6 +987,8 @@ footer{ position:relative; z-index:1; padding:64px 32px 30px; border-top:1px sol
   background-size:26px 26px;
 }
 .location-map .pin{ color:var(--red); position:relative; z-index:1; }
+.location-map.has-map{ background:var(--grey-100); }
+.location-map iframe{ width:100%; height:100%; border:0; display:block; }
 .location-card h3{ font-size:18px; font-weight:700; }
 .location-card .addr{ font-size:14.5px; color:var(--grey-600); line-height:1.6; }
 .location-card .meta{ display:flex; gap:16px; font-size:13px; color:var(--grey-600); flex-wrap:wrap; }
@@ -1108,6 +1110,25 @@ footer{ position:relative; z-index:1; padding:64px 32px 30px; border-top:1px sol
 .admin-search-count{ font-size:12.5px; color:var(--grey-400); }
 .admin-search-note{ font-size:12.5px; color:var(--grey-400); margin-bottom:12px; }
 
+.admin-bulk-bar{
+  display:flex; align-items:center; gap:10px; padding:10px 16px; margin-bottom:12px;
+  background:var(--grey-800); color:#fff; border-radius:12px; animation:adminBulkIn .15s ease;
+}
+@keyframes adminBulkIn{ from{ opacity:0; transform:translateY(-4px); } to{ opacity:1; transform:translateY(0); } }
+.admin-bulk-count{ font-size:13px; font-weight:700; margin-right:4px; }
+.admin-bulk-bar .adm-select-sm{ width:180px; }
+.admin-bulk-bar .adm-select-trigger{ background:rgba(255,255,255,0.08); border-color:rgba(255,255,255,0.18); color:#fff; }
+.admin-bulk-bar .adm-select-trigger:hover{ border-color:rgba(255,255,255,0.4); }
+.admin-bulk-bar .adm-select-placeholder{ color:rgba(255,255,255,0.6); }
+.admin-bulk-bar .admin-btn{ background:rgba(255,255,255,0.08); border-color:rgba(255,255,255,0.18); color:#fff; }
+.admin-bulk-bar .admin-btn:hover{ background:rgba(255,255,255,0.16); }
+.admin-bulk-bar .admin-btn-danger{ background:transparent; border-color:rgba(235,90,90,0.5); color:#ff8f8f; }
+.admin-bulk-bar .admin-btn-danger:hover{ background:rgba(235,90,90,0.15); }
+.admin-bulk-clear{ margin-left:auto; }
+
+.admin-table-checkbox{ width:36px; }
+.admin-table-checkbox input{ width:16px; height:16px; cursor:pointer; }
+
 .admin-card{ background:#fff; border:1px solid var(--grey-100); border-radius:var(--radius-md); overflow:hidden; }
 .admin-card + .admin-card{ margin-top:20px; }
 .admin-empty{ padding:48px 20px; text-align:center; color:var(--grey-400); font-size:14px; }
@@ -1223,6 +1244,8 @@ footer{ position:relative; z-index:1; padding:64px 32px 30px; border-top:1px sol
 }
 .adm-select-trigger:hover{ border-color:var(--grey-800); }
 .adm-select-trigger.open{ border-color:var(--ink); box-shadow:0 0 0 3px rgba(45,45,45,0.1); }
+.adm-select-trigger.disabled{ opacity:0.55; cursor:not-allowed; }
+.adm-select-trigger.disabled:hover{ border-color:var(--grey-200); }
 .adm-select-placeholder{ color:var(--grey-400); }
 .adm-select-chevron{ flex:none; opacity:0.55; transition:transform .2s ease; }
 .adm-select-trigger.open .adm-select-chevron{ transform:rotate(180deg); }
@@ -1303,6 +1326,17 @@ footer{ position:relative; z-index:1; padding:64px 32px 30px; border-top:1px sol
 .admin-row-dragging{ opacity:0.4; }
 .admin-row-drop-target{ box-shadow:inset 0 2px 0 var(--red), inset 0 -2px 0 var(--red); }
 .admin-btn-muted{ color:var(--grey-400); }
+
+/* ---------- Low stock / inventory alerts widget ---------- */
+.admin-lowstock-card{ margin-bottom:24px; }
+.admin-lowstock-empty{ font-size:13.5px; color:var(--grey-400); padding:8px 0 4px; }
+.admin-lowstock-list{ display:flex; flex-direction:column; gap:2px; max-height:280px; overflow-y:auto; }
+.admin-lowstock-row{
+  display:flex; align-items:center; gap:12px; padding:8px 6px; border-radius:8px; cursor:pointer;
+  transition:background .15s ease;
+}
+.admin-lowstock-row:hover{ background:var(--grey-50); }
+.admin-lowstock-name{ flex:1; font-size:13.5px; font-weight:600; color:var(--ink); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 
 /* ---------- Analytics ---------- */
 .adm-analytics-grid{ display:grid; grid-template-columns:repeat(2, 1fr); gap:16px; }

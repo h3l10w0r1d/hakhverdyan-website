@@ -7,21 +7,33 @@ import useSEO from "../lib/useSEO";
 import MagnetButton from "../components/MagnetButton";
 import CountUp from "../components/CountUp";
 import { useQuoteCart } from "../context/QuoteCartContext";
-import { fetchPartners } from "../lib/api";
-import { ArrowIcon, CheckIcon, WrenchIcon, ShieldCheckIcon, VennIcon, HeadsetIcon, PinIcon } from "../lib/icons";
+import YandexMap from "../components/YandexMap";
+import { fetchPartners, fetchLocations, fetchSettings } from "../lib/api";
+import { localized } from "../lib/localized";
+import { ArrowIcon, CheckIcon, WrenchIcon, ShieldCheckIcon, VennIcon, HeadsetIcon } from "../lib/icons";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function About() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.resolvedLanguage;
   const { setPanelOpen } = useQuoteCart();
   useSEO({ title: t("seo.about.title"), description: t("seo.about.description"), path: "/about" });
   const finalCtaRef = useRef(null);
   const [partners, setPartners] = useState([]);
+  const [locations, setLocations] = useState([]);
+  const [settings, setSettings] = useState(null);
 
   useEffect(() => {
     fetchPartners().then(setPartners).catch(() => setPartners([]));
+    fetchLocations().then(setLocations).catch(() => setLocations([]));
+    fetchSettings().then(setSettings).catch(() => {});
   }, []);
+
+  const phone = settings?.phone || "+374 60 770 700";
+  const phoneHref = "tel:" + phone.replace(/[^\d+]/g, "");
+  const hoursWeekday = settings ? localized(settings, "hours_weekday", lang) : "";
+  const hoursSaturday = settings ? localized(settings, "hours_saturday", lang) : "";
 
   useReveal([]);
 
@@ -61,11 +73,6 @@ export default function About() {
       ctx.revert();
     };
   }, []);
-
-  const LOCATIONS = [
-    { name: t("about.loc1Name"), addr: t("about.loc1Addr") },
-    { name: t("about.loc2Name"), addr: t("about.loc2Addr") },
-  ];
 
   return (
     <>
@@ -225,18 +232,15 @@ export default function About() {
             </div>
           </div>
           <div className="locations-grid">
-            {LOCATIONS.map(loc => (
-              <div className="location-card reveal" key={loc.name}>
-                <div className="location-map">
-                  <div className="location-map-grid"></div>
-                  <span className="pin"><PinIcon /></span>
-                </div>
-                <h3>{loc.name}</h3>
-                <div className="addr">{loc.addr}</div>
+            {locations.map(loc => (
+              <div className="location-card reveal" key={loc.id}>
+                <YandexMap lat={loc.lat} lng={loc.lng} label={localized(loc, "name", lang)} />
+                <h3>{localized(loc, "name", lang)}</h3>
+                <div className="addr">{localized(loc, "address", lang)}</div>
                 <div className="meta">
-                  <span>{t("about.hoursWeek")}</span>
-                  <span>{t("about.hoursSat")}</span>
-                  <a href="tel:+37460770700">+374 60 770 700</a>
+                  <span>{hoursWeekday}</span>
+                  <span>{hoursSaturday}</span>
+                  <a href={phoneHref}>{phone}</a>
                 </div>
               </div>
             ))}
