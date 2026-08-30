@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 from ..auth import get_current_admin
 from ..database import get_db
 from ..models import AdminUser, Product, ProductImage
-from ..schemas import ProductIn, ProductOut, ProductUpdate, ReorderIn
+from ..schemas import ProductBulkCategoryIn, ProductIn, ProductOut, ProductUpdate, ReorderIn
 
 router = APIRouter(prefix="/api/admin/products", tags=["admin-products"])
 
@@ -46,6 +46,29 @@ def reorder_products(payload: ReorderIn, db: Session = Depends(get_db), admin: A
         raise HTTPException(status_code=404, detail=f"Unknown product id(s): {', '.join(missing)}")
     for index, product_id in enumerate(payload.ids):
         products[product_id].sort_order = index
+    db.commit()
+    return db.execute(select(Product).order_by(Product.sort_order, Product.name)).scalars().all()
+
+
+@router.post("/bulk-delete")
+def bulk_delete_products(payload: ReorderIn, db: Session = Depends(get_db), admin: AdminUser = Depends(get_current_admin)):
+    products = db.query(Product).filter(Product.id.in_(payload.ids)).all()
+    for product in products:
+        db.delete(product)
+    db.commit()
+    return {"deleted": len(products)}
+
+
+@router.put("/bulk-category", response_model=List[ProductOut])
+def bulk_update_category(
+    payload: ProductBulkCategoryIn, db: Session = Depends(get_db), admin: AdminUser = Depends(get_current_admin),
+):
+    products = db.query(Product).filter(Product.id.in_(payload.ids)).all()
+    missing = set(payload.ids) - {p.id for p in products}
+    if missing:
+        raise HTTPException(status_code=404, detail=f"Unknown product id(s): {', '.join(missing)}")
+    for product in products:
+        product.category = payload.category
     db.commit()
     return db.execute(select(Product).order_by(Product.sort_order, Product.name)).scalars().all()
 

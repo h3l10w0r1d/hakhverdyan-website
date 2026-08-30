@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
-export default function Select({ value, onChange, options, placeholder = "Select…", className = "" }) {
+export default function Select({ value, onChange, options, placeholder = "Select…", className = "", disabled = false }) {
   const [open, setOpen] = useState(false);
   const [pos, setPos] = useState(null);
   const rootRef = useRef(null);
@@ -15,6 +15,7 @@ export default function Select({ value, onChange, options, placeholder = "Select
   }
 
   function toggle() {
+    if (disabled) return;
     if (!open) place();
     setOpen(o => !o);
   }
@@ -47,8 +48,9 @@ export default function Select({ value, onChange, options, placeholder = "Select
       <button
         type="button"
         ref={triggerRef}
-        className={"adm-select-trigger" + (open ? " open" : "")}
+        className={"adm-select-trigger" + (open ? " open" : "") + (disabled ? " disabled" : "")}
         onClick={toggle}
+        disabled={disabled}
         aria-haspopup="listbox"
         aria-expanded={open}
       >

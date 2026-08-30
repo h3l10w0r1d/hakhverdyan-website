@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import { adminListQuotes, adminUpdateQuoteStatus, adminUpdateQuoteNote } from "../../lib/adminApi";
 import Select from "../../components/admin/Select";
+import { downloadCsv } from "../../lib/csvExport";
 
 const STATUS_OPTIONS = [
   { value: "new", label: "New" },
@@ -34,6 +35,24 @@ export default function AdminBookings() {
     return item.name.toLowerCase().includes(query) || item.email.toLowerCase().includes(query) || item.phone.toLowerCase().includes(query);
   });
 
+  function exportCsv() {
+    downloadCsv(
+      `bookings-${new Date().toISOString().slice(0, 10)}.csv`,
+      [
+        { key: "date", label: "Date", value: q => new Date(q.created_at).toISOString() },
+        { key: "name", label: "Name", value: q => q.name },
+        { key: "email", label: "Email", value: q => q.email },
+        { key: "phone", label: "Phone", value: q => q.phone },
+        { key: "items", label: "Items", value: q => q.items.map(it => `${it.qty} × ${it.product_name}`).join("; ") },
+        { key: "total", label: "Total (֏)", value: q => q.total },
+        { key: "status", label: "Status", value: q => q.status },
+        { key: "note", label: "Customer note", value: q => q.note || "" },
+        { key: "admin_note", label: "Internal note", value: q => q.admin_note || "" },
+      ],
+      filtered
+    );
+  }
+
   const open = quotes.find(q => q.id === openId) || null;
 
   function toggleOpen(q) {
@@ -59,7 +78,10 @@ export default function AdminBookings() {
 
   return (
     <div>
-      <h1 className="admin-page-title">Bookings</h1>
+      <div className="admin-page-head">
+        <h1 className="admin-page-title">Bookings</h1>
+        <button className="admin-btn" onClick={exportCsv} disabled={filtered.length === 0}>Export CSV</button>
+      </div>
 
       <div className="admin-search-row">
         <input

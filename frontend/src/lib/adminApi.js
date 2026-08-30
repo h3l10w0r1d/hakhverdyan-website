@@ -52,6 +52,10 @@ export const adminDeleteProduct = id =>
   request(`/api/admin/products/${id}`, { method: "DELETE" });
 export const adminReorderProducts = ids =>
   request("/api/admin/products/reorder", { method: "PUT", body: JSON.stringify({ ids }) });
+export const adminBulkDeleteProducts = ids =>
+  request("/api/admin/products/bulk-delete", { method: "POST", body: JSON.stringify({ ids }) });
+export const adminBulkUpdateCategory = (ids, category) =>
+  request("/api/admin/products/bulk-category", { method: "PUT", body: JSON.stringify({ ids, category }) });
 
 export const adminListPosts = () => request("/api/admin/posts");
 export const adminCreatePost = payload =>

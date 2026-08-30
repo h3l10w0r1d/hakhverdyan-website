@@ -118,6 +118,11 @@ class ReorderIn(BaseModel):
     ids: List[str] = Field(..., min_length=1)
 
 
+class ProductBulkCategoryIn(BaseModel):
+    ids: List[str] = Field(..., min_length=1)
+    category: str = Field(..., min_length=1, max_length=60)
+
+
 class PartnerReorderIn(BaseModel):
     ids: List[int] = Field(..., min_length=1)
 

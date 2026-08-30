@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { adminListProducts, adminDeleteProduct, adminReorderProducts, adminListCategories } from "../../lib/adminApi";
+import {
+  adminListProducts, adminDeleteProduct, adminReorderProducts, adminListCategories,
+  adminBulkDeleteProducts, adminBulkUpdateCategory,
+} from "../../lib/adminApi";
 import DragHandleIcon from "../../components/admin/DragHandleIcon";
+import Select from "../../components/admin/Select";
 import useDragReorder from "../../lib/useDragReorder";
 import { productPhoto } from "../../lib/productPhotos";
 
@@ -12,8 +16,12 @@ export default function AdminProducts() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [search, setSearch] = useState("");
+  const [selected, setSelected] = useState(() => new Set());
+  const [bulkCategory, setBulkCategory] = useState("");
+  const [bulkBusy, setBulkBusy] = useState(false);
 
   const categoryLabel = id => categories.find(c => c.id === id)?.label || id;
+  const categoryOptions = categories.map(c => ({ value: c.id, label: c.label }));
 
   function load() {
     setLoading(true);
@@ -22,6 +30,7 @@ export default function AdminProducts() {
 
   useEffect(load, []);
   useEffect(() => { adminListCategories().then(setCategories).catch(() => {}); }, []);
+  useEffect(() => { clearSelection(); }, [search]);
 
   const q = search.trim().toLowerCase();
   const filtered = q
@@ -54,6 +63,55 @@ export default function AdminProducts() {
     }
   }
 
+  function toggleSelected(e, id) {
+    e.stopPropagation();
+    setSelected(s => {
+      const next = new Set(s);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }
+
+  function toggleSelectAll() {
+    setSelected(s => (s.size === filtered.length ? new Set() : new Set(filtered.map(p => p.id))));
+  }
+
+  function clearSelection() {
+    setSelected(new Set());
+    setBulkCategory("");
+  }
+
+  async function onBulkDelete() {
+    if (!window.confirm(`Delete ${selected.size} product${selected.size === 1 ? "" : "s"}? This can't be undone.`)) return;
+    setBulkBusy(true);
+    setError("");
+    try {
+      await adminBulkDeleteProducts([...selected]);
+      clearSelection();
+      load();
+    } catch (err) {
+      setError(err.message || "Couldn't delete the selected products.");
+    } finally {
+      setBulkBusy(false);
+    }
+  }
+
+  async function onBulkCategory(categoryId) {
+    setBulkCategory(categoryId);
+    setBulkBusy(true);
+    setError("");
+    try {
+      await adminBulkUpdateCategory([...selected], categoryId);
+      clearSelection();
+      load();
+    } catch (err) {
+      setError(err.message || "Couldn't move the selected products.");
+    } finally {
+      setBulkBusy(false);
+    }
+  }
+
   return (
     <div>
       <div className="admin-page-head">
@@ -72,6 +130,20 @@ export default function AdminProducts() {
       </div>
       {isFiltered && <div className="admin-search-note">Reordering is disabled while a search is active.</div>}
 
+      {selected.size > 0 && (
+        <div className="admin-bulk-bar">
+          <span className="admin-bulk-count">{selected.size} selected</span>
+          <Select
+            className="adm-select-sm" placeholder="Move to category…"
+            value={bulkCategory} onChange={onBulkCategory} options={categoryOptions} disabled={bulkBusy}
+          />
+          <button type="button" className="admin-btn admin-btn-sm admin-btn-danger" onClick={onBulkDelete} disabled={bulkBusy}>
+            Delete selected
+          </button>
+          <button type="button" className="admin-btn admin-btn-sm admin-bulk-clear" onClick={clearSelection}>Clear</button>
+        </div>
+      )}
+
       <div className="admin-card">
         {loading ? (
           <div className="admin-empty">Loading…</div>
@@ -81,6 +153,13 @@ export default function AdminProducts() {
           <table className={"admin-table" + (isFiltered ? "" : " admin-table-reorderable")}>
             <thead>
               <tr>
+                <th className="admin-table-checkbox">
+                  <input
+                    type="checkbox" checked={selected.size > 0 && selected.size === filtered.length}
+                    ref={el => { if (el) el.indeterminate = selected.size > 0 && selected.size < filtered.length; }}
+                    onChange={toggleSelectAll}
+                  />
+                </th>
                 <th></th><th></th><th>Name</th><th>Category</th><th>Price</th><th>Badge</th><th>Stock</th><th>Promo</th><th></th>
               </tr>
             </thead>
@@ -101,6 +180,9 @@ export default function AdminProducts() {
                     onDragEnd: onDragEnd,
                   })}
                 >
+                  <td className="admin-table-checkbox" onClick={e => e.stopPropagation()}>
+                    <input type="checkbox" checked={selected.has(p.id)} onChange={e => toggleSelected(e, p.id)} />
+                  </td>
                   <td className="admin-drag-handle" title={isFiltered ? "" : "Drag to reorder"} onClick={e => e.stopPropagation()}>
                     {!isFiltered && <DragHandleIcon />}
                   </td>

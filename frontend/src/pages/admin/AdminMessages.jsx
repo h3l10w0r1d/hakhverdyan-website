@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { adminListMessages, adminUpdateMessageStatus } from "../../lib/adminApi";
 import Select from "../../components/admin/Select";
+import { downloadCsv } from "../../lib/csvExport";
 
 const STATUS_OPTIONS = [
   { value: "new", label: "New" },
@@ -40,9 +41,27 @@ export default function AdminMessages() {
     );
   });
 
+  function exportCsv() {
+    downloadCsv(
+      `messages-${new Date().toISOString().slice(0, 10)}.csv`,
+      [
+        { key: "date", label: "Date", value: m => new Date(m.created_at).toISOString() },
+        { key: "name", label: "Name", value: m => m.name },
+        { key: "email", label: "Email", value: m => m.email || "" },
+        { key: "phone", label: "Phone", value: m => m.phone || "" },
+        { key: "message", label: "Message", value: m => m.message },
+        { key: "status", label: "Status", value: m => m.status },
+      ],
+      filtered
+    );
+  }
+
   return (
     <div>
-      <h1 className="admin-page-title">Messages</h1>
+      <div className="admin-page-head">
+        <h1 className="admin-page-title">Messages</h1>
+        <button className="admin-btn" onClick={exportCsv} disabled={filtered.length === 0}>Export CSV</button>
+      </div>
 
       <div className="admin-search-row">
         <input
