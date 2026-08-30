@@ -3,20 +3,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import { adminListPosts, adminCreatePost, adminUpdatePost, adminDeletePost } from "../../lib/adminApi";
 import ImageDropzone from "../../components/admin/ImageDropzone";
 import { ArrowIcon, GearIcon, CloseIcon } from "../../lib/icons";
+import slugify from "../../lib/slugify";
 
 const EMPTY = {
   slug: "", title: "", title_hy: "", excerpt: "", excerpt_hy: "",
   content: "", content_hy: "", category: "", category_hy: "",
   cover_url: null, published_at: "", status: "draft", tags: [],
 };
-
-function slugify(text) {
-  return text.toLowerCase().trim()
-    .replace(/[^a-z0-9\s-]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-")
-    .slice(0, 120);
-}
 
 function nowLocalDatetime() {
   const d = new Date();

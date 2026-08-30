@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import {
   adminListProducts, adminCreateProduct, adminUpdateProduct, adminDeleteProduct, adminReorderProducts,
-  adminListCategories,
+  adminListCategories, adminCreateCategory,
 } from "../../lib/adminApi";
 import Select from "../../components/admin/Select";
 import MultiImageDropzone from "../../components/admin/MultiImageDropzone";
 import DragHandleIcon from "../../components/admin/DragHandleIcon";
 import useDragReorder from "../../lib/useDragReorder";
 import { productPhoto } from "../../lib/productPhotos";
+import slugify from "../../lib/slugify";
 
 const ICONS = [
   "aluminum", "aluminum-angle", "pvc", "pvc-chamber", "handle", "lock",
@@ -30,6 +31,9 @@ export default function AdminProducts() {
   const [form, setForm] = useState(null); // null = closed, EMPTY-shaped object = open
   const [editingId, setEditingId] = useState(null);
   const [saving, setSaving] = useState(false);
+  const [newCategoryForm, setNewCategoryForm] = useState(null);
+  const [savingCategory, setSavingCategory] = useState(false);
+  const [categoryError, setCategoryError] = useState("");
 
   const categoryOptions = categories.map(c => ({ value: c.id, label: c.label }));
   const categoryLabel = id => categories.find(c => c.id === id)?.label || id;
@@ -39,8 +43,28 @@ export default function AdminProducts() {
     adminListProducts().then(setProducts).catch(() => setError("Couldn't load products.")).finally(() => setLoading(false));
   }
 
+  function loadCategories() {
+    return adminListCategories().then(setCategories).catch(() => {});
+  }
+
   useEffect(load, []);
-  useEffect(() => { adminListCategories().then(setCategories).catch(() => {}); }, []);
+  useEffect(() => { loadCategories(); }, []);
+
+  async function onCreateCategory(e) {
+    e.preventDefault();
+    setSavingCategory(true);
+    setCategoryError("");
+    try {
+      const created = await adminCreateCategory(newCategoryForm);
+      await loadCategories();
+      updateField("category", created.id);
+      setNewCategoryForm(null);
+    } catch (err) {
+      setCategoryError(err.message || "Couldn't create category.");
+    } finally {
+      setSavingCategory(false);
+    }
+  }
 
   const q = search.trim().toLowerCase();
   const filtered = q
@@ -233,8 +257,13 @@ export default function AdminProducts() {
               </div>
               <div className="admin-form-row">
                 <label className="quote-field">
-                  <span>Category</span>
-                  <Select value={form.category} onChange={v => updateField("category", v)} options={categoryOptions} />
+                  <span>
+                    Category
+                    <button type="button" className="quote-field-inline-action" onClick={() => setNewCategoryForm({ id: "", label: "", label_hy: "" })}>
+                      + New
+                    </button>
+                  </span>
+                  <Select value={form.category} onChange={v => updateField("category", v)} options={categoryOptions} placeholder="Select a category" />
                 </label>
                 <label className="quote-field">
                   <span>Icon / photo group</span>
@@ -274,6 +303,49 @@ export default function AdminProducts() {
               <button type="button" className="admin-btn" onClick={closeForm}>Cancel</button>
               <button type="submit" className="admin-btn admin-btn-primary" disabled={saving}>
                 {saving ? "Saving…" : "Save product"}
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+
+      {newCategoryForm && (
+        <div className="admin-modal-backdrop" onClick={e => { if (e.target === e.currentTarget) setNewCategoryForm(null); }}>
+          <form className="admin-modal admin-modal-sm" onSubmit={onCreateCategory}>
+            <div className="admin-modal-head">
+              <h2>New category</h2>
+              <button type="button" className="admin-modal-close" onClick={() => setNewCategoryForm(null)}>&times;</button>
+            </div>
+            <div className="admin-modal-body">
+              {categoryError && <div className="admin-error-banner">{categoryError}</div>}
+              <label className="quote-field">
+                <span>Label (EN)</span>
+                <input
+                  value={newCategoryForm.label} required autoFocus
+                  onChange={e => setNewCategoryForm(f => ({
+                    ...f, label: e.target.value, id: f.id === slugify(f.label) ? slugify(e.target.value) : f.id,
+                  }))}
+                />
+              </label>
+              <label className="quote-field">
+                <span>Label (HY)</span>
+                <input
+                  value={newCategoryForm.label_hy}
+                  onChange={e => setNewCategoryForm(f => ({ ...f, label_hy: e.target.value }))}
+                />
+              </label>
+              <label className="quote-field">
+                <span>ID (slug, unique)</span>
+                <input
+                  value={newCategoryForm.id} required pattern="[a-z0-9\-]+" placeholder="glass-panels"
+                  onChange={e => setNewCategoryForm(f => ({ ...f, id: slugify(e.target.value) }))}
+                />
+              </label>
+            </div>
+            <div className="admin-modal-foot">
+              <button type="button" className="admin-btn" onClick={() => setNewCategoryForm(null)}>Cancel</button>
+              <button type="submit" className="admin-btn admin-btn-primary" disabled={savingCategory}>
+                {savingCategory ? "Creating…" : "Create category"}
               </button>
             </div>
           </form>

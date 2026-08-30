@@ -619,6 +619,9 @@ footer{ position:relative; z-index:1; padding:64px 32px 30px; border-top:1px sol
 .quote-form{ display:flex; flex-direction:column; gap:14px; padding:16px 20px; }
 .quote-field{ display:flex; flex-direction:column; gap:6px; }
 .quote-field span{ font-size:12px; font-weight:600; color:var(--grey-600); }
+.quote-field > span:has(.quote-field-inline-action){ display:flex; align-items:center; justify-content:space-between; }
+.quote-field-inline-action{ font-size:11px; font-weight:700; color:var(--red); background:none; border:none; cursor:pointer; padding:0; }
+.quote-field-inline-action:hover{ text-decoration:underline; }
 .quote-field input, .quote-field textarea{
   font-family:inherit; font-size:13.5px; padding:10px 12px; border-radius:10px;
   border:1.5px solid var(--grey-200); color:var(--ink); transition:border-color .2s ease; resize:none;
@@ -1171,6 +1174,7 @@ footer{ position:relative; z-index:1; padding:64px 32px 30px; border-top:1px sol
   background:#fff; border-radius:var(--radius-lg); width:100%; max-width:620px; max-height:88vh;
   display:flex; flex-direction:column; box-shadow:0 40px 80px -20px rgba(10,10,15,0.5); overflow:hidden;
 }
+.admin-modal-sm{ max-width:420px; }
 .admin-modal-head{ display:flex; align-items:center; justify-content:space-between; padding:18px 22px; border-bottom:1px solid var(--grey-100); flex:none; }
 .admin-modal-head h2{ font-family:'Space Grotesk',sans-serif; font-size:18px; font-weight:700; }
 .admin-modal-close{
