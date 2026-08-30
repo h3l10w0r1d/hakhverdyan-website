@@ -547,20 +547,36 @@ footer{ position:relative; z-index:1; padding:64px 32px 30px; border-top:1px sol
 
 @media (max-width: 560px){
   .qv-backdrop{ align-items:flex-end; padding:0; }
-  .qv-card{ max-width:100%; max-height:92vh; border-radius:14px 14px 0 0; }
-  .qv-media{ height:220px; }
+  .qv-card{ max-width:100%; height:90vh; border-radius:14px 14px 0 0; }
+  .qv-media{ height:260px; }
+  .qv-body{ display:flex; flex-direction:column; justify-content:center; }
 }
 
-/* Real desktop pointer: lay the card out horizontally (photo left, details right)
-   and drop the dark scrim — it should read as the product card opening up, not
-   as a page-blocking popup. */
+/* Real desktop pointer: lay the card out horizontally (photo left, details
+   right) as a large, immersive overlay rather than a small popover. */
 @media (hover:hover) and (pointer:fine){
-  .qv-backdrop{ background:transparent; backdrop-filter:none; -webkit-backdrop-filter:none; }
-  .qv-card{ flex-direction:row; max-width:640px; height:360px; max-height:360px; }
-  .qv-media{ width:280px; height:auto; }
-  .qv-panel{ padding-top:28px; }
-  .qv-body{ padding:6px 26px 4px; }
-  .qv-footer{ padding:14px 26px 22px; }
+  .qv-card{
+    flex-direction:row; width:min(94vw, 1280px); height:min(88vh, 820px);
+    max-width:none; max-height:none;
+  }
+  .qv-media{ width:52%; height:auto; flex:none; }
+  .qv-panel{ padding-top:0; }
+  .qv-body{ padding:52px 60px 12px; display:flex; flex-direction:column; justify-content:center; }
+  .qv-name{ font-size:32px; margin-bottom:10px; }
+  .qv-spec{ font-size:16.5px; margin-bottom:24px; max-width:480px; }
+  .qv-trust{ gap:10px; margin-bottom:28px; }
+  .qv-trust span{ font-size:13px; padding:8px 14px; }
+  .qv-body .product-price-row{ margin-bottom:4px; }
+  .qv-body .product-price{ font-size:32px; }
+  .qv-body .product-price-old{ font-size:16px; }
+  .qv-body .product-unit{ font-size:14px; }
+  .qv-footer{ padding:28px 60px 44px; }
+  .qv-footer .qty-stepper{ height:48px; }
+  .qv-footer .qty-stepper button{ width:40px; height:46px; font-size:18px; }
+  .qv-footer .add-quote-btn{ min-height:46px; font-size:14.5px; padding:12px 20px; }
+  .qv-close{ width:40px; height:40px; top:20px; }
+  .qv-close:not(.is-back){ right:20px; }
+  .qv-nav{ width:40px; height:40px; }
 }
 
 /* ---------- Quote cart FAB + panel ---------- */
