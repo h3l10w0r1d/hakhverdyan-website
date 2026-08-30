@@ -100,9 +100,9 @@ export default function About() {
             </div>
             <div className="story-visual reveal">
               <div className="story-panel">
-                <div className="story-panel-grid"></div>
+                <img className="story-panel-photo" src="/about/story-installation.jpg" alt="" />
+                <div className="story-panel-shade"></div>
                 <div className="story-panel-glow"></div>
-                <svg className="story-panel-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4"><path d="M4 4h16v6H10v10H4V4z" /></svg>
               </div>
               <div className="story-chip chip-1">
                 <div className="ic"><CheckIcon size={16} /></div>

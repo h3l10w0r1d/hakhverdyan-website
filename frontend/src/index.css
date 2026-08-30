@@ -681,22 +681,19 @@ footer{ position:relative; z-index:1; padding:64px 32px 30px; border-top:1px sol
 .story-copy p.lead{ font-size:19px; color:var(--ink); font-weight:500; line-height:1.5; }
 .story-visual{ position:relative; height:420px; }
 .story-panel{
-  position:absolute; inset:0; background:linear-gradient(155deg, var(--grey-800), #14161a 70%);
+  position:absolute; inset:0; background:var(--grey-800);
   border-radius:var(--radius-xl); overflow:hidden; box-shadow:0 30px 60px -20px rgba(20,20,25,0.45);
 }
-.story-panel-grid{
+.story-panel-photo{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:50% 35%; }
+.story-panel-shade{
   position:absolute; inset:0;
-  background-image:
-    linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px);
-  background-size:46px 46px;
+  background:linear-gradient(155deg, rgba(20,22,26,0.1), rgba(20,22,26,0.55) 75%);
 }
 .story-panel-glow{
   position:absolute; width:340px; height:340px; border-radius:50%;
   background:radial-gradient(circle, rgba(177,35,38,0.45), transparent 70%);
   bottom:-100px; left:-60px; filter:blur(10px);
 }
-.story-panel-mark{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:120px; height:120px; color:rgba(255,255,255,0.9); }
 .story-chip{
   position:absolute; background:#fff; border-radius:var(--radius-md); padding:14px 18px;
   box-shadow:0 20px 40px -12px rgba(20,20,30,0.25); border:1px solid var(--grey-100);
