@@ -29,6 +29,17 @@ class AdminUser(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
 
 
+class Customer(Base):
+    __tablename__ = "customers"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    email: Mapped[str] = mapped_column(String, unique=True, nullable=False, index=True)
+    password_hash: Mapped[str] = mapped_column(String, nullable=False)
+    name: Mapped[str] = mapped_column(String, nullable=False)
+    phone: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+
+
 class Product(Base):
     __tablename__ = "products"
 
@@ -73,6 +84,7 @@ class QuoteRequest(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    customer_id: Mapped[Optional[int]] = mapped_column(ForeignKey("customers.id"), nullable=True, index=True)
     name: Mapped[str] = mapped_column(String, nullable=False)
     phone: Mapped[str] = mapped_column(String, nullable=False)
     email: Mapped[str] = mapped_column(String, nullable=False)
@@ -148,3 +160,41 @@ class ContactMessage(Base):
     email: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     message: Mapped[str] = mapped_column(String, nullable=False)
     status: Mapped[str] = mapped_column(String, nullable=False, default="new")
+
+
+class Category(Base):
+    __tablename__ = "categories"
+
+    id: Mapped[str] = mapped_column(String, primary_key=True)
+    label: Mapped[str] = mapped_column(String, nullable=False)
+    label_hy: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+    sort_order: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
+
+
+class SiteSettings(Base):
+    # Singleton row (id is always 1) holding the contact/social info shown
+    # sitewide in the Footer and Contacts page.
+    __tablename__ = "site_settings"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, default=1)
+    phone: Mapped[str] = mapped_column(String, nullable=False, default="+374 60 770 700")
+    whatsapp: Mapped[str] = mapped_column(String, nullable=False, default="+374 60 770 700")
+    email: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+    facebook_url: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+    instagram_url: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+    tiktok_url: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+    hours_weekday: Mapped[str] = mapped_column(String, nullable=False, default="Mon–Fri 9:00–18:00")
+    hours_weekday_hy: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+    hours_saturday: Mapped[str] = mapped_column(String, nullable=False, default="Sat 9:00–16:00")
+    hours_saturday_hy: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+
+
+class Location(Base):
+    __tablename__ = "locations"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    name: Mapped[str] = mapped_column(String, nullable=False)
+    name_hy: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+    address: Mapped[str] = mapped_column(String, nullable=False)
+    address_hy: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+    sort_order: Mapped[int] = mapped_column(Integer, nullable=False, default=0)

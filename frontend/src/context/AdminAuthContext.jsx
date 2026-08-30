@@ -31,7 +31,7 @@ export function AdminAuthProvider({ children }) {
     setAdmin(null);
   }
 
-  const value = { admin, loading, login, logout, isAuthenticated: !!admin };
+  const value = { admin, loading, login, logout, setAdmin, isAuthenticated: !!admin };
   return <AdminAuthContext.Provider value={value}>{children}</AdminAuthContext.Provider>;
 }
 

@@ -5,6 +5,8 @@ import gsap from "gsap";
 import MagnetButton from "./MagnetButton";
 import LanguageSwitch from "./LanguageSwitch";
 import { useQuoteCart } from "../context/QuoteCartContext";
+import { useCustomerAuth } from "../context/CustomerAuthContext";
+import { UserIcon } from "../lib/icons";
 
 export default function Nav() {
   const { t } = useTranslation();
@@ -12,6 +14,7 @@ export default function Nav() {
   const menuRef = useRef(null);
   const location = useLocation();
   const { setPanelOpen } = useQuoteCart();
+  const { isAuthenticated, customer } = useCustomerAuth();
 
   const LINKS = [
     { to: "/about", label: t("nav.about") },
@@ -49,6 +52,9 @@ export default function Nav() {
         </nav>
         <div className="nav-right">
           <LanguageSwitch />
+          <Link className="nav-account-link" to={isAuthenticated ? "/account" : "/login"} aria-label={isAuthenticated ? customer?.name : t("nav.login")}>
+            <UserIcon size={19} />
+          </Link>
           <MagnetButton as="button" className="nav-cta" onClick={() => setPanelOpen(true)}>{t("nav.requestQuote")}</MagnetButton>
           <button className="nav-burger" aria-label={open ? "Close menu" : "Open menu"} onClick={() => setOpen(o => !o)}>
             {open ? (
@@ -67,6 +73,9 @@ export default function Nav() {
               {link.label}
             </NavLink>
           ))}
+          <NavLink className={({ isActive }) => "mobile-menu-link" + (isActive ? " active" : "")} to={isAuthenticated ? "/account" : "/login"}>
+            {isAuthenticated ? customer?.name : t("nav.login")}
+          </NavLink>
           <LanguageSwitch className="mobile-menu-lang" align="center" />
           <MagnetButton as="button" className="nav-cta mobile-menu-cta" onClick={() => setPanelOpen(true)}>{t("nav.requestQuote")}</MagnetButton>
         </div>

@@ -7,7 +7,7 @@ import useSEO from "../lib/useSEO";
 import MagnetButton from "../components/MagnetButton";
 import ProductCard from "../components/ProductCard";
 import Select from "../components/admin/Select";
-import { fetchProducts } from "../lib/api";
+import { fetchProducts, fetchCategories } from "../lib/api";
 import { localized } from "../lib/localized";
 import { useQuoteCart } from "../context/QuoteCartContext";
 import { ArrowIcon, SearchIcon, GlobeIcon, WrenchIcon, ClockIcon } from "../lib/icons";
@@ -20,6 +20,7 @@ export default function Catalog() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [categories, setCategories] = useState([]);
   const [activeTab, setActiveTab] = useState(searchParams.get("cat") || "all");
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("default");
@@ -27,11 +28,7 @@ export default function Catalog() {
 
   const TABS = [
     { key: "all", label: t("catalog.tabAll") },
-    { key: "profiles", label: t("catalog.tabProfiles") },
-    { key: "hardware", label: t("catalog.tabHardware") },
-    { key: "sheets", label: t("catalog.tabSheets") },
-    { key: "doors", label: t("catalog.tabDoors") },
-    { key: "facades", label: t("catalog.tabFacades") },
+    ...categories.map(c => ({ key: c.id, label: localized(c, "label", lang) })),
   ];
 
   useEffect(() => {
@@ -43,10 +40,14 @@ export default function Catalog() {
   }, []);
 
   useEffect(() => {
+    fetchCategories().then(setCategories).catch(() => setCategories([]));
+  }, []);
+
+  useEffect(() => {
     const cat = searchParams.get("cat");
-    if (cat && TABS.some(t => t.key === cat)) setActiveTab(cat);
+    if (cat && (cat === "all" || categories.some(c => c.id === cat))) setActiveTab(cat);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams]);
+  }, [searchParams, categories]);
 
   function selectTab(key) {
     setActiveTab(key);

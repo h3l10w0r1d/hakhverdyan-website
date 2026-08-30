@@ -6,15 +6,33 @@ import useReveal from "../lib/useReveal";
 import useSEO from "../lib/useSEO";
 import MagnetButton from "../components/MagnetButton";
 import PhoneInput from "../components/PhoneInput";
-import { submitContactMessage } from "../lib/api";
+import { submitContactMessage, fetchSettings, fetchLocations } from "../lib/api";
 import { loadSavedContact, saveContact } from "../lib/userPrefs";
+import { localized } from "../lib/localized";
 import { ArrowIcon, PhoneIcon, ClockIcon, PinIcon, FacebookIcon, InstagramIcon, TiktokIcon, WhatsappIcon } from "../lib/icons";
 
 export default function Contacts() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.resolvedLanguage;
   useSEO({ title: t("seo.contacts.title"), description: t("seo.contacts.description"), path: "/contacts" });
   useReveal([]);
   const [searchParams] = useSearchParams();
+
+  const [settings, setSettings] = useState(null);
+  const [locations, setLocations] = useState([]);
+
+  useEffect(() => {
+    fetchSettings().then(setSettings).catch(() => {});
+    fetchLocations().then(setLocations).catch(() => {});
+  }, []);
+
+  const phone = settings?.phone || "+374 60 770 700";
+  const phoneHref = "tel:" + phone.replace(/[^\d+]/g, "");
+  const whatsappHref = "https://wa.me/" + (settings?.whatsapp || phone).replace(/[^\d]/g, "");
+  const hoursWeekday = settings ? localized(settings, "hours_weekday", lang) : "";
+  const hoursSaturday = settings ? localized(settings, "hours_saturday", lang) : "";
+  const hoursValue = [hoursWeekday, hoursSaturday].filter(Boolean).join(", ");
+  const locationsValue = locations.map(l => localized(l, "name", lang)).join(" & ");
 
   const [form, setForm] = useState(() => {
     const saved = loadSavedContact();
@@ -70,11 +88,6 @@ export default function Contacts() {
     }
   }
 
-  const LOCATIONS = [
-    { name: t("contacts.loc1Name"), addr: t("contacts.loc1Addr") },
-    { name: t("contacts.loc2Name"), addr: t("contacts.loc2Addr") },
-  ];
-
   return (
     <>
       <section className="services-hero contacts-hero">
@@ -90,29 +103,29 @@ export default function Contacts() {
           <div className="contact-grid">
             <div>
               <div className="contact-methods">
-                <a className="contact-method reveal" href="tel:+37460770700">
+                <a className="contact-method reveal" href={phoneHref}>
                   <div className="ic"><PhoneIcon size={20} /></div>
-                  <div><div className="label">{t("contacts.callUs")}</div><div className="value">+374 60 770 700</div></div>
+                  <div><div className="label">{t("contacts.callUs")}</div><div className="value">{phone}</div></div>
                 </a>
-                <a className="contact-method reveal" href="https://wa.me/37460770700" target="_blank" rel="noreferrer">
+                <a className="contact-method reveal" href={whatsappHref} target="_blank" rel="noreferrer">
                   <div className="ic"><WhatsappIcon size={20} /></div>
-                  <div><div className="label">{t("contacts.whatsapp")}</div><div className="value">+374 60 770 700</div></div>
+                  <div><div className="label">{t("contacts.whatsapp")}</div><div className="value">{settings?.whatsapp || phone}</div></div>
                 </a>
                 <div className="contact-method reveal">
                   <div className="ic"><ClockIcon size={20} /></div>
-                  <div><div className="label">{t("contacts.hours")}</div><div className="value">{t("contacts.hoursValue")}</div></div>
+                  <div><div className="label">{t("contacts.hours")}</div><div className="value">{hoursValue}</div></div>
                 </div>
                 <div className="contact-method reveal">
                   <div className="ic"><PinIcon size={20} /></div>
-                  <div><div className="label">{t("contacts.locations")}</div><div className="value">{t("contacts.locationsValue")}</div></div>
+                  <div><div className="label">{t("contacts.locations")}</div><div className="value">{locationsValue}</div></div>
                 </div>
               </div>
 
               <div className="footer-social">
-                <a href="https://www.facebook.com/share/1ERgBgZy4H/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><FacebookIcon /></a>
-                <a href="https://www.instagram.com/hakhverdyan.holding" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><InstagramIcon /></a>
-                <a href="https://www.tiktok.com/@hakhverdyan.holding" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><TiktokIcon /></a>
-                <a href="https://wa.me/37460770700" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><WhatsappIcon /></a>
+                {settings?.facebook_url && <a href={settings.facebook_url} target="_blank" rel="noopener noreferrer" aria-label="Facebook"><FacebookIcon /></a>}
+                {settings?.instagram_url && <a href={settings.instagram_url} target="_blank" rel="noopener noreferrer" aria-label="Instagram"><InstagramIcon /></a>}
+                {settings?.tiktok_url && <a href={settings.tiktok_url} target="_blank" rel="noopener noreferrer" aria-label="TikTok"><TiktokIcon /></a>}
+                <a href={whatsappHref} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><WhatsappIcon /></a>
               </div>
             </div>
 
@@ -156,18 +169,18 @@ export default function Contacts() {
             </div>
           </div>
           <div className="locations-grid">
-            {LOCATIONS.map(loc => (
-              <div className="location-card reveal" key={loc.name}>
+            {locations.map(loc => (
+              <div className="location-card reveal" key={loc.id}>
                 <div className="location-map">
                   <div className="location-map-grid"></div>
                   <span className="pin"><PinIcon /></span>
                 </div>
-                <h3>{loc.name}</h3>
-                <div className="addr">{loc.addr}</div>
+                <h3>{localized(loc, "name", lang)}</h3>
+                <div className="addr">{localized(loc, "address", lang)}</div>
                 <div className="meta">
-                  <span>{t("contacts.hoursWeek")}</span>
-                  <span>{t("contacts.hoursSat")}</span>
-                  <a href="tel:+37460770700">+374 60 770 700</a>
+                  <span>{hoursWeekday}</span>
+                  <span>{hoursSaturday}</span>
+                  <a href={phoneHref}>{phone}</a>
                 </div>
               </div>
             ))}

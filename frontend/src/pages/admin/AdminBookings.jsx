@@ -7,6 +7,7 @@ const STATUS_OPTIONS = [
   { value: "contacted", label: "Contacted" },
   { value: "closed", label: "Closed" },
 ];
+const STATUS_FILTER_OPTIONS = [{ value: "all", label: "All statuses" }, ...STATUS_OPTIONS];
 const fmt = n => n.toLocaleString("en-US") + "֏";
 const fmtDate = iso => new Date(iso).toLocaleString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
 
@@ -16,6 +17,8 @@ export default function AdminBookings() {
   const [openId, setOpenId] = useState(null);
   const [noteDraft, setNoteDraft] = useState("");
   const [savingNote, setSavingNote] = useState(false);
+  const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
 
   function load() {
     setLoading(true);
@@ -23,6 +26,13 @@ export default function AdminBookings() {
   }
 
   useEffect(load, []);
+
+  const query = search.trim().toLowerCase();
+  const filtered = quotes.filter(item => {
+    if (statusFilter !== "all" && item.status !== statusFilter) return false;
+    if (!query) return true;
+    return item.name.toLowerCase().includes(query) || item.email.toLowerCase().includes(query) || item.phone.toLowerCase().includes(query);
+  });
 
   const open = quotes.find(q => q.id === openId) || null;
 
@@ -50,18 +60,28 @@ export default function AdminBookings() {
   return (
     <div>
       <h1 className="admin-page-title">Bookings</h1>
+
+      <div className="admin-search-row">
+        <input
+          type="text" className="admin-search-input" placeholder="Search by name, email, or phone…"
+          value={search} onChange={e => setSearch(e.target.value)}
+        />
+        <Select className="adm-select-sm" value={statusFilter} onChange={setStatusFilter} options={STATUS_FILTER_OPTIONS} />
+        {(search || statusFilter !== "all") && <span className="admin-search-count">{filtered.length} of {quotes.length}</span>}
+      </div>
+
       <div className="admin-card">
         {loading ? (
           <div className="admin-empty">Loading…</div>
-        ) : quotes.length === 0 ? (
-          <div className="admin-empty">No booking requests yet.</div>
+        ) : filtered.length === 0 ? (
+          <div className="admin-empty">{quotes.length === 0 ? "No booking requests yet." : "No bookings match your search."}</div>
         ) : (
           <table className="admin-table">
             <thead>
               <tr><th>Date</th><th>Customer</th><th>Items</th><th>Total</th><th>Status</th><th></th></tr>
             </thead>
             <tbody>
-              {quotes.map(q => (
+              {filtered.map(q => (
                 <Fragment key={q.id}>
                   <tr className="admin-table-row-clickable" onClick={() => toggleOpen(q)}>
                     <td>{fmtDate(q.created_at)}</td>

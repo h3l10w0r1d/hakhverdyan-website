@@ -8,6 +8,8 @@ const LINKS = [
   { to: "/admin/partners", label: "Partners" },
   { to: "/admin/bookings", label: "Bookings" },
   { to: "/admin/messages", label: "Messages" },
+  { to: "/admin/settings", label: "Settings" },
+  { to: "/admin/account", label: "Account" },
 ];
 
 export default function AdminLayout() {

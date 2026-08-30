@@ -7,6 +7,25 @@ _DOOR_PHOTO = "https://images.unsplash.com/photo-1734360659832-6ec810b0334e?w=12
 _GATE_PHOTO = "https://images.unsplash.com/photo-1785102742384-123dd05c1465?w=1200&q=70&fm=jpg&fit=crop"
 _FACADE_PHOTO = "https://images.unsplash.com/photo-1745015446589-7ee6f702d8c1?w=1200&q=70&fm=jpg&fit=crop"
 
+CATEGORIES = [
+    {"id": "profiles", "label": "Profiles", "label_hy": "Պրոֆիլներ"},
+    {"id": "hardware", "label": "Hardware", "label_hy": "Կցամասեր"},
+    {"id": "sheets", "label": "Sheets", "label_hy": "Թիթեղներ"},
+    {"id": "doors", "label": "Doors & Gates", "label_hy": "Դռներ և դարպասներ"},
+    {"id": "facades", "label": "Facades", "label_hy": "Ճակատներ"},
+]
+
+LOCATIONS = [
+    {
+        "name": "Griboedov Location", "name_hy": "Գրիբոեդովի մասնաճյուղ",
+        "address": "Griboedov 56 st., Yerevan, Armenia", "address_hy": "Գրիբոեդովի փող. 56, Երևան, Հայաստան",
+    },
+    {
+        "name": "Tevosyan Location", "name_hy": "Թևոսյանի մասնաճյուղ",
+        "address": "Tevosyan 7/11 st., Yerevan, Armenia", "address_hy": "Թևոսյանի փող. 7/11, Երևան, Հայաստան",
+    },
+]
+
 PARTNERS = [
     {"name": "Medos", "logo": "/logos/medos.jpg", "url": "https://medos.pl/en/home/"},
     {"name": "Alcotek", "logo": "/logos/alcotek.png", "url": "https://alcotek.ru/en/"},

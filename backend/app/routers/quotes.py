@@ -1,11 +1,13 @@
 from datetime import timedelta
+from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
 
+from ..customer_auth import get_current_customer_optional
 from ..database import get_db
 from ..email_service import build_confirmation_email, send_email_simulated
-from ..models import Product, QuoteRequest, QuoteRequestItem
+from ..models import Customer, Product, QuoteRequest, QuoteRequestItem
 from ..ratelimit import enforce_rate_limit, get_client_ip
 from ..schemas import EmailLogOut, QuoteRequestIn, QuoteRequestOut
 
@@ -13,12 +15,20 @@ router = APIRouter(prefix="/api/quotes", tags=["quotes"])
 
 
 @router.post("", response_model=QuoteRequestOut, status_code=201)
-def create_quote(payload: QuoteRequestIn, request: Request, db: Session = Depends(get_db)):
+def create_quote(
+    payload: QuoteRequestIn,
+    request: Request,
+    db: Session = Depends(get_db),
+    customer: Optional[Customer] = Depends(get_current_customer_optional),
+):
     enforce_rate_limit(db, f"quote:{get_client_ip(request)}", limit=10, window=timedelta(hours=1))
     if not payload.items:
         raise HTTPException(status_code=400, detail="Quote request must include at least one item")
 
-    quote = QuoteRequest(name=payload.name, phone=payload.phone, email=payload.email, note=payload.note, total=0)
+    quote = QuoteRequest(
+        customer_id=customer.id if customer else None,
+        name=payload.name, phone=payload.phone, email=payload.email, note=payload.note, total=0,
+    )
     db.add(quote)
     db.flush()
 

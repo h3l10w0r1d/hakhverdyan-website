@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import {
   adminListProducts, adminCreateProduct, adminUpdateProduct, adminDeleteProduct, adminReorderProducts,
+  adminListCategories,
 } from "../../lib/adminApi";
 import Select from "../../components/admin/Select";
 import MultiImageDropzone from "../../components/admin/MultiImageDropzone";
@@ -8,27 +9,30 @@ import DragHandleIcon from "../../components/admin/DragHandleIcon";
 import useDragReorder from "../../lib/useDragReorder";
 import { productPhoto } from "../../lib/productPhotos";
 
-const CATEGORIES = ["profiles", "hardware", "sheets", "doors", "facades"];
 const ICONS = [
   "aluminum", "aluminum-angle", "pvc", "pvc-chamber", "handle", "lock",
   "layers", "sheen", "polycarbonate", "door-split", "door-flush",
   "gate", "gate-insulated", "facade-grid", "facade-frameless", "box",
 ];
-const CATEGORY_OPTIONS = CATEGORIES.map(c => ({ value: c, label: c[0].toUpperCase() + c.slice(1) }));
 const ICON_OPTIONS = ICONS.map(i => ({ value: i, label: i }));
 
 const EMPTY = {
-  id: "", name: "", name_hy: "", category: "profiles", spec: "", spec_hy: "",
+  id: "", name: "", name_hy: "", category: "", spec: "", spec_hy: "",
   price: "", old_price: "", unit: "/ m", badge: "In stock", badge_hy: "", is_promo: false, icon: "box", images: [],
 };
 
 export default function AdminProducts() {
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [search, setSearch] = useState("");
   const [form, setForm] = useState(null); // null = closed, EMPTY-shaped object = open
   const [editingId, setEditingId] = useState(null);
   const [saving, setSaving] = useState(false);
+
+  const categoryOptions = categories.map(c => ({ value: c.id, label: c.label }));
+  const categoryLabel = id => categories.find(c => c.id === id)?.label || id;
 
   function load() {
     setLoading(true);
@@ -36,6 +40,15 @@ export default function AdminProducts() {
   }
 
   useEffect(load, []);
+  useEffect(() => { adminListCategories().then(setCategories).catch(() => {}); }, []);
+
+  const q = search.trim().toLowerCase();
+  const filtered = q
+    ? products.filter(p =>
+        p.name.toLowerCase().includes(q) || p.id.toLowerCase().includes(q) || categoryLabel(p.category).toLowerCase().includes(q)
+      )
+    : products;
+  const isFiltered = q.length > 0;
 
   async function persistOrder(nextProducts) {
     setProducts(nextProducts);
@@ -51,7 +64,7 @@ export default function AdminProducts() {
 
   function openCreate() {
     setEditingId(null);
-    setForm({ ...EMPTY });
+    setForm({ ...EMPTY, category: categories[0]?.id || "" });
   }
 
   function openEdit(p) {
@@ -120,39 +133,51 @@ export default function AdminProducts() {
 
       {error && <div className="admin-error-banner">{error}</div>}
 
+      <div className="admin-search-row">
+        <input
+          type="text" className="admin-search-input" placeholder="Search by name, ID, or category…"
+          value={search} onChange={e => setSearch(e.target.value)}
+        />
+        {isFiltered && <span className="admin-search-count">{filtered.length} of {products.length}</span>}
+      </div>
+      {isFiltered && <div className="admin-search-note">Reordering is disabled while a search is active.</div>}
+
       <div className="admin-card">
         {loading ? (
           <div className="admin-empty">Loading…</div>
-        ) : products.length === 0 ? (
-          <div className="admin-empty">No products yet.</div>
+        ) : filtered.length === 0 ? (
+          <div className="admin-empty">{isFiltered ? "No products match your search." : "No products yet."}</div>
         ) : (
-          <table className="admin-table admin-table-reorderable">
+          <table className={"admin-table" + (isFiltered ? "" : " admin-table-reorderable")}>
             <thead>
               <tr>
                 <th></th><th></th><th>Name</th><th>Category</th><th>Price</th><th>Badge</th><th>Promo</th><th></th>
               </tr>
             </thead>
             <tbody>
-              {products.map((p, i) => (
+              {filtered.map((p, i) => (
                 <tr
                   key={p.id}
-                  draggable
-                  onDragStart={onDragStart(i)}
-                  onDragOver={onDragOver(i)}
-                  onDrop={onDrop}
-                  onDragEnd={onDragEnd}
+                  {...(isFiltered ? {} : {
+                    draggable: true,
+                    onDragStart: onDragStart(i),
+                    onDragOver: onDragOver(i),
+                    onDrop: onDrop,
+                    onDragEnd: onDragEnd,
+                  })}
                   className={
+                    isFiltered ? "" :
                     (dragIndex === i ? "admin-row-dragging" : "") +
                     (overIndex === i && dragIndex !== i ? " admin-row-drop-target" : "")
                   }
                 >
-                  <td className="admin-drag-handle" title="Drag to reorder"><DragHandleIcon /></td>
+                  <td className="admin-drag-handle" title={isFiltered ? "" : "Drag to reorder"}>{!isFiltered && <DragHandleIcon />}</td>
                   <td><img className="admin-table-thumb" src={p.image || productPhoto(p.icon)} alt="" /></td>
                   <td>
                     <div className="admin-table-title">{p.name}</div>
                     <div className="admin-table-sub">{p.id}</div>
                   </td>
-                  <td>{p.category}</td>
+                  <td>{categoryLabel(p.category)}</td>
                   <td>{p.price.toLocaleString("en-US")}֏ {p.unit}</td>
                   <td>{p.badge}</td>
                   <td>{p.is_promo ? "Yes" : "—"}</td>
@@ -209,7 +234,7 @@ export default function AdminProducts() {
               <div className="admin-form-row">
                 <label className="quote-field">
                   <span>Category</span>
-                  <Select value={form.category} onChange={v => updateField("category", v)} options={CATEGORY_OPTIONS} />
+                  <Select value={form.category} onChange={v => updateField("category", v)} options={categoryOptions} />
                 </label>
                 <label className="quote-field">
                   <span>Icon / photo group</span>

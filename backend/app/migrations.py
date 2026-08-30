@@ -10,6 +10,7 @@ from sqlalchemy import inspect, text
 _COLUMN_DDL = {
     ("products", "sort_order"): "INTEGER NOT NULL DEFAULT 0",
     ("products", "image"): "TEXT",
+    ("quote_requests", "customer_id"): "INTEGER",
 }
 
 

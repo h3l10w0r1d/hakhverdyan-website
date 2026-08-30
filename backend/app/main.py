@@ -7,12 +7,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from .auth import hash_password
 from .database import Base, engine, SessionLocal
 from .migrations import run_migrations
-from .models import AdminUser, Product, ProductImage, BlogPost, Partner
-from .seed_data import PRODUCTS, BLOG_POSTS, PARTNERS
+from .models import AdminUser, Product, ProductImage, BlogPost, Partner, Category, SiteSettings, Location
+from .seed_data import PRODUCTS, BLOG_POSTS, PARTNERS, CATEGORIES, LOCATIONS
 from .routers import (
-    products, quotes, contact, blog, partners,
+    products, quotes, contact, blog, partners, categories, settings, customer_auth,
     admin_auth, admin_products, admin_quotes, admin_messages, admin_stats, admin_analytics,
-    admin_partners, admin_blog,
+    admin_partners, admin_blog, admin_categories, admin_settings, admin_admins,
 )
 
 
@@ -64,6 +64,45 @@ def seed_partners():
         db.close()
 
 
+def seed_categories():
+    db = SessionLocal()
+    try:
+        if db.query(Category).count() == 0:
+            for index, item in enumerate(CATEGORIES):
+                db.add(Category(**item, sort_order=index))
+            db.commit()
+    finally:
+        db.close()
+
+
+def seed_locations():
+    db = SessionLocal()
+    try:
+        if db.query(Location).count() == 0:
+            for index, item in enumerate(LOCATIONS):
+                db.add(Location(**item, sort_order=index))
+            db.commit()
+    finally:
+        db.close()
+
+
+def seed_site_settings():
+    db = SessionLocal()
+    try:
+        if db.get(SiteSettings, 1) is None:
+            db.add(SiteSettings(
+                id=1,
+                facebook_url="https://www.facebook.com/share/1ERgBgZy4H/?mibextid=wwXIfr",
+                instagram_url="https://www.instagram.com/hakhverdyan.holding",
+                tiktok_url="https://www.tiktok.com/@hakhverdyan.holding",
+                hours_weekday_hy="Երկ–Ուրբ 9:00–18:00",
+                hours_saturday_hy="Շաբ 9:00–16:00",
+            ))
+            db.commit()
+    finally:
+        db.close()
+
+
 def seed_admin():
     # Dev-only fallback credentials. On Vercel, missing ADMIN_EMAIL/ADMIN_PASSWORD
     # fails startup instead of silently seeding a guessable admin account.
@@ -92,6 +131,9 @@ async def lifespan(app: FastAPI):
     seed_products()
     seed_blog_posts()
     seed_partners()
+    seed_categories()
+    seed_locations()
+    seed_site_settings()
     seed_admin()
     yield
 
@@ -115,10 +157,16 @@ app.include_router(quotes.router)
 app.include_router(contact.router)
 app.include_router(blog.router)
 app.include_router(partners.router)
+app.include_router(categories.router)
+app.include_router(settings.router)
+app.include_router(customer_auth.router)
 app.include_router(admin_auth.router)
 app.include_router(admin_products.router)
 app.include_router(admin_partners.router)
 app.include_router(admin_blog.router)
+app.include_router(admin_categories.router)
+app.include_router(admin_settings.router)
+app.include_router(admin_admins.router)
 app.include_router(admin_quotes.router)
 app.include_router(admin_messages.router)
 app.include_router(admin_stats.router)

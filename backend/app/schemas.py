@@ -26,6 +26,22 @@ class TokenOut(BaseModel):
     admin: AdminOut
 
 
+class AdminCreateIn(BaseModel):
+    email: EmailStr
+    password: str = Field(..., min_length=8, max_length=200)
+    name: str = Field(..., min_length=1, max_length=120)
+
+
+class AdminUpdateIn(BaseModel):
+    name: Optional[str] = Field(None, min_length=1, max_length=120)
+    email: Optional[EmailStr] = None
+
+
+class ChangePasswordIn(BaseModel):
+    current_password: str = Field(..., min_length=1)
+    new_password: str = Field(..., min_length=8, max_length=200)
+
+
 class ProductIn(BaseModel):
     id: str = Field(..., min_length=1, max_length=60)
     name: str = Field(..., min_length=1, max_length=200)
@@ -149,6 +165,39 @@ class QuoteRequestOut(BaseModel):
         from_attributes = True
 
 
+class CustomerRegisterIn(BaseModel):
+    name: str = Field(..., min_length=1, max_length=120)
+    email: EmailStr
+    password: str = Field(..., min_length=8, max_length=200)
+    phone: Optional[str] = Field(None, max_length=40)
+
+
+class CustomerLoginIn(BaseModel):
+    email: EmailStr
+    password: str = Field(..., min_length=1)
+
+
+class CustomerOut(BaseModel):
+    id: int
+    email: str
+    name: str
+    phone: Optional[str] = None
+
+    class Config:
+        from_attributes = True
+
+
+class CustomerTokenOut(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    customer: CustomerOut
+
+
+class CustomerUpdateIn(BaseModel):
+    name: Optional[str] = Field(None, min_length=1, max_length=120)
+    phone: Optional[str] = Field(None, max_length=40)
+
+
 class BlogPostOut(BaseModel):
     slug: str
     title: str
@@ -240,3 +289,87 @@ class ContactMessageOut(BaseModel):
 
     class Config:
         from_attributes = True
+
+
+class CategoryOut(BaseModel):
+    id: str
+    label: str
+    label_hy: Optional[str] = None
+    sort_order: int
+
+    class Config:
+        from_attributes = True
+
+
+class CategoryIn(BaseModel):
+    id: str = Field(..., min_length=1, max_length=60, pattern=r"^[a-z0-9\-]+$")
+    label: str = Field(..., min_length=1, max_length=120)
+    label_hy: Optional[str] = None
+
+
+class CategoryUpdate(BaseModel):
+    label: Optional[str] = Field(None, min_length=1, max_length=120)
+    label_hy: Optional[str] = None
+
+
+class CategoryReorderIn(BaseModel):
+    ids: List[str] = Field(..., min_length=1)
+
+
+class LocationOut(BaseModel):
+    id: int
+    name: str
+    name_hy: Optional[str] = None
+    address: str
+    address_hy: Optional[str] = None
+    sort_order: int
+
+    class Config:
+        from_attributes = True
+
+
+class LocationIn(BaseModel):
+    name: str = Field(..., min_length=1, max_length=200)
+    name_hy: Optional[str] = None
+    address: str = Field(..., min_length=1, max_length=300)
+    address_hy: Optional[str] = None
+
+
+class LocationUpdate(BaseModel):
+    name: Optional[str] = Field(None, min_length=1, max_length=200)
+    name_hy: Optional[str] = None
+    address: Optional[str] = Field(None, min_length=1, max_length=300)
+    address_hy: Optional[str] = None
+
+
+class LocationReorderIn(BaseModel):
+    ids: List[int] = Field(..., min_length=1)
+
+
+class SiteSettingsOut(BaseModel):
+    phone: str
+    whatsapp: str
+    email: Optional[str] = None
+    facebook_url: Optional[str] = None
+    instagram_url: Optional[str] = None
+    tiktok_url: Optional[str] = None
+    hours_weekday: str
+    hours_weekday_hy: Optional[str] = None
+    hours_saturday: str
+    hours_saturday_hy: Optional[str] = None
+
+    class Config:
+        from_attributes = True
+
+
+class SiteSettingsUpdate(BaseModel):
+    phone: Optional[str] = Field(None, min_length=1, max_length=40)
+    whatsapp: Optional[str] = Field(None, min_length=1, max_length=40)
+    email: Optional[EmailStr] = None
+    facebook_url: Optional[str] = Field(None, max_length=500)
+    instagram_url: Optional[str] = Field(None, max_length=500)
+    tiktok_url: Optional[str] = Field(None, max_length=500)
+    hours_weekday: Optional[str] = Field(None, min_length=1, max_length=120)
+    hours_weekday_hy: Optional[str] = None
+    hours_saturday: Optional[str] = Field(None, min_length=1, max_length=120)
+    hours_saturday_hy: Optional[str] = None
