@@ -1346,6 +1346,10 @@ footer{ position:relative; z-index:1; padding:64px 32px 30px; border-top:1px sol
 .admin-lowstock-name{ flex:1; font-size:13.5px; font-weight:600; color:var(--ink); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 
 /* ---------- Analytics ---------- */
+.adm-analytics-head{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:14px; }
+.adm-analytics-title{ font-family:'Space Grotesk',sans-serif; font-size:16px; font-weight:700; color:var(--ink); }
+.adm-analytics-head .adm-select-sm{ width:160px; }
+.adm-analytics-loading{ opacity:0.6; transition:opacity .15s ease; pointer-events:none; }
 .adm-analytics-grid{ display:grid; grid-template-columns:repeat(2, 1fr); gap:16px; }
 .adm-chart-card{ padding:20px 22px; }
 .adm-chart-head{ display:flex; align-items:baseline; justify-content:space-between; gap:10px; margin-bottom:14px; }

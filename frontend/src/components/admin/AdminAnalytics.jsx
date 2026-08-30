@@ -1,5 +1,13 @@
 import { useEffect, useState } from "react";
 import { adminAnalytics } from "../../lib/adminApi";
+import Select from "./Select";
+
+const RANGE_OPTIONS = [
+  { value: "7", label: "Last 7 days" },
+  { value: "14", label: "Last 14 days" },
+  { value: "30", label: "Last 30 days" },
+  { value: "90", label: "Last 90 days" },
+];
 
 // Validated categorical/status colors — see the dataviz palette reference.
 const BLUE = "#2a78d6";
@@ -54,11 +62,14 @@ function BarList({ rows }) {
 }
 
 export default function AdminAnalytics() {
+  const [days, setDays] = useState("14");
   const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    adminAnalytics().then(setData).catch(() => setData(null));
-  }, []);
+    setLoading(true);
+    adminAnalytics(days).then(setData).catch(() => setData(null)).finally(() => setLoading(false));
+  }, [days]);
 
   if (!data) return null;
 
@@ -76,7 +87,12 @@ export default function AdminAnalytics() {
   }));
 
   return (
-    <div className="adm-analytics">
+    <div className={"adm-analytics" + (loading ? " adm-analytics-loading" : "")}>
+      <div className="adm-analytics-head">
+        <h2 className="adm-analytics-title">Overview</h2>
+        <Select className="adm-select-sm" value={days} onChange={setDays} options={RANGE_OPTIONS} />
+      </div>
+
       <div className="admin-stat-grid" style={{ marginBottom: 24 }}>
         <div className="admin-stat-card">
           <div className="admin-stat-value">{fmtMoney(data.total_revenue)}</div>
@@ -103,7 +119,7 @@ export default function AdminAnalytics() {
       <div className="adm-analytics-grid">
         <div className="admin-card adm-chart-card">
           <div className="adm-chart-head">
-            <h3>Bookings, last 14 days</h3>
+            <h3>Bookings, last {data.days} days</h3>
             <span className="adm-chart-range">{fmtDay(data.bookings_by_day[0].date)} – {fmtDay(data.bookings_by_day.at(-1).date)}</span>
           </div>
           <DayBarChart data={data.bookings_by_day} valueKey="count" color={BLUE} formatValue={d => `${d.count} booking${d.count === 1 ? "" : "s"}, ${fmtMoney(d.revenue)}`} />
@@ -111,7 +127,7 @@ export default function AdminAnalytics() {
 
         <div className="admin-card adm-chart-card">
           <div className="adm-chart-head">
-            <h3>Messages, last 14 days</h3>
+            <h3>Messages, last {data.days} days</h3>
             <span className="adm-chart-range">{fmtDay(data.messages_by_day[0].date)} – {fmtDay(data.messages_by_day.at(-1).date)}</span>
           </div>
           <DayBarChart data={data.messages_by_day} valueKey="count" color="#eb6834" formatValue={d => `${d.count} message${d.count === 1 ? "" : "s"}`} />
@@ -119,7 +135,7 @@ export default function AdminAnalytics() {
 
         <div className="admin-card adm-chart-card">
           <div className="adm-chart-head">
-            <h3>New members, last 14 days</h3>
+            <h3>New members, last {data.days} days</h3>
             <span className="adm-chart-range">{fmtDay(data.new_customers_by_day[0].date)} – {fmtDay(data.new_customers_by_day.at(-1).date)}</span>
           </div>
           <DayBarChart data={data.new_customers_by_day} valueKey="count" color={GREEN} formatValue={d => `${d.count} new member${d.count === 1 ? "" : "s"}`} />

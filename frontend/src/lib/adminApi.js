@@ -41,7 +41,7 @@ export const adminLogin = (email, password) =>
 
 export const adminMe = () => request("/api/admin/me");
 export const adminStats = () => request("/api/admin/stats");
-export const adminAnalytics = () => request("/api/admin/analytics");
+export const adminAnalytics = (days = 14) => request(`/api/admin/analytics?days=${days}`);
 
 export const adminListProducts = () => request("/api/admin/products");
 export const adminCreateProduct = payload =>

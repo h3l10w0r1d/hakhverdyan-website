@@ -1,19 +1,20 @@
 from collections import defaultdict
 from datetime import datetime, timedelta
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
 from ..auth import get_current_admin
 from ..database import get_db
-from ..models import AdminUser, Category, ContactMessage, Customer, Product, QuoteRequest, QuoteRequestItem
+from ..models import AdminUser, Category, ContactMessage, Customer, Product, QuoteRequest
 
 router = APIRouter(prefix="/api/admin/analytics", tags=["admin-analytics"])
 
-DAYS_WINDOW = 14
+DEFAULT_DAYS = 14
+ALLOWED_DAYS = {7, 14, 30, 90}
 
 
-def _day_series(rows, date_getter, days=DAYS_WINDOW):
+def _day_series(rows, date_getter, days):
     today = datetime.utcnow().date()
     buckets = {(today - timedelta(days=i)): {"count": 0, "revenue": 0} for i in range(days - 1, -1, -1)}
     cutoff = today - timedelta(days=days - 1)
@@ -31,25 +32,40 @@ def _day_series(rows, date_getter, days=DAYS_WINDOW):
 
 
 @router.get("")
-def get_analytics(db: Session = Depends(get_db), admin: AdminUser = Depends(get_current_admin)):
-    quotes = db.query(QuoteRequest).all()
-    messages = db.query(ContactMessage).all()
-    customers = db.query(Customer).all()
+def get_analytics(
+    days: int = Query(DEFAULT_DAYS),
+    db: Session = Depends(get_db),
+    admin: AdminUser = Depends(get_current_admin),
+):
+    if days not in ALLOWED_DAYS:
+        days = DEFAULT_DAYS
 
-    bookings_by_day = _day_series(quotes, lambda q: q.created_at)
-    messages_by_day = _day_series(messages, lambda m: m.created_at)
-    new_customers_by_day = _day_series(customers, lambda c: c.created_at)
+    today = datetime.utcnow().date()
+    cutoff = datetime.combine(today - timedelta(days=days - 1), datetime.min.time())
+
+    # Every metric below is scoped to the selected window, so the whole
+    # dashboard moves together when the timeframe changes — except the
+    # "registered members" total, which reads as an all-time audience size
+    # (the "new members" chart already covers signups within the window).
+    all_quotes = db.query(QuoteRequest).filter(QuoteRequest.created_at >= cutoff).all()
+    all_messages = db.query(ContactMessage).filter(ContactMessage.created_at >= cutoff).all()
+    new_customers = db.query(Customer).filter(Customer.created_at >= cutoff).all()
+    total_customers = db.query(Customer).count()
+
+    bookings_by_day = _day_series(all_quotes, lambda q: q.created_at, days)
+    messages_by_day = _day_series(all_messages, lambda m: m.created_at, days)
+    new_customers_by_day = _day_series(new_customers, lambda c: c.created_at, days)
 
     status_breakdown = defaultdict(int)
-    for q in quotes:
+    for q in all_quotes:
         status_breakdown[q.status] += 1
 
     message_status_breakdown = defaultdict(int)
-    for m in messages:
+    for m in all_messages:
         message_status_breakdown[m.status] += 1
 
     product_totals = defaultdict(lambda: {"qty": 0, "revenue": 0})
-    for q in quotes:
+    for q in all_quotes:
         for item in q.items:
             t = product_totals[item.product_id]
             t["qty"] += item.qty
@@ -82,10 +98,11 @@ def get_analytics(db: Session = Depends(get_db), admin: AdminUser = Depends(get_
         reverse=True,
     )
 
-    total_revenue = sum(q.total for q in quotes)
-    total_bookings = len(quotes)
+    total_revenue = sum(q.total for q in all_quotes)
+    total_bookings = len(all_quotes)
 
     return {
+        "days": days,
         "bookings_by_day": bookings_by_day,
         "messages_by_day": messages_by_day,
         "new_customers_by_day": new_customers_by_day,
@@ -96,6 +113,6 @@ def get_analytics(db: Session = Depends(get_db), admin: AdminUser = Depends(get_
         "total_revenue": total_revenue,
         "total_bookings": total_bookings,
         "avg_booking_value": round(total_revenue / total_bookings) if total_bookings else 0,
-        "total_customers": len(customers),
-        "total_messages": len(messages),
+        "total_customers": total_customers,
+        "total_messages": len(all_messages),
     }
