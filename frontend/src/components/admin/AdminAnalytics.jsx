@@ -3,7 +3,10 @@ import { adminAnalytics } from "../../lib/adminApi";
 
 // Validated categorical/status colors — see the dataviz palette reference.
 const BLUE = "#2a78d6";
+const ORANGE = "#eb6834";
+const GREEN = "#0ca30c";
 const STATUS_COLORS = { new: "#fab219", contacted: "#2a78d6", closed: "#0ca30c" };
+const MESSAGE_STATUS_COLORS = { new: "#fab219", replied: "#2a78d6", spam: "#9ca3af" };
 const fmtMoney = n => n.toLocaleString("en-US") + "֏";
 const fmtDay = iso => new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric" });
 
@@ -62,8 +65,14 @@ export default function AdminAnalytics() {
   const statusRows = ["new", "contacted", "closed"].map(key => ({
     key, label: key, value: data.status_breakdown[key] || 0, dot: STATUS_COLORS[key],
   }));
+  const messageStatusRows = ["new", "replied", "spam"].map(key => ({
+    key, label: key, value: data.message_status_breakdown[key] || 0, dot: MESSAGE_STATUS_COLORS[key],
+  }));
   const productRows = data.top_products.map(p => ({
     key: p.product_id, label: p.name, value: p.qty, display: `${p.qty} · ${fmtMoney(p.revenue)}`,
+  }));
+  const categoryRows = data.top_categories.map(c => ({
+    key: c.category_id, label: c.label, value: c.qty, display: `${c.qty} · ${fmtMoney(c.revenue)}`,
   }));
 
   return (
@@ -80,6 +89,14 @@ export default function AdminAnalytics() {
         <div className="admin-stat-card">
           <div className="admin-stat-value">{fmtMoney(data.avg_booking_value)}</div>
           <div className="admin-stat-label">Avg. booking value</div>
+        </div>
+        <div className="admin-stat-card">
+          <div className="admin-stat-value">{data.total_customers}</div>
+          <div className="admin-stat-label">Registered members</div>
+        </div>
+        <div className="admin-stat-card">
+          <div className="admin-stat-value">{data.total_messages}</div>
+          <div className="admin-stat-label">Total messages</div>
         </div>
       </div>
 
@@ -101,13 +118,31 @@ export default function AdminAnalytics() {
         </div>
 
         <div className="admin-card adm-chart-card">
+          <div className="adm-chart-head">
+            <h3>New members, last 14 days</h3>
+            <span className="adm-chart-range">{fmtDay(data.new_customers_by_day[0].date)} – {fmtDay(data.new_customers_by_day.at(-1).date)}</span>
+          </div>
+          <DayBarChart data={data.new_customers_by_day} valueKey="count" color={GREEN} formatValue={d => `${d.count} new member${d.count === 1 ? "" : "s"}`} />
+        </div>
+
+        <div className="admin-card adm-chart-card">
           <div className="adm-chart-head"><h3>Booking status</h3></div>
           <BarList rows={statusRows} />
         </div>
 
         <div className="admin-card adm-chart-card">
+          <div className="adm-chart-head"><h3>Message status</h3></div>
+          <BarList rows={messageStatusRows} />
+        </div>
+
+        <div className="admin-card adm-chart-card">
           <div className="adm-chart-head"><h3>Top products booked</h3></div>
           <BarList rows={productRows} />
+        </div>
+
+        <div className="admin-card adm-chart-card">
+          <div className="adm-chart-head"><h3>Top categories booked</h3></div>
+          <BarList rows={categoryRows} />
         </div>
       </div>
     </div>

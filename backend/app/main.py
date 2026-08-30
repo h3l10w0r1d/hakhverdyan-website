@@ -11,7 +11,7 @@ from .models import AdminUser, Product, ProductImage, BlogPost, Partner, Categor
 from .seed_data import PRODUCTS, BLOG_POSTS, PARTNERS, CATEGORIES, LOCATIONS
 from .routers import (
     products, quotes, contact, blog, partners, categories, settings, customer_auth,
-    admin_auth, admin_products, admin_quotes, admin_messages, admin_stats, admin_analytics,
+    admin_auth, admin_products, admin_quotes, admin_messages, admin_stats, admin_analytics, admin_customers,
     admin_partners, admin_blog, admin_categories, admin_settings, admin_admins,
 )
 
@@ -188,6 +188,7 @@ app.include_router(admin_quotes.router)
 app.include_router(admin_messages.router)
 app.include_router(admin_stats.router)
 app.include_router(admin_analytics.router)
+app.include_router(admin_customers.router)
 
 
 @app.get("/api/health")

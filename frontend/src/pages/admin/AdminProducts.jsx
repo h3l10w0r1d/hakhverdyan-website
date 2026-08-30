@@ -8,6 +8,7 @@ import DragHandleIcon from "../../components/admin/DragHandleIcon";
 import Select from "../../components/admin/Select";
 import useDragReorder from "../../lib/useDragReorder";
 import { productPhoto } from "../../lib/productPhotos";
+import { downloadCsv } from "../../lib/csvExport";
 
 export default function AdminProducts() {
   const navigate = useNavigate();
@@ -112,11 +113,42 @@ export default function AdminProducts() {
     }
   }
 
+  function exportCsv() {
+    // Photos are stored as embedded image data, not hosted files or URLs — a
+    // real photo easily exceeds a spreadsheet's per-cell character limit, so
+    // the export carries a photo count rather than the (unusable) raw data.
+    downloadCsv(
+      `products-${new Date().toISOString().slice(0, 10)}.csv`,
+      [
+        { key: "id", label: "ID", value: p => p.id },
+        { key: "name", label: "Name (EN)", value: p => p.name },
+        { key: "name_hy", label: "Name (HY)", value: p => p.name_hy || "" },
+        { key: "category", label: "Category", value: p => categoryLabel(p.category) },
+        { key: "spec", label: "Tagline (EN)", value: p => p.spec },
+        { key: "spec_hy", label: "Tagline (HY)", value: p => p.spec_hy || "" },
+        { key: "description", label: "Description (EN)", value: p => p.description || "" },
+        { key: "description_hy", label: "Description (HY)", value: p => p.description_hy || "" },
+        { key: "price", label: "Price (֏)", value: p => p.price },
+        { key: "old_price", label: "Old price (֏)", value: p => p.old_price ?? "" },
+        { key: "unit", label: "Unit", value: p => p.unit },
+        { key: "badge", label: "Badge (EN)", value: p => p.badge },
+        { key: "badge_hy", label: "Badge (HY)", value: p => p.badge_hy || "" },
+        { key: "promo", label: "Promo", value: p => (p.is_promo ? "Yes" : "No") },
+        { key: "stock", label: "Stock", value: p => (p.stock_qty === null ? "Unlimited" : p.stock_qty) },
+        { key: "photos", label: "Photos", value: p => (p.images || []).length },
+      ],
+      filtered
+    );
+  }
+
   return (
     <div>
       <div className="admin-page-head">
         <h1 className="admin-page-title">Products</h1>
-        <button className="admin-btn admin-btn-primary" onClick={() => navigate("/admin/products/new")}>+ New product</button>
+        <div className="admin-editor-actions">
+          <button className="admin-btn" onClick={exportCsv} disabled={filtered.length === 0}>Export CSV</button>
+          <button className="admin-btn admin-btn-primary" onClick={() => navigate("/admin/products/new")}>+ New product</button>
+        </div>
       </div>
 
       {error && <div className="admin-error-banner">{error}</div>}

@@ -85,6 +85,9 @@ export const adminListMessages = () => request("/api/admin/messages");
 export const adminUpdateMessageStatus = (id, status) =>
   request(`/api/admin/messages/${id}/status`, { method: "PATCH", body: JSON.stringify({ status }) });
 
+export const adminListCustomers = () => request("/api/admin/customers");
+export const adminGetCustomer = id => request(`/api/admin/customers/${id}`);
+
 export const adminListAdmins = () => request("/api/admin/admins");
 export const adminCreateAdmin = payload =>
   request("/api/admin/admins", { method: "POST", body: JSON.stringify(payload) });

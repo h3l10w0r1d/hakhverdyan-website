@@ -301,6 +301,7 @@ class ContactMessageIn(BaseModel):
 class ContactMessageOut(BaseModel):
     id: int
     created_at: datetime
+    customer_id: Optional[int] = None
     name: str
     phone: Optional[str] = None
     email: Optional[str] = None
@@ -399,3 +400,18 @@ class SiteSettingsUpdate(BaseModel):
     hours_weekday_hy: Optional[str] = None
     hours_saturday: Optional[str] = Field(None, min_length=1, max_length=120)
     hours_saturday_hy: Optional[str] = None
+
+
+class CustomerAdminOut(BaseModel):
+    id: int
+    email: str
+    name: str
+    phone: Optional[str] = None
+    created_at: datetime
+    bookings_count: int = 0
+    messages_count: int = 0
+
+
+class CustomerDetailOut(CustomerAdminOut):
+    quotes: List[QuoteRequestOut] = []
+    messages: List[ContactMessageOut] = []

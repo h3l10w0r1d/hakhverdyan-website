@@ -14,6 +14,7 @@ _COLUMN_DDL = {
     ("products", "description_hy"): "TEXT",
     ("products", "stock_qty"): "INTEGER",
     ("quote_requests", "customer_id"): "INTEGER",
+    ("contact_messages", "customer_id"): "INTEGER",
     ("locations", "lat"): "REAL",
     ("locations", "lng"): "REAL",
     # Existing posts were already live, so they backfill as published — only

@@ -34,6 +34,8 @@ const AdminSettings = lazyWithReload(() => import("./pages/admin/AdminSettings")
 const AdminAccount = lazyWithReload(() => import("./pages/admin/AdminAccount"));
 const AdminBlogEditor = lazyWithReload(() => import("./pages/admin/AdminBlogEditor"));
 const AdminProductEditor = lazyWithReload(() => import("./pages/admin/AdminProductEditor"));
+const AdminMembers = lazyWithReload(() => import("./pages/admin/AdminMembers"));
+const AdminMemberDetail = lazyWithReload(() => import("./pages/admin/AdminMemberDetail"));
 
 export default function App() {
   return (
@@ -59,6 +61,8 @@ export default function App() {
                       <Route path="partners" element={<AdminPartners />} />
                       <Route path="bookings" element={<AdminBookings />} />
                       <Route path="messages" element={<AdminMessages />} />
+                      <Route path="members" element={<AdminMembers />} />
+                      <Route path="members/:id" element={<AdminMemberDetail />} />
                       <Route path="settings" element={<AdminSettings />} />
                       <Route path="account" element={<AdminAccount />} />
                     </Route>
