@@ -10,6 +10,8 @@ from sqlalchemy import inspect, text
 _COLUMN_DDL = {
     ("products", "sort_order"): "INTEGER NOT NULL DEFAULT 0",
     ("products", "image"): "TEXT",
+    ("products", "description"): "TEXT",
+    ("products", "description_hy"): "TEXT",
     ("quote_requests", "customer_id"): "INTEGER",
     # Existing posts were already live, so they backfill as published — only
     # posts created after this migration default to draft (see BlogPost.status).

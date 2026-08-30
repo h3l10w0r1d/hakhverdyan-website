@@ -44,7 +44,7 @@ export default function ProductCard({ product, reveal = true }) {
     >
       <div className="product-thumb" ref={thumbRef}>
         <img className="product-photo" src={product.image || productPhoto(product.icon)} alt={name} loading="lazy" />
-        <span className={"product-badge" + (product.is_promo ? " promo" : "")}>{badge}</span>
+        <span className={"product-badge" + (product.is_promo ? " is-promo" : "")}>{badge}</span>
       </div>
       <div className="product-name">{name}</div>
       <div className="product-spec">{spec}</div>

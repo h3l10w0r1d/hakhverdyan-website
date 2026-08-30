@@ -482,7 +482,7 @@ footer{ position:relative; z-index:1; padding:64px 32px 30px; border-top:1px sol
   position:absolute; top:12px; left:12px; z-index:1; font-size:11px; font-weight:700; letter-spacing:0.02em;
   padding:5px 11px; border-radius:6px; background:rgba(20,20,25,0.55); color:#fff; backdrop-filter:blur(6px);
 }
-.product-badge.promo{ background:var(--red); }
+.product-badge.is-promo{ background:var(--red); }
 .product-name{ font-size:17px; font-weight:700; margin-bottom:4px; line-height:1.3; }
 .product-spec{ font-size:13px; color:var(--grey-600); margin-bottom:18px; }
 .product-price-row{ display:flex; align-items:baseline; gap:8px; margin-top:auto; margin-bottom:18px; flex-wrap:wrap; }
@@ -545,6 +545,8 @@ footer{ position:relative; z-index:1; padding:64px 32px 30px; border-top:1px sol
 .qv-body{ padding:22px 24px 4px; overflow-y:auto; flex:1; }
 .qv-name{ font-size:20px; font-weight:700; margin-bottom:6px; line-height:1.3; }
 .qv-spec{ font-size:14px; color:var(--grey-600); line-height:1.5; margin-bottom:16px; }
+.qv-description{ font-size:13.5px; color:var(--grey-600); line-height:1.6; margin-bottom:12px; }
+.qv-description:last-of-type{ margin-bottom:16px; }
 .qv-trust{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:18px; }
 .qv-trust span{
   font-size:11.5px; font-weight:600; color:var(--grey-600); background:var(--grey-50);
@@ -1404,6 +1406,18 @@ footer{ position:relative; z-index:1; padding:64px 32px 30px; border-top:1px sol
 .ghost-publish-modal{ max-width:440px; }
 .ghost-publish-summary{ font-size:14px; color:var(--grey-600); line-height:1.5; }
 .ghost-publish-summary strong{ color:var(--ink); }
+
+/* ---------- Full-page editor forms (products, etc.) ---------- */
+.admin-editor-back{ margin-bottom:2px; }
+.admin-editor-actions{ display:flex; align-items:flex-start; gap:10px; }
+.admin-editor-grid{ display:grid; grid-template-columns:1fr 340px; gap:20px; align-items:start; }
+.admin-editor-main, .admin-editor-side{ display:flex; flex-direction:column; gap:20px; min-width:0; }
+.quote-field-hint{ font-style:normal; font-size:11.5px; color:var(--grey-400); line-height:1.4; }
+.admin-danger-hint{ font-size:13px; color:var(--grey-600); line-height:1.5; margin-bottom:14px; }
+
+@media (max-width: 980px){
+  .admin-editor-grid{ grid-template-columns:1fr; }
+}
 
 @media (max-width: 1080px){
   .adm-analytics-grid{ grid-template-columns:1fr; }

@@ -64,6 +64,7 @@ export default function ProductQuickView() {
   const name = localized(product, "name", lang);
   const spec = localized(product, "spec", lang);
   const badge = localized(product, "badge", lang);
+  const description = localized(product, "description", lang);
 
   function handleAdd() {
     const rect = mediaRef.current.getBoundingClientRect();
@@ -98,7 +99,7 @@ export default function ProductQuickView() {
 
         <div className="qv-media" ref={mediaRef} onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
           <img key={slide} className="qv-photo" src={photos[slide]} alt={name} />
-          {badge && <span className={"product-badge" + (product.is_promo ? " promo" : "")}>{badge}</span>}
+          {badge && <span className={"product-badge" + (product.is_promo ? " is-promo" : "")}>{badge}</span>}
           {photos.length > 1 && (
             <>
               <button className="qv-nav prev" onClick={prevSlide} aria-label="Previous photo">
@@ -121,6 +122,9 @@ export default function ProductQuickView() {
           <div className="qv-body">
             <div className="qv-name">{name}</div>
             <div className="qv-spec">{spec}</div>
+            {description && description.split("\n\n").map((para, i) => (
+              <p className="qv-description" key={i}>{para}</p>
+            ))}
             <div className="qv-trust">
               <span>{t("catalog.trustPricing")}</span>
               <span>{t("catalog.trustEu")}</span>

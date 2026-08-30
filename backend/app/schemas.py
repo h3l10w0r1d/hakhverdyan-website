@@ -49,6 +49,8 @@ class ProductIn(BaseModel):
     category: str = Field(..., min_length=1, max_length=60)
     spec: str = Field(..., min_length=1, max_length=300)
     spec_hy: Optional[str] = None
+    description: Optional[str] = Field(None, max_length=5000)
+    description_hy: Optional[str] = Field(None, max_length=5000)
     price: int = Field(..., ge=0)
     old_price: Optional[int] = Field(None, ge=0)
     unit: str = Field(..., min_length=1, max_length=20)
@@ -65,6 +67,8 @@ class ProductUpdate(BaseModel):
     category: Optional[str] = Field(None, min_length=1, max_length=60)
     spec: Optional[str] = Field(None, min_length=1, max_length=300)
     spec_hy: Optional[str] = None
+    description: Optional[str] = Field(None, max_length=5000)
+    description_hy: Optional[str] = Field(None, max_length=5000)
     price: Optional[int] = Field(None, ge=0)
     old_price: Optional[int] = Field(None, ge=0)
     unit: Optional[str] = Field(None, min_length=1, max_length=20)
@@ -90,6 +94,8 @@ class ProductOut(BaseModel):
     category: str
     spec: str
     spec_hy: Optional[str] = None
+    description: Optional[str] = None
+    description_hy: Optional[str] = None
     price: int
     old_price: Optional[int] = None
     unit: str

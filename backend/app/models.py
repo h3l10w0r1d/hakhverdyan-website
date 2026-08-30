@@ -49,6 +49,8 @@ class Product(Base):
     category: Mapped[str] = mapped_column(String, index=True, nullable=False)
     spec: Mapped[str] = mapped_column(String, nullable=False)
     spec_hy: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+    description: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+    description_hy: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     price: Mapped[int] = mapped_column(Integer, nullable=False)
     old_price: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
     unit: Mapped[str] = mapped_column(String, nullable=False)

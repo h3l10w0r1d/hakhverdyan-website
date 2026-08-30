@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -7,6 +7,7 @@ import useSEO from "../lib/useSEO";
 import MagnetButton from "../components/MagnetButton";
 import CountUp from "../components/CountUp";
 import { useQuoteCart } from "../context/QuoteCartContext";
+import { fetchPartners } from "../lib/api";
 import { ArrowIcon, CheckIcon, WrenchIcon, ShieldCheckIcon, VennIcon, HeadsetIcon, PinIcon } from "../lib/icons";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -16,6 +17,11 @@ export default function About() {
   const { setPanelOpen } = useQuoteCart();
   useSEO({ title: t("seo.about.title"), description: t("seo.about.description"), path: "/about" });
   const finalCtaRef = useRef(null);
+  const [partners, setPartners] = useState([]);
+
+  useEffect(() => {
+    fetchPartners().then(setPartners).catch(() => setPartners([]));
+  }, []);
 
   useReveal([]);
 
