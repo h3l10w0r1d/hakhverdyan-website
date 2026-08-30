@@ -202,10 +202,16 @@ export default function About() {
       <section className="marquee-section">
         <div className="marquee-label">{t("about.marqueeLabel")}</div>
         <div className="marquee-mask">
-          <div className="marquee-track" id="aboutMarquee">
-            {Array.from({ length: 2 }).map((_, i) => (
-              <span key={i}>MEDOS&nbsp;&nbsp;&nbsp;&nbsp;MACO&nbsp;&nbsp;&nbsp;&nbsp;ARPLAS&nbsp;&nbsp;&nbsp;&nbsp;PALRAM&nbsp;&nbsp;&nbsp;&nbsp;FLEXIDOOR</span>
-            ))}
+          <div className="marquee-track logo-track" id="aboutMarquee">
+            {[...partners, ...partners].map((p, i) => {
+              const Tag = p.url ? "a" : "div";
+              const linkProps = p.url ? { href: p.url, target: "_blank", rel: "noopener noreferrer" } : {};
+              return (
+                <Tag className="logo-chip" key={p.id + "-" + i} {...linkProps}>
+                  <img src={p.logo} alt={p.name} loading={i < partners.length ? "eager" : "lazy"} />
+                </Tag>
+              );
+            })}
           </div>
         </div>
       </section>
