@@ -29,7 +29,7 @@ export default function AdminLogin() {
   return (
     <div className="admin-login-screen">
       <form className="admin-login-card" onSubmit={onSubmit}>
-        <div className="admin-login-logo"><span className="dot"></span>HAKHVERDYAN</div>
+        <div className="admin-login-logo"><img src="/brand/logo-icon.png" alt="" />HAKHVERDYAN</div>
         <h1>Admin sign in</h1>
         <label className="quote-field">
           <span>Email</span>
