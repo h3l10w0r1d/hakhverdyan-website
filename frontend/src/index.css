@@ -107,6 +107,7 @@ nav a.nav-link.active{ color:var(--ink); background:var(--grey-50); }
   background:#fff; border:1px solid var(--grey-100); border-radius:var(--radius-lg);
   box-shadow:0 24px 60px -12px rgba(20,20,30,0.28); padding:10px;
   display:flex; flex-direction:column; gap:2px;
+  max-height:calc(100vh - 96px); max-height:calc(100svh - 96px); overflow-y:auto;
   transform-origin:top center;
   opacity:0; visibility:hidden; transform:translateY(-14px) scale(0.97);
   transition:opacity .28s cubic-bezier(.22,1,.36,1), transform .32s cubic-bezier(.22,1,.36,1), visibility 0s linear .32s;
@@ -199,7 +200,12 @@ nav a.nav-link.active{ color:var(--ink); background:var(--grey-50); }
 }
 
 /* ---------- Hero ---------- */
-.hero{ position:relative; z-index:1; min-height:100vh; display:flex; align-items:center; padding:150px 32px 60px; overflow:hidden; }
+/* 100vh includes the area behind a mobile browser's collapsible address bar, so on
+   first load (before the user scrolls and the bar collapses) the hero renders taller
+   than what's actually visible. 100svh matches the viewport with browser chrome fully
+   expanded — the safe minimum — with 100vh above it as the fallback for browsers that
+   don't support svh. */
+.hero{ position:relative; z-index:1; min-height:100vh; min-height:100svh; display:flex; align-items:center; padding:150px 32px 60px; overflow:hidden; }
 .hero-bg{ position:absolute; inset:0; z-index:0; background:var(--grey-800); }
 .hero-bg-photo{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:58% 48%; }
 .hero-bg-shade{
@@ -468,7 +474,7 @@ footer{ position:relative; z-index:1; padding:64px 32px 30px; border-top:1px sol
 }
 .search-box:focus-within{ border-color:var(--grey-800); }
 .search-box svg{ flex:none; color:var(--grey-400); }
-.search-box input{ border:none; outline:none; background:none; font-family:inherit; font-size:14.5px; color:var(--ink); width:100%; }
+.search-box input{ border:none; outline:none; background:none; font-family:inherit; font-size:16px; color:var(--ink); width:100%; }
 .search-box input::placeholder{ color:var(--grey-400); }
 .sort-select.adm-select{ flex:none; width:auto; }
 .sort-select .adm-select-trigger{
@@ -597,7 +603,7 @@ footer{ position:relative; z-index:1; padding:64px 32px 30px; border-top:1px sol
 
 @media (max-width: 560px){
   .qv-backdrop{ align-items:flex-end; padding:0; }
-  .qv-card{ max-width:100%; height:90vh; border-radius:14px 14px 0 0; }
+  .qv-card{ max-width:100%; height:90vh; height:90svh; border-radius:14px 14px 0 0; }
   .qv-media{ height:260px; }
   .qv-body{ display:flex; flex-direction:column; justify-content:center; }
 }
@@ -671,7 +677,7 @@ footer{ position:relative; z-index:1; padding:64px 32px 30px; border-top:1px sol
 .quote-field-inline-action{ font-size:11px; font-weight:700; color:var(--red); background:none; border:none; cursor:pointer; padding:0; }
 .quote-field-inline-action:hover{ text-decoration:underline; }
 .quote-field input, .quote-field textarea{
-  font-family:inherit; font-size:13.5px; padding:10px 12px; border-radius:10px;
+  font-family:inherit; font-size:16px; padding:10px 12px; border-radius:10px;
   border:1.5px solid var(--grey-200); color:var(--ink); transition:border-color .2s ease; resize:none;
 }
 .quote-field input:focus, .quote-field textarea:focus{ outline:none; border-color:var(--ink); }
@@ -865,7 +871,7 @@ footer{ position:relative; z-index:1; padding:64px 32px 30px; border-top:1px sol
 .form-field label{ font-size:13px; font-weight:600; color:var(--grey-800); }
 .form-field input, .form-field textarea{
   border:1.5px solid var(--grey-200); border-radius:14px; padding:13px 16px; font-family:inherit;
-  font-size:14.5px; color:var(--ink); background:#fff; transition:border-color .25s ease; resize:vertical;
+  font-size:16px; color:var(--ink); background:#fff; transition:border-color .25s ease; resize:vertical;
 }
 .form-field input:focus, .form-field textarea:focus{ outline:none; border-color:var(--grey-800); }
 .form-note{ font-size:12.5px; color:var(--grey-400); margin-top:14px; }
@@ -878,7 +884,7 @@ footer{ position:relative; z-index:1; padding:64px 32px 30px; border-top:1px sol
 .phone-field:focus-within{ border-color:var(--grey-800); }
 .phone-field input{
   flex:1; min-width:0; border:none; background:transparent; font-family:inherit;
-  font-size:14.5px; color:var(--ink); padding:13px 16px 13px 8px;
+  font-size:16px; color:var(--ink); padding:13px 16px 13px 8px;
 }
 .phone-field input:focus{ outline:none; }
 .phone-country-trigger{
@@ -902,7 +908,7 @@ footer{ position:relative; z-index:1; padding:64px 32px 30px; border-top:1px sol
 .country-select-search{ flex:none; padding:10px; border-bottom:1px solid var(--grey-100); }
 .country-select-search input{
   width:100%; border:1.5px solid var(--grey-200); border-radius:10px; padding:8px 12px;
-  font-family:inherit; font-size:13.5px; color:var(--ink);
+  font-family:inherit; font-size:16px; color:var(--ink);
 }
 .country-select-search input:focus{ outline:none; border-color:var(--grey-800); }
 .country-select-list{ flex:1; overflow-y:auto; padding:6px; }

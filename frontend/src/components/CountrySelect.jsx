@@ -16,7 +16,9 @@ export default function CountrySelect({ value, onChange }) {
   function place() {
     const r = triggerRef.current?.getBoundingClientRect();
     if (!r) return;
-    setPos({ top: r.bottom + 6, left: r.left, width: Math.max(280, r.width) });
+    const width = Math.max(280, r.width);
+    const left = Math.min(r.left, window.innerWidth - width - 12);
+    setPos({ top: r.bottom + 6, left: Math.max(12, left), width });
   }
 
   function toggle() {
