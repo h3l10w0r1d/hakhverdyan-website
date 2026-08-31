@@ -7,7 +7,15 @@ const RANGE_OPTIONS = [
   { value: "14", label: "Last 14 days" },
   { value: "30", label: "Last 30 days" },
   { value: "90", label: "Last 90 days" },
+  { value: "custom", label: "Custom range" },
 ];
+
+const todayIso = () => new Date().toISOString().slice(0, 10);
+const isoDaysAgo = n => {
+  const d = new Date();
+  d.setDate(d.getDate() - n);
+  return d.toISOString().slice(0, 10);
+};
 
 // Validated categorical/status colors — see the dataviz palette reference.
 const BLUE = "#2a78d6";
@@ -62,14 +70,26 @@ function BarList({ rows }) {
 }
 
 export default function AdminAnalytics() {
-  const [days, setDays] = useState("14");
+  const [range, setRange] = useState("14");
+  const [customStart, setCustomStart] = useState("");
+  const [customEnd, setCustomEnd] = useState("");
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  function onRangeChange(value) {
+    setRange(value);
+    if (value === "custom" && !customStart && !customEnd) {
+      setCustomEnd(todayIso());
+      setCustomStart(isoDaysAgo(13));
+    }
+  }
+
   useEffect(() => {
+    if (range === "custom" && (!customStart || !customEnd)) return;
     setLoading(true);
-    adminAnalytics(days).then(setData).catch(() => setData(null)).finally(() => setLoading(false));
-  }, [days]);
+    const params = range === "custom" ? { start: customStart, end: customEnd } : { days: range };
+    adminAnalytics(params).then(setData).catch(() => setData(null)).finally(() => setLoading(false));
+  }, [range, customStart, customEnd]);
 
   if (!data) return null;
 
@@ -90,7 +110,22 @@ export default function AdminAnalytics() {
     <div className={"adm-analytics" + (loading ? " adm-analytics-loading" : "")}>
       <div className="adm-analytics-head">
         <h2 className="adm-analytics-title">Overview</h2>
-        <Select className="adm-select-sm" value={days} onChange={setDays} options={RANGE_OPTIONS} />
+        <div className="adm-range-controls">
+          <Select className="adm-select-sm" value={range} onChange={onRangeChange} options={RANGE_OPTIONS} />
+          {range === "custom" && (
+            <div className="adm-date-range">
+              <input
+                type="date" className="adm-date-input" value={customStart} max={customEnd || todayIso()}
+                onChange={e => setCustomStart(e.target.value)}
+              />
+              <span className="adm-date-range-sep">–</span>
+              <input
+                type="date" className="adm-date-input" value={customEnd} min={customStart} max={todayIso()}
+                onChange={e => setCustomEnd(e.target.value)}
+              />
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="admin-stat-grid" style={{ marginBottom: 24 }}>
@@ -119,7 +154,7 @@ export default function AdminAnalytics() {
       <div className="adm-analytics-grid">
         <div className="admin-card adm-chart-card">
           <div className="adm-chart-head">
-            <h3>Bookings, last {data.days} days</h3>
+            <h3>Bookings{data.is_custom ? "" : `, last ${data.days} days`}</h3>
             <span className="adm-chart-range">{fmtDay(data.bookings_by_day[0].date)} – {fmtDay(data.bookings_by_day.at(-1).date)}</span>
           </div>
           <DayBarChart data={data.bookings_by_day} valueKey="count" color={BLUE} formatValue={d => `${d.count} booking${d.count === 1 ? "" : "s"}, ${fmtMoney(d.revenue)}`} />
@@ -127,7 +162,7 @@ export default function AdminAnalytics() {
 
         <div className="admin-card adm-chart-card">
           <div className="adm-chart-head">
-            <h3>Messages, last {data.days} days</h3>
+            <h3>Messages{data.is_custom ? "" : `, last ${data.days} days`}</h3>
             <span className="adm-chart-range">{fmtDay(data.messages_by_day[0].date)} – {fmtDay(data.messages_by_day.at(-1).date)}</span>
           </div>
           <DayBarChart data={data.messages_by_day} valueKey="count" color="#eb6834" formatValue={d => `${d.count} message${d.count === 1 ? "" : "s"}`} />
@@ -135,7 +170,7 @@ export default function AdminAnalytics() {
 
         <div className="admin-card adm-chart-card">
           <div className="adm-chart-head">
-            <h3>New members, last {data.days} days</h3>
+            <h3>New members{data.is_custom ? "" : `, last ${data.days} days`}</h3>
             <span className="adm-chart-range">{fmtDay(data.new_customers_by_day[0].date)} – {fmtDay(data.new_customers_by_day.at(-1).date)}</span>
           </div>
           <DayBarChart data={data.new_customers_by_day} valueKey="count" color={GREEN} formatValue={d => `${d.count} new member${d.count === 1 ? "" : "s"}`} />

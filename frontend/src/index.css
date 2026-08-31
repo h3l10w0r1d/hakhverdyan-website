@@ -1391,7 +1391,15 @@ footer{ position:relative; z-index:1; padding:64px 32px 30px; border-top:1px sol
 /* ---------- Analytics ---------- */
 .adm-analytics-head{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:14px; }
 .adm-analytics-title{ font-family:'Space Grotesk',sans-serif; font-size:16px; font-weight:700; color:var(--ink); }
+.adm-range-controls{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
 .adm-analytics-head .adm-select-sm{ width:160px; }
+.adm-date-range{ display:flex; align-items:center; gap:7px; }
+.adm-date-input{
+  font-family:inherit; font-size:12.5px; padding:6px 9px; border:1px solid var(--grey-200);
+  border-radius:8px; background:#fff; color:var(--ink);
+}
+.adm-date-input:focus{ outline:none; border-color:var(--grey-800); }
+.adm-date-range-sep{ color:var(--grey-400); font-size:12.5px; }
 .adm-analytics-loading{ opacity:0.6; transition:opacity .15s ease; pointer-events:none; }
 .adm-analytics-grid{ display:grid; grid-template-columns:repeat(2, 1fr); gap:16px; }
 .adm-chart-card{ padding:20px 22px; }

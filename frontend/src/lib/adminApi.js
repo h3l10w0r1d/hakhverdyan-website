@@ -41,7 +41,16 @@ export const adminLogin = (email, password) =>
 
 export const adminMe = () => request("/api/admin/me");
 export const adminStats = () => request("/api/admin/stats");
-export const adminAnalytics = (days = 14) => request(`/api/admin/analytics?days=${days}`);
+export const adminAnalytics = ({ days, start, end } = {}) => {
+  const params = new URLSearchParams();
+  if (start && end) {
+    params.set("start", start);
+    params.set("end", end);
+  } else {
+    params.set("days", days || 14);
+  }
+  return request(`/api/admin/analytics?${params.toString()}`);
+};
 
 export const adminListProducts = () => request("/api/admin/products");
 export const adminCreateProduct = payload =>

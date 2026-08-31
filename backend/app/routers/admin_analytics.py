@@ -1,5 +1,6 @@
 from collections import defaultdict
 from datetime import datetime, timedelta
+from typing import Optional
 
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
@@ -12,15 +13,15 @@ router = APIRouter(prefix="/api/admin/analytics", tags=["admin-analytics"])
 
 DEFAULT_DAYS = 14
 ALLOWED_DAYS = {7, 14, 30, 90}
+MAX_CUSTOM_DAYS = 366
 
 
-def _day_series(rows, date_getter, days):
-    today = datetime.utcnow().date()
-    buckets = {(today - timedelta(days=i)): {"count": 0, "revenue": 0} for i in range(days - 1, -1, -1)}
-    cutoff = today - timedelta(days=days - 1)
+def _day_series(rows, date_getter, start_date, days):
+    buckets = {(start_date + timedelta(days=i)): {"count": 0, "revenue": 0} for i in range(days)}
+    end_date = start_date + timedelta(days=days - 1)
     for row in rows:
         d = date_getter(row).date()
-        if d < cutoff or d not in buckets:
+        if d < start_date or d > end_date:
             continue
         buckets[d]["count"] += 1
         if hasattr(row, "total"):
@@ -31,17 +32,36 @@ def _day_series(rows, date_getter, days):
     ]
 
 
+def _parse_date(value):
+    try:
+        return datetime.strptime(value, "%Y-%m-%d").date()
+    except (TypeError, ValueError):
+        return None
+
+
 @router.get("")
 def get_analytics(
     days: int = Query(DEFAULT_DAYS),
+    start: Optional[str] = Query(None),
+    end: Optional[str] = Query(None),
     db: Session = Depends(get_db),
     admin: AdminUser = Depends(get_current_admin),
 ):
-    if days not in ALLOWED_DAYS:
-        days = DEFAULT_DAYS
-
     today = datetime.utcnow().date()
-    cutoff = datetime.combine(today - timedelta(days=days - 1), datetime.min.time())
+
+    start_date = _parse_date(start)
+    end_date = _parse_date(end)
+    is_custom = start_date is not None and end_date is not None and start_date <= end_date
+    if is_custom:
+        end_date = min(end_date, today)
+        days = min((end_date - start_date).days + 1, MAX_CUSTOM_DAYS)
+        start_date = end_date - timedelta(days=days - 1)
+    else:
+        if days not in ALLOWED_DAYS:
+            days = DEFAULT_DAYS
+        start_date = today - timedelta(days=days - 1)
+
+    cutoff = datetime.combine(start_date, datetime.min.time())
 
     # Every metric below is scoped to the selected window, so the whole
     # dashboard moves together when the timeframe changes — except the
@@ -52,9 +72,9 @@ def get_analytics(
     new_customers = db.query(Customer).filter(Customer.created_at >= cutoff).all()
     total_customers = db.query(Customer).count()
 
-    bookings_by_day = _day_series(all_quotes, lambda q: q.created_at, days)
-    messages_by_day = _day_series(all_messages, lambda m: m.created_at, days)
-    new_customers_by_day = _day_series(new_customers, lambda c: c.created_at, days)
+    bookings_by_day = _day_series(all_quotes, lambda q: q.created_at, start_date, days)
+    messages_by_day = _day_series(all_messages, lambda m: m.created_at, start_date, days)
+    new_customers_by_day = _day_series(new_customers, lambda c: c.created_at, start_date, days)
 
     status_breakdown = defaultdict(int)
     for q in all_quotes:
@@ -103,6 +123,7 @@ def get_analytics(
 
     return {
         "days": days,
+        "is_custom": is_custom,
         "bookings_by_day": bookings_by_day,
         "messages_by_day": messages_by_day,
         "new_customers_by_day": new_customers_by_day,
