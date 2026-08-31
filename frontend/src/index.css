@@ -107,6 +107,13 @@ nav a.nav-link.active{ color:var(--ink); background:var(--grey-50); }
   background:#fff; border:1px solid var(--grey-100); border-radius:var(--radius-lg);
   box-shadow:0 24px 60px -12px rgba(20,20,30,0.28); padding:10px;
   display:flex; flex-direction:column; gap:2px;
+  transform-origin:top center;
+  opacity:0; visibility:hidden; transform:translateY(-14px) scale(0.97);
+  transition:opacity .28s cubic-bezier(.22,1,.36,1), transform .32s cubic-bezier(.22,1,.36,1), visibility 0s linear .32s;
+}
+.mobile-menu.open{
+  opacity:1; visibility:visible; transform:translateY(0) scale(1);
+  transition:opacity .32s cubic-bezier(.22,1,.36,1), transform .4s cubic-bezier(.22,1,.36,1), visibility 0s linear 0s;
 }
 .mobile-menu-link{
   padding:15px 18px; border-radius:var(--radius-sm); font-size:16px; font-weight:600; color:var(--ink);
@@ -170,6 +177,26 @@ nav a.nav-link.active{ color:var(--ink); background:var(--grey-50); }
   cursor:pointer; transition:border-color .25s ease, background .25s ease;
 }
 .btn-secondary:hover{border-color:var(--grey-800); background:var(--grey-50);}
+
+/* ---------- Touch press feedback ---------- */
+/* Hover states never fire on touch, so taps otherwise feel inert. Give every tappable
+   surface a quick spring-back scale on press instead — the tactile cue Apple's mobile
+   pages use in place of hover. Scoped to hover:none so pointer/mouse users keep the
+   existing hover-driven interactions untouched. */
+@media (hover:none){
+  .btn-primary, .btn-secondary, .nav-cta, .filter-tab, .why-card, .cat-card,
+  .product-card, .mobile-menu-link, .view-all-link, .logo-chip, .location-card,
+  .team-card, .add-quote-btn, .qty-stepper button, .nav-account-link, .nav-burger,
+  .lang-switch-trigger, .lang-option{
+    transition:transform .18s cubic-bezier(.22,1,.36,1);
+  }
+  .btn-primary:active, .nav-cta:active, .add-quote-btn:active{ transform:scale(0.95); }
+  .btn-secondary:active, .filter-tab:active, .mobile-menu-link:active, .view-all-link:active,
+  .lang-switch-trigger:active, .lang-option:active, .nav-account-link:active, .nav-burger:active,
+  .qty-stepper button:active{ transform:scale(0.92); }
+  .why-card:active, .cat-card:active, .product-card:active, .logo-chip:active,
+  .location-card:active, .team-card:active{ transform:scale(0.97); }
+}
 
 /* ---------- Hero ---------- */
 .hero{ position:relative; z-index:1; min-height:100vh; display:flex; align-items:center; padding:150px 32px 60px; overflow:hidden; }
@@ -265,7 +292,7 @@ section.block{ position:relative; z-index:1; padding:100px 32px; }
   transition:border-color .25s ease, color .25s ease; background:none; cursor:pointer;
 }
 .view-all-link:hover{ border-color:var(--red); color:var(--red); }
-.reveal{ will-change:transform, opacity; }
+.reveal{ will-change:transform, opacity, filter; }
 
 /* ---------- Why choose us / Values ---------- */
 .why-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:20px; }

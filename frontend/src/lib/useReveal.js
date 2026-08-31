@@ -12,14 +12,24 @@ export default function useReveal(deps = []) {
     const targets = gsap.utils.toArray(".reveal").filter(el => !el.dataset.revealed);
     if (!targets.length) return;
 
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
     const ctx = gsap.context(() => {
-      gsap.set(targets, { opacity: 0, y: 30 });
+      if (reduced) {
+        gsap.set(targets, { opacity: 1, y: 0, scale: 1, filter: "none" });
+        targets.forEach(el => { el.dataset.revealed = "1"; });
+        return;
+      }
+      gsap.set(targets, { opacity: 0, y: 34, scale: 0.96, filter: "blur(6px)" });
       ScrollTrigger.batch(targets, {
-        start: "top 85%",
+        start: "top 88%",
         once: true,
         onEnter: batch => {
           batch.forEach(el => { el.dataset.revealed = "1"; });
-          gsap.to(batch, { opacity: 1, y: 0, duration: 0.7, stagger: 0.08, ease: "power3.out", overwrite: true });
+          gsap.to(batch, {
+            opacity: 1, y: 0, scale: 1, filter: "blur(0px)",
+            duration: 0.9, stagger: 0.08, ease: "power3.out", overwrite: true,
+          });
         },
       });
     });
