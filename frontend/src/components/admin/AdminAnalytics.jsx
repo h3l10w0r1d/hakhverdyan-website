@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { adminAnalytics } from "../../lib/adminApi";
 import Select from "./Select";
+import DatePicker from "./DatePicker";
 
 const RANGE_OPTIONS = [
   { value: "7", label: "Last 7 days" },
@@ -10,11 +11,13 @@ const RANGE_OPTIONS = [
   { value: "custom", label: "Custom range" },
 ];
 
-const todayIso = () => new Date().toISOString().slice(0, 10);
+const pad = n => String(n).padStart(2, "0");
+const toLocalIso = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const todayIso = () => toLocalIso(new Date());
 const isoDaysAgo = n => {
   const d = new Date();
   d.setDate(d.getDate() - n);
-  return d.toISOString().slice(0, 10);
+  return toLocalIso(d);
 };
 
 // Validated categorical/status colors — see the dataviz palette reference.
@@ -114,15 +117,9 @@ export default function AdminAnalytics() {
           <Select className="adm-select-sm" value={range} onChange={onRangeChange} options={RANGE_OPTIONS} />
           {range === "custom" && (
             <div className="adm-date-range">
-              <input
-                type="date" className="adm-date-input" value={customStart} max={customEnd || todayIso()}
-                onChange={e => setCustomStart(e.target.value)}
-              />
+              <DatePicker value={customStart} onChange={setCustomStart} max={customEnd || todayIso()} />
               <span className="adm-date-range-sep">–</span>
-              <input
-                type="date" className="adm-date-input" value={customEnd} min={customStart} max={todayIso()}
-                onChange={e => setCustomEnd(e.target.value)}
-              />
+              <DatePicker value={customEnd} onChange={setCustomEnd} min={customStart} max={todayIso()} />
             </div>
           )}
         </div>
