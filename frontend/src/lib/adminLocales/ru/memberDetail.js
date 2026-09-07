@@ -1,0 +1,22 @@
+export default {
+  backToMembers: "← Клиенты",
+  couldntLoad: "Не удалось загрузить данные клиента.",
+  notFound: "Клиент не найден.",
+  statBookings: "Заказы",
+  statTotalBooked: "Сумма заказов",
+  statMessages: "Сообщения",
+  profileTitle: "Профиль",
+  profileMemberSince: "Дата регистрации",
+  bookingsTitle: "Заказы ({{count}})",
+  bookingsEmpty: "Заказов пока нет.",
+  bookingLabel: "Заказ №{{id}}",
+  bookingTotal: "Итого: {{amount}}",
+  bookingNoteLabel: "Примечание:",
+  messagesTitle: "Сообщения ({{count}})",
+  messagesEmpty: "Сообщений пока нет.",
+  status: {
+    new: "Новый",
+    contacted: "На связи",
+    closed: "Закрыт",
+  },
+};

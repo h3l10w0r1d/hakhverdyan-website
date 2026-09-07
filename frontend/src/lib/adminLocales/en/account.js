@@ -1,0 +1,31 @@
+export default {
+  pageTitle: "Account",
+  profile: {
+    title: "My profile",
+    save: "Save profile",
+    success: "Profile updated.",
+    couldntUpdate: "Couldn't update profile.",
+  },
+  password: {
+    title: "Change password",
+    current: "Current password",
+    new: "New password",
+    confirm: "Confirm new password",
+    save: "Change password",
+    mismatch: "New passwords don't match.",
+    success: "Password changed.",
+    couldntChange: "Couldn't change password.",
+  },
+  admins: {
+    title: "Admin users",
+    newAdmin: "+ New admin",
+    couldntLoad: "Couldn't load admins.",
+    you: "(you)",
+    newModalTitle: "New admin",
+    create: "Create admin",
+    creating: "Creating…",
+    couldntCreate: "Couldn't create admin.",
+    removeConfirm: "Remove admin \"{{name}}\" ({{email}})? This can't be undone.",
+    couldntRemove: "Couldn't remove admin.",
+  },
+};

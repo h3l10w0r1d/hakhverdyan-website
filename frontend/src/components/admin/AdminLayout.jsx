@@ -1,24 +1,27 @@
 import { useEffect, useState } from "react";
 import { NavLink, Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAdminAuth } from "../../context/AdminAuthContext";
+import { useAdminT } from "../../context/AdminI18nContext";
+import AdminLangSwitch from "./AdminLangSwitch";
 import {
   GridIcon, BoxIcon, DraftIcon, VennIcon, CalendarIcon, MailIcon, UsersIcon, GearIcon, UserIcon,
 } from "../../lib/icons";
 
 const LINKS = [
-  { to: "/admin", label: "Dashboard", end: true, icon: GridIcon },
-  { to: "/admin/products", label: "Products", icon: BoxIcon },
-  { to: "/admin/blog", label: "Blog", icon: DraftIcon },
-  { to: "/admin/partners", label: "Partners", icon: VennIcon },
-  { to: "/admin/bookings", label: "Bookings", icon: CalendarIcon },
-  { to: "/admin/messages", label: "Messages", icon: MailIcon },
-  { to: "/admin/members", label: "Members", icon: UsersIcon },
-  { to: "/admin/settings", label: "Settings", icon: GearIcon },
-  { to: "/admin/account", label: "Account", icon: UserIcon },
+  { to: "/admin", key: "dashboard", end: true, icon: GridIcon },
+  { to: "/admin/products", key: "products", icon: BoxIcon },
+  { to: "/admin/blog", key: "blog", icon: DraftIcon },
+  { to: "/admin/partners", key: "partners", icon: VennIcon },
+  { to: "/admin/bookings", key: "bookings", icon: CalendarIcon },
+  { to: "/admin/messages", key: "messages", icon: MailIcon },
+  { to: "/admin/members", key: "members", icon: UsersIcon },
+  { to: "/admin/settings", key: "settings", icon: GearIcon },
+  { to: "/admin/account", key: "account", icon: UserIcon },
 ];
 
 export default function AdminLayout() {
   const { admin, loading, logout, isAuthenticated } = useAdminAuth();
+  const { t } = useAdminT();
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
 
@@ -41,6 +44,7 @@ export default function AdminLayout() {
           )}
         </button>
         <img className="admin-mobile-bar-logo" src="/brand/logo-icon.png" alt="" />
+        <AdminLangSwitch className="admin-mobile-bar-lang" />
       </div>
 
       {mobileOpen && <div className="admin-mobile-backdrop" onClick={() => setMobileOpen(false)} />}
@@ -54,13 +58,14 @@ export default function AdminLayout() {
           {LINKS.map(l => (
             <NavLink key={l.to} to={l.to} end={l.end} className={({ isActive }) => "admin-nav-link" + (isActive ? " active" : "")}>
               <l.icon size={18} />
-              <span className="admin-nav-link-label">{l.label}</span>
+              <span className="admin-nav-link-label">{t(`nav.${l.key}`)}</span>
             </NavLink>
           ))}
         </nav>
         <div className="admin-sidebar-foot">
+          <AdminLangSwitch className="admin-sidebar-lang" />
           <div className="admin-sidebar-user">{admin?.name || admin?.email}</div>
-          <button className="admin-logout-btn" onClick={logout}>Sign out</button>
+          <button className="admin-logout-btn" onClick={logout}>{t("nav.signOut")}</button>
         </div>
       </aside>
       <main className="admin-main">

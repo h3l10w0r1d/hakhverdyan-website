@@ -1,7 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { useAdminT } from "../../context/AdminI18nContext";
 
-export default function Select({ value, onChange, options, placeholder = "Select…", className = "", disabled = false }) {
+export default function Select({ value, onChange, options, placeholder, className = "", disabled = false }) {
+  const { t } = useAdminT();
+  const resolvedPlaceholder = placeholder ?? t("common.selectPlaceholder");
   const [open, setOpen] = useState(false);
   const [pos, setPos] = useState(null);
   const rootRef = useRef(null);

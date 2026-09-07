@@ -9,8 +9,10 @@ import Select from "../../components/admin/Select";
 import useDragReorder from "../../lib/useDragReorder";
 import { productPhoto } from "../../lib/productPhotos";
 import { downloadCsv } from "../../lib/csvExport";
+import { useAdminT } from "../../context/AdminI18nContext";
 
 export default function AdminProducts() {
+  const { t } = useAdminT();
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -26,7 +28,7 @@ export default function AdminProducts() {
 
   function load() {
     setLoading(true);
-    adminListProducts().then(setProducts).catch(() => setError("Couldn't load products.")).finally(() => setLoading(false));
+    adminListProducts().then(setProducts).catch(() => setError(t("products.couldntLoad"))).finally(() => setLoading(false));
   }
 
   useEffect(load, []);
@@ -46,7 +48,7 @@ export default function AdminProducts() {
     try {
       await adminReorderProducts(nextProducts.map(p => p.id));
     } catch {
-      setError("Couldn't save the new order — reloading.");
+      setError(t("products.couldntSaveOrder"));
       load();
     }
   }
@@ -55,12 +57,12 @@ export default function AdminProducts() {
 
   async function onDelete(e, id) {
     e.stopPropagation();
-    if (!window.confirm(`Delete product "${id}"? This can't be undone.`)) return;
+    if (!window.confirm(t("products.deleteConfirm", { id }))) return;
     try {
       await adminDeleteProduct(id);
       load();
     } catch (err) {
-      setError(err.message || "Couldn't delete product.");
+      setError(err.message || t("products.couldntDelete"));
     }
   }
 
@@ -84,7 +86,10 @@ export default function AdminProducts() {
   }
 
   async function onBulkDelete() {
-    if (!window.confirm(`Delete ${selected.size} product${selected.size === 1 ? "" : "s"}? This can't be undone.`)) return;
+    const confirmMsg = selected.size === 1
+      ? t("products.deleteBulkConfirmOne")
+      : t("products.deleteBulkConfirmMany", { count: selected.size });
+    if (!window.confirm(confirmMsg)) return;
     setBulkBusy(true);
     setError("");
     try {
@@ -92,7 +97,7 @@ export default function AdminProducts() {
       clearSelection();
       load();
     } catch (err) {
-      setError(err.message || "Couldn't delete the selected products.");
+      setError(err.message || t("products.couldntBulkDelete"));
     } finally {
       setBulkBusy(false);
     }
@@ -107,7 +112,7 @@ export default function AdminProducts() {
       clearSelection();
       load();
     } catch (err) {
-      setError(err.message || "Couldn't move the selected products.");
+      setError(err.message || t("products.couldntBulkMove"));
     } finally {
       setBulkBusy(false);
     }
@@ -120,22 +125,22 @@ export default function AdminProducts() {
     downloadCsv(
       `products-${new Date().toISOString().slice(0, 10)}.csv`,
       [
-        { key: "id", label: "ID", value: p => p.id },
-        { key: "name", label: "Name (EN)", value: p => p.name },
-        { key: "name_hy", label: "Name (HY)", value: p => p.name_hy || "" },
-        { key: "category", label: "Category", value: p => categoryLabel(p.category) },
-        { key: "spec", label: "Tagline (EN)", value: p => p.spec },
-        { key: "spec_hy", label: "Tagline (HY)", value: p => p.spec_hy || "" },
-        { key: "description", label: "Description (EN)", value: p => p.description || "" },
-        { key: "description_hy", label: "Description (HY)", value: p => p.description_hy || "" },
-        { key: "price", label: "Price (֏)", value: p => p.price },
-        { key: "old_price", label: "Old price (֏)", value: p => p.old_price ?? "" },
-        { key: "unit", label: "Unit", value: p => p.unit },
-        { key: "badge", label: "Badge (EN)", value: p => p.badge },
-        { key: "badge_hy", label: "Badge (HY)", value: p => p.badge_hy || "" },
-        { key: "promo", label: "Promo", value: p => (p.is_promo ? "Yes" : "No") },
-        { key: "stock", label: "Stock", value: p => (p.stock_qty === null ? "Unlimited" : p.stock_qty) },
-        { key: "photos", label: "Photos", value: p => (p.images || []).length },
+        { key: "id", label: t("products.csvId"), value: p => p.id },
+        { key: "name", label: t("products.csvNameEn"), value: p => p.name },
+        { key: "name_hy", label: t("products.csvNameHy"), value: p => p.name_hy || "" },
+        { key: "category", label: t("products.colCategory"), value: p => categoryLabel(p.category) },
+        { key: "spec", label: t("products.csvTaglineEn"), value: p => p.spec },
+        { key: "spec_hy", label: t("products.csvTaglineHy"), value: p => p.spec_hy || "" },
+        { key: "description", label: t("products.csvDescriptionEn"), value: p => p.description || "" },
+        { key: "description_hy", label: t("products.csvDescriptionHy"), value: p => p.description_hy || "" },
+        { key: "price", label: t("products.csvPrice"), value: p => p.price },
+        { key: "old_price", label: t("products.csvOldPrice"), value: p => p.old_price ?? "" },
+        { key: "unit", label: t("products.csvUnit"), value: p => p.unit },
+        { key: "badge", label: t("products.csvBadgeEn"), value: p => p.badge },
+        { key: "badge_hy", label: t("products.csvBadgeHy"), value: p => p.badge_hy || "" },
+        { key: "promo", label: t("products.colPromo"), value: p => (p.is_promo ? t("common.yes") : t("common.no")) },
+        { key: "stock", label: t("products.colStock"), value: p => (p.stock_qty === null ? t("products.unlimited") : p.stock_qty) },
+        { key: "photos", label: t("products.csvPhotos"), value: p => (p.images || []).length },
       ],
       filtered
     );
@@ -144,10 +149,10 @@ export default function AdminProducts() {
   return (
     <div>
       <div className="admin-page-head">
-        <h1 className="admin-page-title">Products</h1>
+        <h1 className="admin-page-title">{t("products.pageTitle")}</h1>
         <div className="admin-editor-actions">
-          <button className="admin-btn" onClick={exportCsv} disabled={filtered.length === 0}>Export CSV</button>
-          <button className="admin-btn admin-btn-primary" onClick={() => navigate("/admin/products/new")}>+ New product</button>
+          <button className="admin-btn" onClick={exportCsv} disabled={filtered.length === 0}>{t("common.exportCsv")}</button>
+          <button className="admin-btn admin-btn-primary" onClick={() => navigate("/admin/products/new")}>{t("products.newProduct")}</button>
         </div>
       </div>
 
@@ -155,32 +160,32 @@ export default function AdminProducts() {
 
       <div className="admin-search-row">
         <input
-          type="text" className="admin-search-input" placeholder="Search by name, ID, or category…"
+          type="text" className="admin-search-input" placeholder={t("products.searchPlaceholder")}
           value={search} onChange={e => setSearch(e.target.value)}
         />
-        {isFiltered && <span className="admin-search-count">{filtered.length} of {products.length}</span>}
+        {isFiltered && <span className="admin-search-count">{t("products.searchCount", { filtered: filtered.length, total: products.length })}</span>}
       </div>
-      {isFiltered && <div className="admin-search-note">Reordering is disabled while a search is active.</div>}
+      {isFiltered && <div className="admin-search-note">{t("products.reorderDisabledNote")}</div>}
 
       {selected.size > 0 && (
         <div className="admin-bulk-bar">
-          <span className="admin-bulk-count">{selected.size} selected</span>
+          <span className="admin-bulk-count">{t("common.selected", { count: selected.size })}</span>
           <Select
-            className="adm-select-sm" placeholder="Move to category…"
+            className="adm-select-sm" placeholder={t("products.moveToCategory")}
             value={bulkCategory} onChange={onBulkCategory} options={categoryOptions} disabled={bulkBusy}
           />
           <button type="button" className="admin-btn admin-btn-sm admin-btn-danger" onClick={onBulkDelete} disabled={bulkBusy}>
-            Delete selected
+            {t("products.deleteSelected")}
           </button>
-          <button type="button" className="admin-btn admin-btn-sm admin-bulk-clear" onClick={clearSelection}>Clear</button>
+          <button type="button" className="admin-btn admin-btn-sm admin-bulk-clear" onClick={clearSelection}>{t("common.clear")}</button>
         </div>
       )}
 
       <div className="admin-card">
         {loading ? (
-          <div className="admin-empty">Loading…</div>
+          <div className="admin-empty">{t("common.loading")}</div>
         ) : filtered.length === 0 ? (
-          <div className="admin-empty">{isFiltered ? "No products match your search." : "No products yet."}</div>
+          <div className="admin-empty">{isFiltered ? t("products.noMatch") : t("products.noProducts")}</div>
         ) : (
           <table className={"admin-table" + (isFiltered ? "" : " admin-table-reorderable")}>
             <thead>
@@ -192,7 +197,7 @@ export default function AdminProducts() {
                     onChange={toggleSelectAll}
                   />
                 </th>
-                <th></th><th></th><th>Name</th><th>Category</th><th>Price</th><th>Badge</th><th>Stock</th><th>Promo</th><th></th>
+                <th></th><th></th><th>{t("common.name")}</th><th>{t("products.colCategory")}</th><th>{t("products.colPrice")}</th><th>{t("products.colBadge")}</th><th>{t("products.colStock")}</th><th>{t("products.colPromo")}</th><th></th>
               </tr>
             </thead>
             <tbody>
@@ -215,7 +220,7 @@ export default function AdminProducts() {
                   <td className="admin-table-checkbox" onClick={e => e.stopPropagation()}>
                     <input type="checkbox" checked={selected.has(p.id)} onChange={e => toggleSelected(e, p.id)} />
                   </td>
-                  <td className="admin-drag-handle" title={isFiltered ? "" : "Drag to reorder"} onClick={e => e.stopPropagation()}>
+                  <td className="admin-drag-handle" title={isFiltered ? "" : t("imageDropzone.dragToReorder")} onClick={e => e.stopPropagation()}>
                     {!isFiltered && <DragHandleIcon />}
                   </td>
                   <td><img className="admin-table-thumb" src={p.image || productPhoto(p.icon)} alt="" /></td>
@@ -228,16 +233,16 @@ export default function AdminProducts() {
                   <td>{p.badge}</td>
                   <td>
                     {p.stock_qty === null ? (
-                      <span className="admin-table-sub">Unlimited</span>
+                      <span className="admin-table-sub">{t("products.unlimited")}</span>
                     ) : p.stock_qty === 0 ? (
-                      <span className="admin-badge status-new">Out of stock</span>
+                      <span className="admin-badge status-new">{t("products.outOfStock")}</span>
                     ) : (
-                      `${p.stock_qty} in stock`
+                      t("products.inStock", { qty: p.stock_qty })
                     )}
                   </td>
-                  <td>{p.is_promo ? "Yes" : "—"}</td>
+                  <td>{p.is_promo ? t("common.yes") : "—"}</td>
                   <td className="admin-table-actions">
-                    <button className="admin-btn admin-btn-sm admin-btn-danger" onClick={e => onDelete(e, p.id)}>Delete</button>
+                    <button className="admin-btn admin-btn-sm admin-btn-danger" onClick={e => onDelete(e, p.id)}>{t("common.delete")}</button>
                   </td>
                 </tr>
               ))}

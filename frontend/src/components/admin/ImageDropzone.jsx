@@ -1,7 +1,9 @@
 import { useRef, useState } from "react";
 import { resizeToDataUrl } from "../../lib/resizeImage";
+import { useAdminT } from "../../context/AdminI18nContext";
 
 export default function ImageDropzone({ value, onChange }) {
+  const { t } = useAdminT();
   const [dragging, setDragging] = useState(false);
   const [error, setError] = useState("");
   const inputRef = useRef(null);
@@ -10,14 +12,14 @@ export default function ImageDropzone({ value, onChange }) {
     const file = files?.[0];
     if (!file) return;
     if (!file.type.startsWith("image/")) {
-      setError("Please choose an image file.");
+      setError(t("imageDropzone.chooseImageFile"));
       return;
     }
     setError("");
     try {
       onChange(await resizeToDataUrl(file));
     } catch {
-      setError("Couldn't read that image — try another file.");
+      setError(t("imageDropzone.couldntReadImage"));
     }
   }
 
@@ -33,8 +35,8 @@ export default function ImageDropzone({ value, onChange }) {
         <div className="adm-dropzone-preview">
           <img src={value} alt="Product" />
           <div className="adm-dropzone-preview-actions">
-            <button type="button" className="admin-btn admin-btn-sm" onClick={() => inputRef.current?.click()}>Replace</button>
-            <button type="button" className="admin-btn admin-btn-sm admin-btn-danger" onClick={() => onChange(null)}>Remove</button>
+            <button type="button" className="admin-btn admin-btn-sm" onClick={() => inputRef.current?.click()}>{t("imageDropzone.replace")}</button>
+            <button type="button" className="admin-btn admin-btn-sm admin-btn-danger" onClick={() => onChange(null)}>{t("imageDropzone.remove")}</button>
           </div>
         </div>
       ) : (
@@ -51,8 +53,8 @@ export default function ImageDropzone({ value, onChange }) {
             <path d="M12 16V4M12 4l-4 4M12 4l4 4" />
             <path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" />
           </svg>
-          <div className="adm-dropzone-text"><strong>Click to upload</strong> or drag and drop</div>
-          <div className="adm-dropzone-sub">PNG or JPG</div>
+          <div className="adm-dropzone-text"><strong>{t("imageDropzone.clickToUpload")}</strong> {t("imageDropzone.orDragDrop")}</div>
+          <div className="adm-dropzone-sub">{t("imageDropzone.pngOrJpg")}</div>
         </div>
       )}
       <input

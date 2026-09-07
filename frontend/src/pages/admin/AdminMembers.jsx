@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { adminListCustomers } from "../../lib/adminApi";
 import { downloadCsv } from "../../lib/csvExport";
+import { useAdminT } from "../../context/AdminI18nContext";
 
 const fmtDate = iso => new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 
 export default function AdminMembers() {
+  const { t } = useAdminT();
   const navigate = useNavigate();
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -14,7 +16,7 @@ export default function AdminMembers() {
 
   useEffect(() => {
     setLoading(true);
-    adminListCustomers().then(setMembers).catch(() => setError("Couldn't load members.")).finally(() => setLoading(false));
+    adminListCustomers().then(setMembers).catch(() => setError(t("members.couldntLoad"))).finally(() => setLoading(false));
   }, []);
 
   const q = search.trim().toLowerCase();
@@ -43,29 +45,29 @@ export default function AdminMembers() {
   return (
     <div>
       <div className="admin-page-head">
-        <h1 className="admin-page-title">Members</h1>
-        <button className="admin-btn" onClick={exportCsv} disabled={filtered.length === 0}>Export CSV</button>
+        <h1 className="admin-page-title">{t("members.title")}</h1>
+        <button className="admin-btn" onClick={exportCsv} disabled={filtered.length === 0}>{t("common.exportCsv")}</button>
       </div>
 
       {error && <div className="admin-error-banner">{error}</div>}
 
       <div className="admin-search-row">
         <input
-          type="text" className="admin-search-input" placeholder="Search by name, email, or phone…"
+          type="text" className="admin-search-input" placeholder={t("members.searchPlaceholder")}
           value={search} onChange={e => setSearch(e.target.value)}
         />
-        {q && <span className="admin-search-count">{filtered.length} of {members.length}</span>}
+        {q && <span className="admin-search-count">{t("members.searchCount", { count: filtered.length, total: members.length })}</span>}
       </div>
 
       <div className="admin-card">
         {loading ? (
-          <div className="admin-empty">Loading…</div>
+          <div className="admin-empty">{t("common.loading")}</div>
         ) : filtered.length === 0 ? (
-          <div className="admin-empty">{members.length === 0 ? "No registered members yet." : "No members match your search."}</div>
+          <div className="admin-empty">{members.length === 0 ? t("members.emptyNoMembers") : t("members.emptyNoMatch")}</div>
         ) : (
           <table className="admin-table">
             <thead>
-              <tr><th>Name</th><th>Contact</th><th>Joined</th><th>Bookings</th><th>Messages</th></tr>
+              <tr><th>{t("common.personName")}</th><th>{t("members.colContact")}</th><th>{t("members.colJoined")}</th><th>{t("members.colBookings")}</th><th>{t("members.colMessages")}</th></tr>
             </thead>
             <tbody>
               {filtered.map(m => (

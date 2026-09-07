@@ -5,10 +5,12 @@ import {
 import ImageDropzone from "../../components/admin/ImageDropzone";
 import DragHandleIcon from "../../components/admin/DragHandleIcon";
 import useDragReorder from "../../lib/useDragReorder";
+import { useAdminT } from "../../context/AdminI18nContext";
 
 const EMPTY = { name: "", logo: null, url: "", active: true };
 
 export default function AdminPartners() {
+  const { t } = useAdminT();
   const [partners, setPartners] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -18,7 +20,7 @@ export default function AdminPartners() {
 
   function load() {
     setLoading(true);
-    adminListPartners().then(setPartners).catch(() => setError("Couldn't load partners.")).finally(() => setLoading(false));
+    adminListPartners().then(setPartners).catch(() => setError(t("partners.couldntLoad"))).finally(() => setLoading(false));
   }
 
   useEffect(load, []);
@@ -28,7 +30,7 @@ export default function AdminPartners() {
     try {
       await adminReorderPartners(next.map(p => p.id));
     } catch {
-      setError("Couldn't save the new order — reloading.");
+      setError(t("partners.couldntSaveOrder"));
       load();
     }
   }
@@ -56,7 +58,7 @@ export default function AdminPartners() {
 
   async function onSubmit(e) {
     e.preventDefault();
-    if (!form.logo) { setError("Add a logo image first."); return; }
+    if (!form.logo) { setError(t("partners.addLogoFirst")); return; }
     setSaving(true);
     setError("");
     try {
@@ -69,19 +71,19 @@ export default function AdminPartners() {
       closeForm();
       load();
     } catch (err) {
-      setError(err.message || "Couldn't save partner.");
+      setError(err.message || t("partners.couldntSave"));
     } finally {
       setSaving(false);
     }
   }
 
   async function onDelete(id) {
-    if (!window.confirm("Remove this partner? This can't be undone.")) return;
+    if (!window.confirm(t("partners.confirmRemove"))) return;
     try {
       await adminDeletePartner(id);
       load();
     } catch (err) {
-      setError(err.message || "Couldn't remove partner.");
+      setError(err.message || t("partners.couldntRemove"));
     }
   }
 
@@ -93,21 +95,21 @@ export default function AdminPartners() {
   return (
     <div>
       <div className="admin-page-head">
-        <h1 className="admin-page-title">Partners</h1>
-        <button className="admin-btn admin-btn-primary" onClick={openCreate}>+ New partner</button>
+        <h1 className="admin-page-title">{t("partners.title")}</h1>
+        <button className="admin-btn admin-btn-primary" onClick={openCreate}>{t("partners.newPartner")}</button>
       </div>
 
       {error && <div className="admin-error-banner">{error}</div>}
 
       <div className="admin-card">
         {loading ? (
-          <div className="admin-empty">Loading…</div>
+          <div className="admin-empty">{t("common.loading")}</div>
         ) : partners.length === 0 ? (
-          <div className="admin-empty">No partners yet.</div>
+          <div className="admin-empty">{t("partners.emptyState")}</div>
         ) : (
           <table className="admin-table admin-table-reorderable">
             <thead>
-              <tr><th></th><th></th><th>Name</th><th>Website</th><th>Shown on site</th><th></th></tr>
+              <tr><th></th><th></th><th>{t("common.name")}</th><th>{t("partners.colWebsite")}</th><th>{t("partners.colShownOnSite")}</th><th></th></tr>
             </thead>
             <tbody>
               {partners.map((p, i) => (
@@ -123,18 +125,18 @@ export default function AdminPartners() {
                     (overIndex === i && dragIndex !== i ? " admin-row-drop-target" : "")
                   }
                 >
-                  <td className="admin-drag-handle" title="Drag to reorder"><DragHandleIcon /></td>
+                  <td className="admin-drag-handle" title={t("imageDropzone.dragToReorder")}><DragHandleIcon /></td>
                   <td><img className="admin-table-thumb admin-table-thumb-contain" src={p.logo} alt="" /></td>
                   <td className="admin-table-title">{p.name}</td>
                   <td className="admin-table-sub">{p.url || "—"}</td>
                   <td>
                     <button className={"admin-btn admin-btn-sm" + (p.active ? "" : " admin-btn-muted")} onClick={() => toggleActive(p)}>
-                      {p.active ? "Visible" : "Hidden"}
+                      {p.active ? t("partners.visible") : t("partners.hidden")}
                     </button>
                   </td>
                   <td className="admin-table-actions">
-                    <button className="admin-btn admin-btn-sm" onClick={() => openEdit(p)}>Edit</button>
-                    <button className="admin-btn admin-btn-sm admin-btn-danger" onClick={() => onDelete(p.id)}>Delete</button>
+                    <button className="admin-btn admin-btn-sm" onClick={() => openEdit(p)}>{t("common.edit")}</button>
+                    <button className="admin-btn admin-btn-sm admin-btn-danger" onClick={() => onDelete(p.id)}>{t("common.delete")}</button>
                   </td>
                 </tr>
               ))}
@@ -147,31 +149,31 @@ export default function AdminPartners() {
         <div className="admin-modal-backdrop" onClick={e => { if (e.target === e.currentTarget) closeForm(); }}>
           <form className="admin-modal" onSubmit={onSubmit}>
             <div className="admin-modal-head">
-              <h2>{editingId ? "Edit partner" : "New partner"}</h2>
+              <h2>{editingId ? t("partners.editModalTitle") : t("partners.newModalTitle")}</h2>
               <button type="button" className="admin-modal-close" onClick={closeForm}>&times;</button>
             </div>
             <div className="admin-modal-body">
               <label className="quote-field">
-                <span>Logo</span>
+                <span>{t("partners.logoLabel")}</span>
                 <ImageDropzone value={form.logo} onChange={img => updateField("logo", img)} />
               </label>
               <label className="quote-field">
-                <span>Name</span>
+                <span>{t("common.name")}</span>
                 <input value={form.name} onChange={e => updateField("name", e.target.value)} required />
               </label>
               <label className="quote-field">
-                <span>Website (optional — leave blank if the logo shouldn't be clickable)</span>
+                <span>{t("partners.websiteFieldLabel")}</span>
                 <input type="url" value={form.url} onChange={e => updateField("url", e.target.value)} placeholder="https://example.com" />
               </label>
               <label className="admin-checkbox-field">
                 <input type="checkbox" checked={form.active} onChange={e => updateField("active", e.target.checked)} />
-                <span>Shown on the site</span>
+                <span>{t("partners.shownOnSiteCheckbox")}</span>
               </label>
             </div>
             <div className="admin-modal-foot">
-              <button type="button" className="admin-btn" onClick={closeForm}>Cancel</button>
+              <button type="button" className="admin-btn" onClick={closeForm}>{t("common.cancel")}</button>
               <button type="submit" className="admin-btn admin-btn-primary" disabled={saving}>
-                {saving ? "Saving…" : "Save partner"}
+                {saving ? t("common.saving") : t("partners.savePartner")}
               </button>
             </div>
           </form>

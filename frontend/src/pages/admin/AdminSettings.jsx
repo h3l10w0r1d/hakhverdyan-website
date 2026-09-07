@@ -6,11 +6,13 @@ import {
 } from "../../lib/adminApi";
 import DragHandleIcon from "../../components/admin/DragHandleIcon";
 import useDragReorder from "../../lib/useDragReorder";
+import { useAdminT } from "../../context/AdminI18nContext";
 
 const EMPTY_LOCATION = { name: "", name_hy: "", address: "", address_hy: "", lat: "", lng: "" };
 const EMPTY_CATEGORY = { id: "", label: "", label_hy: "" };
 
 function SiteSettingsForm() {
+  const { t } = useAdminT();
   const [settings, setSettings] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -31,75 +33,76 @@ function SiteSettingsForm() {
     try {
       const updated = await adminUpdateSettings(settings);
       setSettings(updated);
-      setStatus({ type: "success", text: "Settings saved." });
+      setStatus({ type: "success", text: t("settings.contact.savedSuccess") });
     } catch (err) {
-      setStatus({ type: "error", text: err.message || "Couldn't save settings." });
+      setStatus({ type: "error", text: err.message || t("settings.contact.couldntSave") });
     } finally {
       setSaving(false);
     }
   }
 
-  if (loading || !settings) return <div className="admin-empty">Loading…</div>;
+  if (loading || !settings) return <div className="admin-empty">{t("common.loading")}</div>;
 
   return (
     <form onSubmit={onSubmit} className="admin-settings-form">
       <div className="admin-form-row">
         <label className="quote-field">
-          <span>Phone</span>
+          <span>{t("settings.contact.phone")}</span>
           <input value={settings.phone} onChange={e => updateField("phone", e.target.value)} required />
         </label>
         <label className="quote-field">
-          <span>WhatsApp</span>
+          <span>{t("settings.contact.whatsapp")}</span>
           <input value={settings.whatsapp} onChange={e => updateField("whatsapp", e.target.value)} required />
         </label>
         <label className="quote-field">
-          <span>Email (optional)</span>
+          <span>{t("settings.contact.emailOptional")}</span>
           <input type="email" value={settings.email || ""} onChange={e => updateField("email", e.target.value || null)} />
         </label>
       </div>
       <div className="admin-form-row">
         <label className="quote-field">
-          <span>Facebook URL</span>
-          <input value={settings.facebook_url || ""} onChange={e => updateField("facebook_url", e.target.value || null)} placeholder="https://facebook.com/..." />
+          <span>{t("settings.contact.facebookUrl")}</span>
+          <input value={settings.facebook_url || ""} onChange={e => updateField("facebook_url", e.target.value || null)} placeholder={t("settings.contact.facebookPlaceholder")} />
         </label>
         <label className="quote-field">
-          <span>Instagram URL</span>
-          <input value={settings.instagram_url || ""} onChange={e => updateField("instagram_url", e.target.value || null)} placeholder="https://instagram.com/..." />
+          <span>{t("settings.contact.instagramUrl")}</span>
+          <input value={settings.instagram_url || ""} onChange={e => updateField("instagram_url", e.target.value || null)} placeholder={t("settings.contact.instagramPlaceholder")} />
         </label>
         <label className="quote-field">
-          <span>TikTok URL</span>
-          <input value={settings.tiktok_url || ""} onChange={e => updateField("tiktok_url", e.target.value || null)} placeholder="https://tiktok.com/@..." />
+          <span>{t("settings.contact.tiktokUrl")}</span>
+          <input value={settings.tiktok_url || ""} onChange={e => updateField("tiktok_url", e.target.value || null)} placeholder={t("settings.contact.tiktokPlaceholder")} />
         </label>
       </div>
       <div className="admin-form-row">
         <label className="quote-field">
-          <span>Weekday hours (EN)</span>
+          <span>{t("settings.contact.hoursWeekdayEn")}</span>
           <input value={settings.hours_weekday} onChange={e => updateField("hours_weekday", e.target.value)} required />
         </label>
         <label className="quote-field">
-          <span>Weekday hours (HY)</span>
+          <span>{t("settings.contact.hoursWeekdayHy")}</span>
           <input value={settings.hours_weekday_hy || ""} onChange={e => updateField("hours_weekday_hy", e.target.value || null)} />
         </label>
       </div>
       <div className="admin-form-row">
         <label className="quote-field">
-          <span>Saturday hours (EN)</span>
+          <span>{t("settings.contact.hoursSaturdayEn")}</span>
           <input value={settings.hours_saturday} onChange={e => updateField("hours_saturday", e.target.value)} required />
         </label>
         <label className="quote-field">
-          <span>Saturday hours (HY)</span>
+          <span>{t("settings.contact.hoursSaturdayHy")}</span>
           <input value={settings.hours_saturday_hy || ""} onChange={e => updateField("hours_saturday_hy", e.target.value || null)} />
         </label>
       </div>
       {status && <div className={"form-status " + status.type}>{status.text}</div>}
       <button type="submit" className="admin-btn admin-btn-primary" disabled={saving}>
-        {saving ? "Saving…" : "Save settings"}
+        {saving ? t("common.saving") : t("settings.contact.saveSettings")}
       </button>
     </form>
   );
 }
 
 function LocationsSection() {
+  const { t } = useAdminT();
   const [locations, setLocations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -109,7 +112,7 @@ function LocationsSection() {
 
   function load() {
     setLoading(true);
-    adminListLocations().then(setLocations).catch(() => setError("Couldn't load locations.")).finally(() => setLoading(false));
+    adminListLocations().then(setLocations).catch(() => setError(t("settings.locations.couldntLoad"))).finally(() => setLoading(false));
   }
 
   useEffect(load, []);
@@ -119,7 +122,7 @@ function LocationsSection() {
     try {
       await adminReorderLocations(next.map(l => l.id));
     } catch {
-      setError("Couldn't save the new order — reloading.");
+      setError(t("settings.locations.reorderError"));
       load();
     }
   }
@@ -159,37 +162,37 @@ function LocationsSection() {
       closeForm();
       load();
     } catch (err) {
-      setError(err.message || "Couldn't save location.");
+      setError(err.message || t("settings.locations.couldntSave"));
     } finally {
       setSaving(false);
     }
   }
 
   async function onDelete(l) {
-    if (!window.confirm(`Remove location "${l.name}"? This can't be undone.`)) return;
+    if (!window.confirm(t("settings.locations.removeConfirm", { name: l.name }))) return;
     try {
       await adminDeleteLocation(l.id);
       load();
     } catch (err) {
-      setError(err.message || "Couldn't remove location.");
+      setError(err.message || t("settings.locations.couldntRemove"));
     }
   }
 
   return (
     <>
       <div className="admin-card-head-row">
-        <h2 className="admin-card-title">Locations</h2>
-        <button type="button" className="admin-btn admin-btn-primary" onClick={openCreate}>+ New location</button>
+        <h2 className="admin-card-title">{t("settings.locations.title")}</h2>
+        <button type="button" className="admin-btn admin-btn-primary" onClick={openCreate}>{t("settings.locations.newLocation")}</button>
       </div>
       {error && <div className="admin-error-banner" style={{ margin: "0 20px 16px" }}>{error}</div>}
       {loading ? (
-        <div className="admin-empty">Loading…</div>
+        <div className="admin-empty">{t("common.loading")}</div>
       ) : locations.length === 0 ? (
-        <div className="admin-empty">No locations yet.</div>
+        <div className="admin-empty">{t("settings.locations.noneYet")}</div>
       ) : (
         <table className="admin-table admin-table-reorderable">
           <thead>
-            <tr><th></th><th>Name</th><th>Address</th><th></th></tr>
+            <tr><th></th><th>{t("settings.locations.colName")}</th><th>{t("settings.locations.colAddress")}</th><th></th></tr>
           </thead>
           <tbody>
             {locations.map((l, i) => (
@@ -205,12 +208,12 @@ function LocationsSection() {
                   (overIndex === i && dragIndex !== i ? " admin-row-drop-target" : "")
                 }
               >
-                <td className="admin-drag-handle" title="Drag to reorder"><DragHandleIcon /></td>
+                <td className="admin-drag-handle" title={t("settings.locations.dragToReorder")}><DragHandleIcon /></td>
                 <td className="admin-table-title">{l.name}</td>
                 <td className="admin-table-sub">{l.address}</td>
                 <td className="admin-table-actions">
-                  <button type="button" className="admin-btn admin-btn-sm" onClick={() => openEdit(l)}>Edit</button>
-                  <button type="button" className="admin-btn admin-btn-sm admin-btn-danger" onClick={() => onDelete(l)}>Delete</button>
+                  <button type="button" className="admin-btn admin-btn-sm" onClick={() => openEdit(l)}>{t("common.edit")}</button>
+                  <button type="button" className="admin-btn admin-btn-sm admin-btn-danger" onClick={() => onDelete(l)}>{t("common.delete")}</button>
                 </td>
               </tr>
             ))}
@@ -222,54 +225,54 @@ function LocationsSection() {
         <div className="admin-modal-backdrop" onClick={e => { if (e.target === e.currentTarget) closeForm(); }}>
           <form className="admin-modal" onSubmit={onSubmit}>
             <div className="admin-modal-head">
-              <h2>{editingId ? "Edit location" : "New location"}</h2>
+              <h2>{editingId ? t("settings.locations.editTitle") : t("settings.locations.newTitle")}</h2>
               <button type="button" className="admin-modal-close" onClick={closeForm}>&times;</button>
             </div>
             <div className="admin-modal-body">
               <div className="admin-form-row">
                 <label className="quote-field">
-                  <span>Name (EN)</span>
+                  <span>{t("settings.locations.nameEn")}</span>
                   <input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} required />
                 </label>
                 <label className="quote-field">
-                  <span>Name (HY)</span>
+                  <span>{t("settings.locations.nameHy")}</span>
                   <input value={form.name_hy} onChange={e => setForm(f => ({ ...f, name_hy: e.target.value }))} />
                 </label>
               </div>
               <div className="admin-form-row">
                 <label className="quote-field">
-                  <span>Address (EN)</span>
+                  <span>{t("settings.locations.addressEn")}</span>
                   <input value={form.address} onChange={e => setForm(f => ({ ...f, address: e.target.value }))} required />
                 </label>
                 <label className="quote-field">
-                  <span>Address (HY)</span>
+                  <span>{t("settings.locations.addressHy")}</span>
                   <input value={form.address_hy} onChange={e => setForm(f => ({ ...f, address_hy: e.target.value }))} />
                 </label>
               </div>
               <div className="admin-form-row">
                 <label className="quote-field">
-                  <span>Latitude</span>
+                  <span>{t("settings.locations.latitude")}</span>
                   <input
-                    type="number" step="any" placeholder="e.g. 40.210984"
+                    type="number" step="any" placeholder={t("settings.locations.latPlaceholder")}
                     value={form.lat} onChange={e => setForm(f => ({ ...f, lat: e.target.value }))}
                   />
                 </label>
                 <label className="quote-field">
-                  <span>Longitude</span>
+                  <span>{t("settings.locations.longitude")}</span>
                   <input
-                    type="number" step="any" placeholder="e.g. 44.512744"
+                    type="number" step="any" placeholder={t("settings.locations.lngPlaceholder")}
                     value={form.lng} onChange={e => setForm(f => ({ ...f, lng: e.target.value }))}
                   />
                 </label>
               </div>
               <p className="quote-field-hint">
-                Look up the address on <a href="https://yandex.com/maps/" target="_blank" rel="noopener noreferrer">Yandex Maps</a> and copy the coordinates shown in the sidebar. Leave blank to show a placeholder instead of a map.
+                {t("settings.locations.mapHintPrefix")} <a href="https://yandex.com/maps/" target="_blank" rel="noopener noreferrer">Yandex Maps</a> {t("settings.locations.mapHintSuffix")}
               </p>
             </div>
             <div className="admin-modal-foot">
-              <button type="button" className="admin-btn" onClick={closeForm}>Cancel</button>
+              <button type="button" className="admin-btn" onClick={closeForm}>{t("common.cancel")}</button>
               <button type="submit" className="admin-btn admin-btn-primary" disabled={saving}>
-                {saving ? "Saving…" : "Save location"}
+                {saving ? t("common.saving") : t("settings.locations.saveLocation")}
               </button>
             </div>
           </form>
@@ -280,6 +283,7 @@ function LocationsSection() {
 }
 
 function CategoriesSection() {
+  const { t } = useAdminT();
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -289,7 +293,7 @@ function CategoriesSection() {
 
   function load() {
     setLoading(true);
-    adminListCategories().then(setCategories).catch(() => setError("Couldn't load categories.")).finally(() => setLoading(false));
+    adminListCategories().then(setCategories).catch(() => setError(t("settings.categories.couldntLoad"))).finally(() => setLoading(false));
   }
 
   useEffect(load, []);
@@ -299,7 +303,7 @@ function CategoriesSection() {
     try {
       await adminReorderCategories(next.map(c => c.id));
     } catch {
-      setError("Couldn't save the new order — reloading.");
+      setError(t("settings.categories.reorderError"));
       load();
     }
   }
@@ -332,37 +336,37 @@ function CategoriesSection() {
       closeForm();
       load();
     } catch (err) {
-      setError(err.message || "Couldn't save category.");
+      setError(err.message || t("settings.categories.couldntSave"));
     } finally {
       setSaving(false);
     }
   }
 
   async function onDelete(c) {
-    if (!window.confirm(`Remove category "${c.label}"? This can't be undone.`)) return;
+    if (!window.confirm(t("settings.categories.removeConfirm", { label: c.label }))) return;
     try {
       await adminDeleteCategory(c.id);
       load();
     } catch (err) {
-      setError(err.message || "Couldn't remove category.");
+      setError(err.message || t("settings.categories.couldntRemove"));
     }
   }
 
   return (
     <>
       <div className="admin-card-head-row">
-        <h2 className="admin-card-title">Product categories</h2>
-        <button type="button" className="admin-btn admin-btn-primary" onClick={openCreate}>+ New category</button>
+        <h2 className="admin-card-title">{t("settings.categories.title")}</h2>
+        <button type="button" className="admin-btn admin-btn-primary" onClick={openCreate}>{t("settings.categories.newCategory")}</button>
       </div>
       {error && <div className="admin-error-banner" style={{ margin: "0 20px 16px" }}>{error}</div>}
       {loading ? (
-        <div className="admin-empty">Loading…</div>
+        <div className="admin-empty">{t("common.loading")}</div>
       ) : categories.length === 0 ? (
-        <div className="admin-empty">No categories yet.</div>
+        <div className="admin-empty">{t("settings.categories.noneYet")}</div>
       ) : (
         <table className="admin-table admin-table-reorderable">
           <thead>
-            <tr><th></th><th>Label</th><th>ID</th><th></th></tr>
+            <tr><th></th><th>{t("settings.categories.colLabel")}</th><th>{t("settings.categories.colId")}</th><th></th></tr>
           </thead>
           <tbody>
             {categories.map((c, i) => (
@@ -378,12 +382,12 @@ function CategoriesSection() {
                   (overIndex === i && dragIndex !== i ? " admin-row-drop-target" : "")
                 }
               >
-                <td className="admin-drag-handle" title="Drag to reorder"><DragHandleIcon /></td>
+                <td className="admin-drag-handle" title={t("settings.locations.dragToReorder")}><DragHandleIcon /></td>
                 <td className="admin-table-title">{c.label}</td>
                 <td className="admin-table-sub">{c.id}</td>
                 <td className="admin-table-actions">
-                  <button type="button" className="admin-btn admin-btn-sm" onClick={() => openEdit(c)}>Edit</button>
-                  <button type="button" className="admin-btn admin-btn-sm admin-btn-danger" onClick={() => onDelete(c)}>Delete</button>
+                  <button type="button" className="admin-btn admin-btn-sm" onClick={() => openEdit(c)}>{t("common.edit")}</button>
+                  <button type="button" className="admin-btn admin-btn-sm admin-btn-danger" onClick={() => onDelete(c)}>{t("common.delete")}</button>
                 </td>
               </tr>
             ))}
@@ -395,31 +399,31 @@ function CategoriesSection() {
         <div className="admin-modal-backdrop" onClick={e => { if (e.target === e.currentTarget) closeForm(); }}>
           <form className="admin-modal" onSubmit={onSubmit}>
             <div className="admin-modal-head">
-              <h2>{editingId ? "Edit category" : "New category"}</h2>
+              <h2>{editingId ? t("settings.categories.editTitle") : t("settings.categories.newTitle")}</h2>
               <button type="button" className="admin-modal-close" onClick={closeForm}>&times;</button>
             </div>
             <div className="admin-modal-body">
               {!editingId && (
                 <label className="quote-field">
-                  <span>ID (slug, unique)</span>
-                  <input value={form.id} onChange={e => setForm(f => ({ ...f, id: e.target.value }))} required pattern="[a-z0-9\-]+" placeholder="glass-panels" />
+                  <span>{t("settings.categories.idLabel")}</span>
+                  <input value={form.id} onChange={e => setForm(f => ({ ...f, id: e.target.value }))} required pattern="[a-z0-9\-]+" placeholder={t("settings.categories.idPlaceholder")} />
                 </label>
               )}
               <div className="admin-form-row">
                 <label className="quote-field">
-                  <span>Label (EN)</span>
+                  <span>{t("settings.categories.labelEn")}</span>
                   <input value={form.label} onChange={e => setForm(f => ({ ...f, label: e.target.value }))} required />
                 </label>
                 <label className="quote-field">
-                  <span>Label (HY)</span>
+                  <span>{t("settings.categories.labelHy")}</span>
                   <input value={form.label_hy} onChange={e => setForm(f => ({ ...f, label_hy: e.target.value }))} />
                 </label>
               </div>
             </div>
             <div className="admin-modal-foot">
-              <button type="button" className="admin-btn" onClick={closeForm}>Cancel</button>
+              <button type="button" className="admin-btn" onClick={closeForm}>{t("common.cancel")}</button>
               <button type="submit" className="admin-btn admin-btn-primary" disabled={saving}>
-                {saving ? "Saving…" : "Save category"}
+                {saving ? t("common.saving") : t("settings.categories.saveCategory")}
               </button>
             </div>
           </form>
@@ -430,14 +434,15 @@ function CategoriesSection() {
 }
 
 export default function AdminSettings() {
+  const { t } = useAdminT();
   return (
     <div>
       <div className="admin-page-head">
-        <h1 className="admin-page-title">Settings</h1>
+        <h1 className="admin-page-title">{t("settings.pageTitle")}</h1>
       </div>
 
       <div className="admin-card admin-settings-card">
-        <h2 className="admin-card-title">Contact & social</h2>
+        <h2 className="admin-card-title">{t("settings.contact.title")}</h2>
         <SiteSettingsForm />
       </div>
 

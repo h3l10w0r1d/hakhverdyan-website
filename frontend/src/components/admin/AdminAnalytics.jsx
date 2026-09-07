@@ -2,14 +2,7 @@ import { useEffect, useState } from "react";
 import { adminAnalytics } from "../../lib/adminApi";
 import Select from "./Select";
 import DatePicker from "./DatePicker";
-
-const RANGE_OPTIONS = [
-  { value: "7", label: "Last 7 days" },
-  { value: "14", label: "Last 14 days" },
-  { value: "30", label: "Last 30 days" },
-  { value: "90", label: "Last 90 days" },
-  { value: "custom", label: "Custom range" },
-];
+import { useAdminT } from "../../context/AdminI18nContext";
 
 const pad = n => String(n).padStart(2, "0");
 const toLocalIso = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
@@ -30,11 +23,12 @@ const fmtMoney = n => n.toLocaleString("en-US") + "֏";
 const fmtDay = iso => new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric" });
 
 function DayBarChart({ data, valueKey, color, formatValue }) {
+  const { t } = useAdminT();
   const max = Math.max(1, ...data.map(d => d[valueKey]));
   const w = 640, h = 160, gap = 4, padding = 4, baseline = h - 22;
   const barW = (w - padding * 2) / data.length - gap;
   return (
-    <svg viewBox={`0 0 ${w} ${h}`} className="adm-chart-svg" preserveAspectRatio="none" role="img" aria-label="Daily chart">
+    <svg viewBox={`0 0 ${w} ${h}`} className="adm-chart-svg" preserveAspectRatio="none" role="img" aria-label={t("analytics.dailyChartAriaLabel")}>
       <line x1={padding} y1={baseline} x2={w - padding} y2={baseline} stroke="var(--grey-200)" strokeWidth="1" />
       {data.map((d, i) => {
         const val = d[valueKey];
@@ -52,10 +46,11 @@ function DayBarChart({ data, valueKey, color, formatValue }) {
 }
 
 function BarList({ rows }) {
+  const { t } = useAdminT();
   const max = Math.max(1, ...rows.map(r => r.value));
   return (
     <div className="adm-bar-list">
-      {rows.length === 0 && <div className="admin-empty">No data yet.</div>}
+      {rows.length === 0 && <div className="admin-empty">{t("analytics.noDataYet")}</div>}
       {rows.map(r => (
         <div className="adm-bar-list-row" key={r.key}>
           <div className="adm-bar-list-label">
@@ -73,6 +68,14 @@ function BarList({ rows }) {
 }
 
 export default function AdminAnalytics() {
+  const { t } = useAdminT();
+  const RANGE_OPTIONS = [
+    { value: "7", label: t("analytics.rangeLast7") },
+    { value: "14", label: t("analytics.rangeLast14") },
+    { value: "30", label: t("analytics.rangeLast30") },
+    { value: "90", label: t("analytics.rangeLast90") },
+    { value: "custom", label: t("analytics.rangeCustom") },
+  ];
   const [range, setRange] = useState("14");
   const [customStart, setCustomStart] = useState("");
   const [customEnd, setCustomEnd] = useState("");
@@ -96,11 +99,13 @@ export default function AdminAnalytics() {
 
   if (!data) return null;
 
+  const statusLabels = { new: t("analytics.statusNew"), contacted: t("analytics.statusContacted"), closed: t("analytics.statusClosed") };
+  const messageStatusLabels = { new: t("analytics.msgStatusNew"), replied: t("analytics.msgStatusReplied"), spam: t("analytics.msgStatusSpam") };
   const statusRows = ["new", "contacted", "closed"].map(key => ({
-    key, label: key, value: data.status_breakdown[key] || 0, dot: STATUS_COLORS[key],
+    key, label: statusLabels[key], value: data.status_breakdown[key] || 0, dot: STATUS_COLORS[key],
   }));
   const messageStatusRows = ["new", "replied", "spam"].map(key => ({
-    key, label: key, value: data.message_status_breakdown[key] || 0, dot: MESSAGE_STATUS_COLORS[key],
+    key, label: messageStatusLabels[key], value: data.message_status_breakdown[key] || 0, dot: MESSAGE_STATUS_COLORS[key],
   }));
   const productRows = data.top_products.map(p => ({
     key: p.product_id, label: p.name, value: p.qty, display: `${p.qty} · ${fmtMoney(p.revenue)}`,
@@ -112,7 +117,7 @@ export default function AdminAnalytics() {
   return (
     <div className={"adm-analytics" + (loading ? " adm-analytics-loading" : "")}>
       <div className="adm-analytics-head">
-        <h2 className="adm-analytics-title">Overview</h2>
+        <h2 className="adm-analytics-title">{t("analytics.overview")}</h2>
         <div className="adm-range-controls">
           <Select className="adm-select-sm" value={range} onChange={onRangeChange} options={RANGE_OPTIONS} />
           {range === "custom" && (
@@ -128,68 +133,68 @@ export default function AdminAnalytics() {
       <div className="admin-stat-grid" style={{ marginBottom: 24 }}>
         <div className="admin-stat-card">
           <div className="admin-stat-value">{fmtMoney(data.total_revenue)}</div>
-          <div className="admin-stat-label">Total revenue (booked)</div>
+          <div className="admin-stat-label">{t("analytics.statTotalRevenue")}</div>
         </div>
         <div className="admin-stat-card">
           <div className="admin-stat-value">{data.total_bookings}</div>
-          <div className="admin-stat-label">Total bookings</div>
+          <div className="admin-stat-label">{t("analytics.statTotalBookings")}</div>
         </div>
         <div className="admin-stat-card">
           <div className="admin-stat-value">{fmtMoney(data.avg_booking_value)}</div>
-          <div className="admin-stat-label">Avg. booking value</div>
+          <div className="admin-stat-label">{t("analytics.statAvgBookingValue")}</div>
         </div>
         <div className="admin-stat-card">
           <div className="admin-stat-value">{data.total_customers}</div>
-          <div className="admin-stat-label">Registered members</div>
+          <div className="admin-stat-label">{t("analytics.statRegisteredMembers")}</div>
         </div>
         <div className="admin-stat-card">
           <div className="admin-stat-value">{data.total_messages}</div>
-          <div className="admin-stat-label">Total messages</div>
+          <div className="admin-stat-label">{t("analytics.statTotalMessages")}</div>
         </div>
       </div>
 
       <div className="adm-analytics-grid">
         <div className="admin-card adm-chart-card">
           <div className="adm-chart-head">
-            <h3>Bookings{data.is_custom ? "" : `, last ${data.days} days`}</h3>
+            <h3>{t("analytics.bookingsHeading")}{data.is_custom ? "" : t("analytics.lastNDays", { days: data.days })}</h3>
             <span className="adm-chart-range">{fmtDay(data.bookings_by_day[0].date)} – {fmtDay(data.bookings_by_day.at(-1).date)}</span>
           </div>
-          <DayBarChart data={data.bookings_by_day} valueKey="count" color={BLUE} formatValue={d => `${d.count} booking${d.count === 1 ? "" : "s"}, ${fmtMoney(d.revenue)}`} />
+          <DayBarChart data={data.bookings_by_day} valueKey="count" color={BLUE} formatValue={d => `${d.count} ${d.count === 1 ? t("analytics.bookingSingular") : t("analytics.bookingPlural")}, ${fmtMoney(d.revenue)}`} />
         </div>
 
         <div className="admin-card adm-chart-card">
           <div className="adm-chart-head">
-            <h3>Messages{data.is_custom ? "" : `, last ${data.days} days`}</h3>
+            <h3>{t("analytics.messagesHeading")}{data.is_custom ? "" : t("analytics.lastNDays", { days: data.days })}</h3>
             <span className="adm-chart-range">{fmtDay(data.messages_by_day[0].date)} – {fmtDay(data.messages_by_day.at(-1).date)}</span>
           </div>
-          <DayBarChart data={data.messages_by_day} valueKey="count" color="#eb6834" formatValue={d => `${d.count} message${d.count === 1 ? "" : "s"}`} />
+          <DayBarChart data={data.messages_by_day} valueKey="count" color="#eb6834" formatValue={d => `${d.count} ${d.count === 1 ? t("analytics.messageSingular") : t("analytics.messagePlural")}`} />
         </div>
 
         <div className="admin-card adm-chart-card">
           <div className="adm-chart-head">
-            <h3>New members{data.is_custom ? "" : `, last ${data.days} days`}</h3>
+            <h3>{t("analytics.newMembersHeading")}{data.is_custom ? "" : t("analytics.lastNDays", { days: data.days })}</h3>
             <span className="adm-chart-range">{fmtDay(data.new_customers_by_day[0].date)} – {fmtDay(data.new_customers_by_day.at(-1).date)}</span>
           </div>
-          <DayBarChart data={data.new_customers_by_day} valueKey="count" color={GREEN} formatValue={d => `${d.count} new member${d.count === 1 ? "" : "s"}`} />
+          <DayBarChart data={data.new_customers_by_day} valueKey="count" color={GREEN} formatValue={d => `${d.count} ${d.count === 1 ? t("analytics.newMemberSingular") : t("analytics.newMemberPlural")}`} />
         </div>
 
         <div className="admin-card adm-chart-card">
-          <div className="adm-chart-head"><h3>Booking status</h3></div>
+          <div className="adm-chart-head"><h3>{t("analytics.bookingStatus")}</h3></div>
           <BarList rows={statusRows} />
         </div>
 
         <div className="admin-card adm-chart-card">
-          <div className="adm-chart-head"><h3>Message status</h3></div>
+          <div className="adm-chart-head"><h3>{t("analytics.messageStatus")}</h3></div>
           <BarList rows={messageStatusRows} />
         </div>
 
         <div className="admin-card adm-chart-card">
-          <div className="adm-chart-head"><h3>Top products booked</h3></div>
+          <div className="adm-chart-head"><h3>{t("analytics.topProducts")}</h3></div>
           <BarList rows={productRows} />
         </div>
 
         <div className="admin-card adm-chart-card">
-          <div className="adm-chart-head"><h3>Top categories booked</h3></div>
+          <div className="adm-chart-head"><h3>{t("analytics.topCategories")}</h3></div>
           <BarList rows={categoryRows} />
         </div>
       </div>

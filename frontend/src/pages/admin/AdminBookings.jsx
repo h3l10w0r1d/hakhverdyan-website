@@ -2,17 +2,22 @@ import { Fragment, useEffect, useState } from "react";
 import { adminListQuotes, adminUpdateQuoteStatus, adminUpdateQuoteNote } from "../../lib/adminApi";
 import Select from "../../components/admin/Select";
 import { downloadCsv } from "../../lib/csvExport";
+import { useAdminT } from "../../context/AdminI18nContext";
 
-const STATUS_OPTIONS = [
-  { value: "new", label: "New" },
-  { value: "contacted", label: "Contacted" },
-  { value: "closed", label: "Closed" },
-];
-const STATUS_FILTER_OPTIONS = [{ value: "all", label: "All statuses" }, ...STATUS_OPTIONS];
 const fmt = n => n.toLocaleString("en-US") + "֏";
 const fmtDate = iso => new Date(iso).toLocaleString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
 
 export default function AdminBookings() {
+  const { t } = useAdminT();
+  const STATUS_OPTIONS = [
+    { value: "new", label: t("bookings.statusNew") },
+    { value: "contacted", label: t("bookings.statusContacted") },
+    { value: "closed", label: t("bookings.statusClosed") },
+  ];
+  const STATUS_FILTER_OPTIONS = [{ value: "all", label: t("bookings.allStatuses") }, ...STATUS_OPTIONS];
+  function statusLabel(status) {
+    return STATUS_OPTIONS.find(o => o.value === status)?.label || status;
+  }
   const [quotes, setQuotes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [openId, setOpenId] = useState(null);
@@ -79,28 +84,28 @@ export default function AdminBookings() {
   return (
     <div>
       <div className="admin-page-head">
-        <h1 className="admin-page-title">Bookings</h1>
-        <button className="admin-btn" onClick={exportCsv} disabled={filtered.length === 0}>Export CSV</button>
+        <h1 className="admin-page-title">{t("bookings.title")}</h1>
+        <button className="admin-btn" onClick={exportCsv} disabled={filtered.length === 0}>{t("common.exportCsv")}</button>
       </div>
 
       <div className="admin-search-row">
         <input
-          type="text" className="admin-search-input" placeholder="Search by name, email, or phone…"
+          type="text" className="admin-search-input" placeholder={t("bookings.searchPlaceholder")}
           value={search} onChange={e => setSearch(e.target.value)}
         />
         <Select className="adm-select-sm" value={statusFilter} onChange={setStatusFilter} options={STATUS_FILTER_OPTIONS} />
-        {(search || statusFilter !== "all") && <span className="admin-search-count">{filtered.length} of {quotes.length}</span>}
+        {(search || statusFilter !== "all") && <span className="admin-search-count">{t("bookings.countOf", { filtered: filtered.length, total: quotes.length })}</span>}
       </div>
 
       <div className="admin-card">
         {loading ? (
-          <div className="admin-empty">Loading…</div>
+          <div className="admin-empty">{t("common.loading")}</div>
         ) : filtered.length === 0 ? (
-          <div className="admin-empty">{quotes.length === 0 ? "No booking requests yet." : "No bookings match your search."}</div>
+          <div className="admin-empty">{quotes.length === 0 ? t("bookings.emptyState") : t("bookings.noMatch")}</div>
         ) : (
           <table className="admin-table">
             <thead>
-              <tr><th>Date</th><th>Customer</th><th>Items</th><th>Total</th><th>Status</th><th></th></tr>
+              <tr><th>{t("common.date")}</th><th>{t("bookings.colCustomer")}</th><th>{t("bookings.colItems")}</th><th>{t("bookings.colTotal")}</th><th>{t("common.status")}</th><th></th></tr>
             </thead>
             <tbody>
               {filtered.map(q => (
@@ -111,9 +116,9 @@ export default function AdminBookings() {
                       <div className="admin-table-title">{q.name}</div>
                       <div className="admin-table-sub">{q.email} · {q.phone}</div>
                     </td>
-                    <td>{q.items.length} item{q.items.length !== 1 ? "s" : ""}</td>
+                    <td>{q.items.length !== 1 ? t("bookings.itemsCountPlural", { count: q.items.length }) : t("bookings.itemsCountSingular", { count: q.items.length })}</td>
                     <td>{fmt(q.total)}</td>
-                    <td><span className={"admin-badge status-" + q.status}>{q.status}</span></td>
+                    <td><span className={"admin-badge status-" + q.status}>{statusLabel(q.status)}</span></td>
                     <td>{openId === q.id ? "▲" : "▼"}</td>
                   </tr>
                   {openId === q.id && (
@@ -128,26 +133,26 @@ export default function AdminBookings() {
                               </div>
                             ))}
                           </div>
-                          {q.note && <div className="admin-booking-note"><strong>Customer note:</strong> {q.note}</div>}
+                          {q.note && <div className="admin-booking-note"><strong>{t("bookings.customerNote")}</strong> {q.note}</div>}
 
                           <div className="admin-form-row">
                             <label className="quote-field">
-                              <span>Status</span>
+                              <span>{t("common.status")}</span>
                               <Select value={q.status} onChange={v => changeStatus(q.id, v)} options={STATUS_OPTIONS} />
                             </label>
                           </div>
 
                           <label className="quote-field">
-                            <span>Internal note</span>
+                            <span>{t("bookings.internalNoteLabel")}</span>
                             <textarea rows={2} value={noteDraft} onChange={e => setNoteDraft(e.target.value)} />
                           </label>
                           <button className="admin-btn admin-btn-sm" disabled={savingNote} onClick={() => saveNote(q.id)}>
-                            {savingNote ? "Saving…" : "Save note"}
+                            {savingNote ? t("common.saving") : t("bookings.saveNote")}
                           </button>
 
                           {q.confirmation_email && (
                             <div className="email-preview" style={{ marginTop: 14 }}>
-                              <div className="email-preview-label">Confirmation email sent</div>
+                              <div className="email-preview-label">{t("bookings.confirmationEmailSent")}</div>
                               <div className="email-preview-card">
                                 <div className="email-preview-subject">{q.confirmation_email.subject}</div>
                                 <div className="email-preview-body">{q.confirmation_email.body}</div>

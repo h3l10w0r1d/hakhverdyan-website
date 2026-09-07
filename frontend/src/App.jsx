@@ -8,12 +8,14 @@ import lazyWithReload from "./lib/lazyWithReload";
 import { QuoteCartProvider } from "./context/QuoteCartContext";
 import { ProductQuickViewProvider } from "./context/ProductQuickViewContext";
 import { AdminAuthProvider } from "./context/AdminAuthContext";
+import { AdminI18nProvider } from "./context/AdminI18nContext";
 import { CustomerAuthProvider } from "./context/CustomerAuthContext";
 import AdminLayout from "./components/admin/AdminLayout";
 import RequireAdmin from "./components/admin/RequireAdmin";
 
 const About = lazyWithReload(() => import("./pages/About"));
 const Catalog = lazyWithReload(() => import("./pages/Catalog"));
+const ProductDetail = lazyWithReload(() => import("./pages/ProductDetail"));
 const Services = lazyWithReload(() => import("./pages/Services"));
 const ServiceDetail = lazyWithReload(() => import("./pages/ServiceDetail"));
 const Contacts = lazyWithReload(() => import("./pages/Contacts"));
@@ -40,6 +42,7 @@ const AdminMemberDetail = lazyWithReload(() => import("./pages/admin/AdminMember
 export default function App() {
   return (
     <AdminAuthProvider>
+      <AdminI18nProvider>
       <CustomerAuthProvider>
         <QuoteCartProvider>
           <ProductQuickViewProvider>
@@ -71,6 +74,7 @@ export default function App() {
                       <Route path="/" element={<Home />} />
                       <Route path="/about" element={<About />} />
                       <Route path="/catalog" element={<Catalog />} />
+                      <Route path="/catalog/:id" element={<ProductDetail />} />
                       <Route path="/services" element={<Services />} />
                       <Route path="/services/:slug" element={<ServiceDetail />} />
                       <Route path="/contacts" element={<Contacts />} />
@@ -87,6 +91,7 @@ export default function App() {
           </ProductQuickViewProvider>
         </QuoteCartProvider>
       </CustomerAuthProvider>
+      </AdminI18nProvider>
     </AdminAuthProvider>
   );
 }

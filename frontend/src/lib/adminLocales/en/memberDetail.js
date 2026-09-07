@@ -1,0 +1,22 @@
+export default {
+  backToMembers: "← Members",
+  couldntLoad: "Couldn't load this member.",
+  notFound: "Member not found.",
+  statBookings: "Bookings",
+  statTotalBooked: "Total booked value",
+  statMessages: "Messages",
+  profileTitle: "Profile",
+  profileMemberSince: "Member since",
+  bookingsTitle: "Bookings ({{count}})",
+  bookingsEmpty: "No bookings yet.",
+  bookingLabel: "Booking #{{id}}",
+  bookingTotal: "Total: {{amount}}",
+  bookingNoteLabel: "Note:",
+  messagesTitle: "Messages ({{count}})",
+  messagesEmpty: "No messages yet.",
+  status: {
+    new: "new",
+    contacted: "contacted",
+    closed: "closed",
+  },
+};

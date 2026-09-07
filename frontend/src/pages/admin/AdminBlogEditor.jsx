@@ -4,6 +4,7 @@ import { adminListPosts, adminCreatePost, adminUpdatePost, adminDeletePost } fro
 import ImageDropzone from "../../components/admin/ImageDropzone";
 import { ArrowIcon, GearIcon, CloseIcon } from "../../lib/icons";
 import slugify from "../../lib/slugify";
+import { useAdminT } from "../../context/AdminI18nContext";
 
 const EMPTY = {
   slug: "", title: "", title_hy: "", excerpt: "", excerpt_hy: "",
@@ -25,6 +26,7 @@ function toLocalDatetime(iso) {
 }
 
 export default function AdminBlogEditor() {
+  const { t } = useAdminT();
   const { slug: editSlug } = useParams();
   const navigate = useNavigate();
   const isNew = !editSlug;
@@ -46,7 +48,7 @@ export default function AdminBlogEditor() {
     adminListPosts()
       .then(posts => {
         const p = posts.find(x => x.slug === editSlug);
-        if (!p) { setError("Post not found."); return; }
+        if (!p) { setError(t("blogEditor.postNotFound")); return; }
         setForm({
           slug: p.slug, title: p.title, title_hy: p.title_hy || "",
           excerpt: p.excerpt, excerpt_hy: p.excerpt_hy || "",
@@ -56,7 +58,7 @@ export default function AdminBlogEditor() {
           status: p.status, tags: p.tags || [],
         });
       })
-      .catch(() => setError("Couldn't load post."))
+      .catch(() => setError(t("blogEditor.couldntLoadPost")))
       .finally(() => setLoading(false));
   }, [editSlug, isNew]);
 
@@ -112,7 +114,7 @@ export default function AdminBlogEditor() {
       if (redirectAfter) navigate(`/admin/blog/${saved.slug}/edit`, { replace: true });
       return saved;
     } catch (err) {
-      setError(err.message || "Couldn't save post.");
+      setError(err.message || t("blogEditor.couldntSavePost"));
       throw err;
     } finally {
       setSaving(false);
@@ -139,24 +141,24 @@ export default function AdminBlogEditor() {
   }
 
   async function onRevertToDraft() {
-    if (!window.confirm("Revert this post to a draft? It will come down from the site.")) return;
+    if (!window.confirm(t("blogEditor.revertConfirm"))) return;
     try {
       await persist({ status: "draft" });
     } catch { /* error already set */ }
   }
 
   async function onDelete() {
-    if (!window.confirm(`Delete "${form.title}"? This can't be undone.`)) return;
+    if (!window.confirm(t("blogEditor.deleteConfirm", { title: form.title }))) return;
     try {
       await adminDeletePost(editSlug);
       navigate("/admin/blog");
     } catch (err) {
-      setError(err.message || "Couldn't delete post.");
+      setError(err.message || t("blogEditor.couldntDeletePost"));
     }
   }
 
   if (loading || !form) {
-    return <div className="ghost-editor"><div className="admin-empty">Loading…</div></div>;
+    return <div className="ghost-editor"><div className="admin-empty">{t("common.loading")}</div></div>;
   }
 
   const title = lang === "hy" ? form.title_hy : form.title;
@@ -167,11 +169,11 @@ export default function AdminBlogEditor() {
     <div className="ghost-editor">
       <header className="ghost-topbar">
         <button className="ghost-back" onClick={() => navigate("/admin/blog")}>
-          <ArrowIcon size={14} /> Posts
+          <ArrowIcon size={14} /> {t("blogEditor.backToPosts")}
         </button>
         <div className="ghost-topbar-center">
           <span className={"admin-badge status-" + (form.status === "published" ? "closed" : "new")}>
-            {form.status === "published" ? "Published" : "Draft"}
+            {form.status === "published" ? t("blogEditor.statusPublished") : t("blogEditor.statusDraft")}
           </span>
           <div className="ghost-lang-toggle">
             <button className={lang === "en" ? "active" : ""} onClick={() => setLang("en")} type="button">EN</button>
@@ -179,24 +181,24 @@ export default function AdminBlogEditor() {
           </div>
         </div>
         <div className="ghost-topbar-actions">
-          <button className="admin-btn" onClick={() => setSettingsOpen(true)} type="button" aria-label="Post settings">
+          <button className="admin-btn" onClick={() => setSettingsOpen(true)} type="button" aria-label={t("blogEditor.postSettings")}>
             <GearIcon size={16} />
           </button>
           {!isNew && (
             <button className="admin-btn" onClick={onSaveDraft} disabled={saving} type="button">
-              {saving ? "Saving…" : "Save"}
+              {saving ? t("common.saving") : t("common.save")}
             </button>
           )}
           {form.status === "published" ? (
             <>
-              <button className="admin-btn" onClick={onRevertToDraft} disabled={saving} type="button">Revert to draft</button>
+              <button className="admin-btn" onClick={onRevertToDraft} disabled={saving} type="button">{t("blogEditor.revertToDraft")}</button>
               <button className="admin-btn admin-btn-primary" onClick={onUpdate} disabled={saving} type="button">
-                {saving ? "Updating…" : "Update"}
+                {saving ? t("blogEditor.updating") : t("blogEditor.update")}
               </button>
             </>
           ) : (
             <button className="admin-btn admin-btn-primary" onClick={() => setPublishOpen(true)} disabled={saving} type="button">
-              Publish
+              {t("blogEditor.publish")}
             </button>
           )}
         </div>
@@ -208,34 +210,34 @@ export default function AdminBlogEditor() {
         <input
           ref={titleRef}
           className="ghost-title-input"
-          placeholder="Post title"
+          placeholder={t("blogEditor.postTitlePlaceholder")}
           value={title}
           onChange={e => onTitleChange(e.target.value)}
         />
         <textarea
           className="ghost-content-input"
-          placeholder="Begin writing your post…"
+          placeholder={t("blogEditor.bodyPlaceholder")}
           value={content}
           onChange={e => updateField(contentField, e.target.value)}
         />
-        <div className="ghost-content-hint">Separate paragraphs with a blank line.</div>
+        <div className="ghost-content-hint">{t("blogEditor.paragraphHint")}</div>
       </div>
 
       {settingsOpen && (
         <div className="ghost-settings-backdrop" onClick={e => { if (e.target === e.currentTarget) setSettingsOpen(false); }}>
           <aside className="ghost-settings-panel">
             <div className="ghost-settings-head">
-              <h2>Post settings</h2>
+              <h2>{t("blogEditor.postSettings")}</h2>
               <button className="admin-modal-close" onClick={() => setSettingsOpen(false)} type="button"><CloseIcon size={16} /></button>
             </div>
             <div className="ghost-settings-body">
               <label className="quote-field">
-                <span>Feature image</span>
+                <span>{t("blogEditor.featureImage")}</span>
                 <ImageDropzone value={form.cover_url} onChange={img => updateField("cover_url", img)} />
               </label>
 
               <label className="quote-field">
-                <span>URL</span>
+                <span>{t("blogEditor.urlLabel")}</span>
                 {isNew ? (
                   <input
                     value={form.slug}
@@ -249,33 +251,33 @@ export default function AdminBlogEditor() {
 
               <div className="admin-form-row">
                 <label className="quote-field">
-                  <span>Excerpt (EN)</span>
+                  <span>{t("blogEditor.excerptEn")}</span>
                   <textarea rows={2} value={form.excerpt} onChange={e => updateField("excerpt", e.target.value)} />
                 </label>
                 <label className="quote-field">
-                  <span>Excerpt (HY)</span>
+                  <span>{t("blogEditor.excerptHy")}</span>
                   <textarea rows={2} value={form.excerpt_hy} onChange={e => updateField("excerpt_hy", e.target.value)} />
                 </label>
               </div>
 
               <div className="admin-form-row">
                 <label className="quote-field">
-                  <span>Category (EN)</span>
+                  <span>{t("blogEditor.categoryEn")}</span>
                   <input value={form.category} onChange={e => updateField("category", e.target.value)} required />
                 </label>
                 <label className="quote-field">
-                  <span>Category (HY)</span>
+                  <span>{t("blogEditor.categoryHy")}</span>
                   <input value={form.category_hy} onChange={e => updateField("category_hy", e.target.value)} />
                 </label>
               </div>
 
               <label className="quote-field">
-                <span>Tags</span>
+                <span>{t("blogEditor.tagsLabel")}</span>
                 <div className="ghost-tags-input">
-                  {form.tags.map(t => (
-                    <span key={t} className="ghost-tag-pill">
-                      {t}
-                      <button type="button" onClick={() => removeTag(t)} aria-label={`Remove ${t}`}>×</button>
+                  {form.tags.map(tag => (
+                    <span key={tag} className="ghost-tag-pill">
+                      {tag}
+                      <button type="button" onClick={() => removeTag(tag)} aria-label={t("blogEditor.removeTagAria", { tag })}>×</button>
                     </span>
                   ))}
                   <input
@@ -286,18 +288,18 @@ export default function AdminBlogEditor() {
                       else if (e.key === "Backspace" && !tagInput && form.tags.length) removeTag(form.tags[form.tags.length - 1]);
                     }}
                     onBlur={addTag}
-                    placeholder={form.tags.length ? "" : "Add a tag…"}
+                    placeholder={form.tags.length ? "" : t("blogEditor.addTagPlaceholder")}
                   />
                 </div>
               </label>
 
               <label className="quote-field">
-                <span>Published date</span>
+                <span>{t("blogEditor.publishedDateLabel")}</span>
                 <input type="datetime-local" value={form.published_at} onChange={e => updateField("published_at", e.target.value)} />
               </label>
 
               {!isNew && (
-                <button type="button" className="admin-btn admin-btn-danger" onClick={onDelete}>Delete post</button>
+                <button type="button" className="admin-btn admin-btn-danger" onClick={onDelete}>{t("blogEditor.deletePostButton")}</button>
               )}
             </div>
           </aside>
@@ -308,22 +310,22 @@ export default function AdminBlogEditor() {
         <div className="admin-modal-backdrop" onClick={e => { if (e.target === e.currentTarget) setPublishOpen(false); }}>
           <div className="admin-modal ghost-publish-modal">
             <div className="admin-modal-head">
-              <h2>Ready, set, publish!</h2>
+              <h2>{t("blogEditor.publishModalHeading")}</h2>
               <button type="button" className="admin-modal-close" onClick={() => setPublishOpen(false)}><CloseIcon size={16} /></button>
             </div>
             <div className="admin-modal-body">
               <p className="ghost-publish-summary">
-                <strong>{form.title || "Untitled post"}</strong> will be published to the site.
+                <strong>{form.title || t("blogEditor.untitledPost")}</strong> {t("blogEditor.willBePublished")}
               </p>
               <label className="quote-field">
-                <span>Published date</span>
+                <span>{t("blogEditor.publishedDateLabel")}</span>
                 <input type="datetime-local" value={form.published_at} onChange={e => updateField("published_at", e.target.value)} />
               </label>
             </div>
             <div className="admin-modal-foot">
-              <button type="button" className="admin-btn" onClick={() => setPublishOpen(false)}>Cancel</button>
+              <button type="button" className="admin-btn" onClick={() => setPublishOpen(false)}>{t("common.cancel")}</button>
               <button type="button" className="admin-btn admin-btn-primary" onClick={onConfirmPublish} disabled={saving}>
-                {saving ? "Publishing…" : "Publish now"}
+                {saving ? t("blogEditor.publishing") : t("blogEditor.publishNow")}
               </button>
             </div>
           </div>

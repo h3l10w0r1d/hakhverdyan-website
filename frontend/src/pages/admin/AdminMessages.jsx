@@ -2,16 +2,18 @@ import { useEffect, useState } from "react";
 import { adminListMessages, adminUpdateMessageStatus } from "../../lib/adminApi";
 import Select from "../../components/admin/Select";
 import { downloadCsv } from "../../lib/csvExport";
+import { useAdminT } from "../../context/AdminI18nContext";
 
-const STATUS_OPTIONS = [
-  { value: "new", label: "New" },
-  { value: "replied", label: "Replied" },
-  { value: "spam", label: "Spam" },
-];
-const STATUS_FILTER_OPTIONS = [{ value: "all", label: "All statuses" }, ...STATUS_OPTIONS];
 const fmtDate = iso => new Date(iso).toLocaleString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
 
 export default function AdminMessages() {
+  const { t } = useAdminT();
+  const STATUS_OPTIONS = [
+    { value: "new", label: t("messages.statusNew") },
+    { value: "replied", label: t("messages.statusReplied") },
+    { value: "spam", label: t("messages.statusSpam") },
+  ];
+  const STATUS_FILTER_OPTIONS = [{ value: "all", label: t("messages.allStatuses") }, ...STATUS_OPTIONS];
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -59,28 +61,28 @@ export default function AdminMessages() {
   return (
     <div>
       <div className="admin-page-head">
-        <h1 className="admin-page-title">Messages</h1>
-        <button className="admin-btn" onClick={exportCsv} disabled={filtered.length === 0}>Export CSV</button>
+        <h1 className="admin-page-title">{t("messages.title")}</h1>
+        <button className="admin-btn" onClick={exportCsv} disabled={filtered.length === 0}>{t("common.exportCsv")}</button>
       </div>
 
       <div className="admin-search-row">
         <input
-          type="text" className="admin-search-input" placeholder="Search by name, contact, or message…"
+          type="text" className="admin-search-input" placeholder={t("messages.searchPlaceholder")}
           value={search} onChange={e => setSearch(e.target.value)}
         />
         <Select className="adm-select-sm" value={statusFilter} onChange={setStatusFilter} options={STATUS_FILTER_OPTIONS} />
-        {(search || statusFilter !== "all") && <span className="admin-search-count">{filtered.length} of {messages.length}</span>}
+        {(search || statusFilter !== "all") && <span className="admin-search-count">{t("messages.countOf", { filtered: filtered.length, total: messages.length })}</span>}
       </div>
 
       <div className="admin-card">
         {loading ? (
-          <div className="admin-empty">Loading…</div>
+          <div className="admin-empty">{t("common.loading")}</div>
         ) : filtered.length === 0 ? (
-          <div className="admin-empty">{messages.length === 0 ? "No contact messages yet." : "No messages match your search."}</div>
+          <div className="admin-empty">{messages.length === 0 ? t("messages.emptyState") : t("messages.noMatch")}</div>
         ) : (
           <table className="admin-table">
             <thead>
-              <tr><th>Date</th><th>From</th><th>Message</th><th>Status</th></tr>
+              <tr><th>{t("common.date")}</th><th>{t("messages.colFrom")}</th><th>{t("messages.colMessage")}</th><th>{t("common.status")}</th></tr>
             </thead>
             <tbody>
               {filtered.map(m => (

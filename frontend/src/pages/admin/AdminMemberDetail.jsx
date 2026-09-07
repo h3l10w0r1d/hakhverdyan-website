@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { adminGetCustomer } from "../../lib/adminApi";
 import { ArrowIcon } from "../../lib/icons";
+import { useAdminT } from "../../context/AdminI18nContext";
 
 const fmt = n => n.toLocaleString("en-US") + "֏";
 const fmtDate = iso => new Date(iso).toLocaleString("en-US", { month: "short", day: "numeric", year: "numeric", hour: "2-digit", minute: "2-digit" });
 
 export default function AdminMemberDetail() {
+  const { t } = useAdminT();
   const { id } = useParams();
   const navigate = useNavigate();
   const [member, setMember] = useState(null);
@@ -15,18 +17,18 @@ export default function AdminMemberDetail() {
 
   useEffect(() => {
     setLoading(true);
-    adminGetCustomer(id).then(setMember).catch(() => setError("Couldn't load this member.")).finally(() => setLoading(false));
+    adminGetCustomer(id).then(setMember).catch(() => setError(t("memberDetail.couldntLoad"))).finally(() => setLoading(false));
   }, [id]);
 
-  if (loading) return <div className="admin-empty">Loading…</div>;
-  if (error || !member) return <div className="admin-error-banner">{error || "Member not found."}</div>;
+  if (loading) return <div className="admin-empty">{t("common.loading")}</div>;
+  if (error || !member) return <div className="admin-error-banner">{error || t("memberDetail.notFound")}</div>;
 
   const totalSpent = member.quotes.reduce((sum, q) => sum + q.total, 0);
 
   return (
     <div>
       <button type="button" className="ghost-back admin-editor-back" onClick={() => navigate("/admin/members")}>
-        ← Members
+        {t("memberDetail.backToMembers")}
       </button>
 
       <div className="admin-page-head" style={{ marginTop: 6 }}>
@@ -36,38 +38,38 @@ export default function AdminMemberDetail() {
       <div className="admin-stat-grid" style={{ marginBottom: 24 }}>
         <div className="admin-stat-card">
           <div className="admin-stat-value">{member.bookings_count}</div>
-          <div className="admin-stat-label">Bookings</div>
+          <div className="admin-stat-label">{t("memberDetail.statBookings")}</div>
         </div>
         <div className="admin-stat-card">
           <div className="admin-stat-value">{fmt(totalSpent)}</div>
-          <div className="admin-stat-label">Total booked value</div>
+          <div className="admin-stat-label">{t("memberDetail.statTotalBooked")}</div>
         </div>
         <div className="admin-stat-card">
           <div className="admin-stat-value">{member.messages_count}</div>
-          <div className="admin-stat-label">Messages</div>
+          <div className="admin-stat-label">{t("memberDetail.statMessages")}</div>
         </div>
       </div>
 
       <div className="admin-card admin-settings-card" style={{ marginBottom: 20 }}>
-        <h2 className="admin-card-title">Profile</h2>
+        <h2 className="admin-card-title">{t("memberDetail.profileTitle")}</h2>
         <div className="admin-member-profile">
-          <div><span className="admin-table-sub">Email</span><div>{member.email}</div></div>
-          <div><span className="admin-table-sub">Phone</span><div>{member.phone || "—"}</div></div>
-          <div><span className="admin-table-sub">Member since</span><div>{fmtDate(member.created_at)}</div></div>
+          <div><span className="admin-table-sub">{t("common.email")}</span><div>{member.email}</div></div>
+          <div><span className="admin-table-sub">{t("common.phone")}</span><div>{member.phone || "—"}</div></div>
+          <div><span className="admin-table-sub">{t("memberDetail.profileMemberSince")}</span><div>{fmtDate(member.created_at)}</div></div>
         </div>
       </div>
 
       <div className="admin-card admin-settings-card" style={{ marginBottom: 20 }}>
-        <h2 className="admin-card-title">Bookings ({member.quotes.length})</h2>
+        <h2 className="admin-card-title">{t("memberDetail.bookingsTitle", { count: member.quotes.length })}</h2>
         {member.quotes.length === 0 ? (
-          <div className="admin-empty">No bookings yet.</div>
+          <div className="admin-empty">{t("memberDetail.bookingsEmpty")}</div>
         ) : (
           <div className="admin-member-list">
             {member.quotes.map(q => (
               <div key={q.id} className="admin-member-row">
                 <div className="admin-member-row-head">
-                  <span className="admin-table-title">Booking #{q.id}</span>
-                  <span className={"admin-badge status-" + q.status}>{q.status}</span>
+                  <span className="admin-table-title">{t("memberDetail.bookingLabel", { id: q.id })}</span>
+                  <span className={"admin-badge status-" + q.status}>{t(`memberDetail.status.${q.status}`)}</span>
                   <span className="admin-table-sub">{fmtDate(q.created_at)}</span>
                 </div>
                 <div className="admin-booking-items">
@@ -78,8 +80,8 @@ export default function AdminMemberDetail() {
                     </div>
                   ))}
                 </div>
-                <div className="admin-member-row-total">Total: {fmt(q.total)}</div>
-                {q.note && <div className="admin-booking-note"><strong>Note:</strong> {q.note}</div>}
+                <div className="admin-member-row-total">{t("memberDetail.bookingTotal", { amount: fmt(q.total) })}</div>
+                {q.note && <div className="admin-booking-note"><strong>{t("memberDetail.bookingNoteLabel")}</strong> {q.note}</div>}
               </div>
             ))}
           </div>
@@ -87,9 +89,9 @@ export default function AdminMemberDetail() {
       </div>
 
       <div className="admin-card admin-settings-card">
-        <h2 className="admin-card-title">Messages ({member.messages.length})</h2>
+        <h2 className="admin-card-title">{t("memberDetail.messagesTitle", { count: member.messages.length })}</h2>
         {member.messages.length === 0 ? (
-          <div className="admin-empty">No messages yet.</div>
+          <div className="admin-empty">{t("memberDetail.messagesEmpty")}</div>
         ) : (
           <div className="admin-member-list">
             {member.messages.map(m => (

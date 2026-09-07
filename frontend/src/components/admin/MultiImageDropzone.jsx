@@ -2,11 +2,13 @@ import { useRef, useState } from "react";
 import { resizeToDataUrl } from "../../lib/resizeImage";
 import useDragReorder from "../../lib/useDragReorder";
 import DragHandleIcon from "./DragHandleIcon";
+import { useAdminT } from "../../context/AdminI18nContext";
 
 // Manages an ordered list of product photos: add (click or drag-drop, multiple
 // files at once), remove, and drag-to-reorder thumbnails. `value` is an array
 // of image URLs/data-URIs; `onChange(nextArray)` fires on every change.
 export default function MultiImageDropzone({ value, onChange }) {
+  const { t } = useAdminT();
   const images = value || [];
   const [dragging, setDragging] = useState(false);
   const [error, setError] = useState("");
@@ -17,7 +19,7 @@ export default function MultiImageDropzone({ value, onChange }) {
   async function handleFiles(files) {
     const list = Array.from(files || []).filter(f => f.type.startsWith("image/"));
     if (!list.length) {
-      setError("Please choose an image file.");
+      setError(t("imageDropzone.chooseImageFile"));
       return;
     }
     setError("");
@@ -27,7 +29,7 @@ export default function MultiImageDropzone({ value, onChange }) {
       // finishes resizing must not overwrite it with a stale base array.
       onChange(prev => [...(prev || []), ...dataUrls]);
     } catch {
-      setError("Couldn't read that image — try another file.");
+      setError(t("imageDropzone.couldntReadImage"));
     }
   }
 
@@ -59,10 +61,10 @@ export default function MultiImageDropzone({ value, onChange }) {
               onDrop={onDrop}
               onDragEnd={onDragEnd}
             >
-              <span className="adm-multi-image-handle" title="Drag to reorder"><DragHandleIcon /></span>
+              <span className="adm-multi-image-handle" title={t("imageDropzone.dragToReorder")}><DragHandleIcon /></span>
               <img src={url} alt={`Photo ${i + 1}`} />
-              {i === 0 && <span className="adm-multi-image-primary">Primary</span>}
-              <button type="button" className="adm-multi-image-remove" onClick={() => removeAt(i)} aria-label="Remove photo">×</button>
+              {i === 0 && <span className="adm-multi-image-primary">{t("imageDropzone.primary")}</span>}
+              <button type="button" className="adm-multi-image-remove" onClick={() => removeAt(i)} aria-label={t("imageDropzone.removePhoto")}>×</button>
             </div>
           ))}
         </div>
@@ -80,8 +82,8 @@ export default function MultiImageDropzone({ value, onChange }) {
           <path d="M12 16V4M12 4l-4 4M12 4l4 4" />
           <path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" />
         </svg>
-        <div className="adm-dropzone-text"><strong>Click to upload</strong> or drag and drop</div>
-        <div className="adm-dropzone-sub">PNG or JPG — multiple allowed</div>
+        <div className="adm-dropzone-text"><strong>{t("imageDropzone.clickToUpload")}</strong> {t("imageDropzone.orDragDrop")}</div>
+        <div className="adm-dropzone-sub">{t("imageDropzone.pngOrJpgMultiple")}</div>
       </div>
       <input
         ref={inputRef} type="file" accept="image/*" multiple style={{ display: "none" }}

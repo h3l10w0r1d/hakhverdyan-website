@@ -1,0 +1,16 @@
+export default {
+  title: "Blog",
+  newPost: "+ New post",
+  tabAll: "All",
+  tabDrafts: "Drafts",
+  tabPublished: "Published",
+  searchPlaceholder: "Search by title, slug, or tag…",
+  searchCount: "{{filtered}} of {{total}}",
+  emptyNone: "No posts yet.",
+  emptyNoMatch: "No posts match.",
+  statusPublished: "Published",
+  statusDraft: "Draft",
+  deleteConfirm: "Delete \"{{title}}\"? This can't be undone.",
+  couldntLoadPosts: "Couldn't load posts.",
+  couldntDeletePost: "Couldn't delete post.",
+};

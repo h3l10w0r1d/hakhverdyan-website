@@ -1,11 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-
-const WEEKDAYS = ["M", "T", "W", "T", "F", "S", "S"];
-const MONTH_NAMES = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December",
-];
+import { useAdminT } from "../../context/AdminI18nContext";
 
 const pad = n => String(n).padStart(2, "0");
 const toIso = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
@@ -14,7 +9,7 @@ const fromIso = iso => {
   return new Date(y, m - 1, d);
 };
 const stripTime = d => new Date(d.getFullYear(), d.getMonth(), d.getDate());
-const fmtLabel = iso => (iso ? fromIso(iso).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "");
+const fmtLabel = (iso, locale) => (iso ? fromIso(iso).toLocaleDateString(locale, { month: "short", day: "numeric", year: "numeric" }) : "");
 
 function buildGrid(year, month) {
   const first = new Date(year, month, 1);
@@ -28,6 +23,10 @@ function buildGrid(year, month) {
 }
 
 export default function DatePicker({ value, onChange, min, max, className = "" }) {
+  const { t } = useAdminT();
+  const WEEKDAYS = t("datepicker.weekdays");
+  const MONTH_NAMES = t("datepicker.months");
+  const locale = t("datepicker.locale");
   const [open, setOpen] = useState(false);
   const [pos, setPos] = useState(null);
   const [viewDate, setViewDate] = useState(() => stripTime(value ? fromIso(value) : new Date()));
@@ -95,7 +94,7 @@ export default function DatePicker({ value, onChange, min, max, className = "" }
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <rect x="3" y="5" width="18" height="16" rx="2" /><path d="M3 10h18M8 3v4M16 3v4" />
         </svg>
-        <span>{fmtLabel(value)}</span>
+        <span>{fmtLabel(value, locale)}</span>
       </button>
 
       {createPortal(
@@ -105,11 +104,11 @@ export default function DatePicker({ value, onChange, min, max, className = "" }
           style={pos ? { top: pos.top, left: pos.left } : undefined}
         >
           <div className="adm-datepicker-head">
-            <button type="button" className="adm-datepicker-nav" onClick={() => setViewDate(new Date(year, month - 1, 1))} aria-label="Previous month">
+            <button type="button" className="adm-datepicker-nav" onClick={() => setViewDate(new Date(year, month - 1, 1))} aria-label={t("datepicker.previousMonth")}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M15 6l-6 6 6 6" /></svg>
             </button>
             <span className="adm-datepicker-title">{MONTH_NAMES[month]} {year}</span>
-            <button type="button" className="adm-datepicker-nav" onClick={() => setViewDate(new Date(year, month + 1, 1))} aria-label="Next month">
+            <button type="button" className="adm-datepicker-nav" onClick={() => setViewDate(new Date(year, month + 1, 1))} aria-label={t("datepicker.nextMonth")}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M9 6l6 6-6 6" /></svg>
             </button>
           </div>
@@ -139,7 +138,7 @@ export default function DatePicker({ value, onChange, min, max, className = "" }
           </div>
           <div className="adm-datepicker-foot">
             <button type="button" className="adm-datepicker-today" disabled={isDisabled(today)} onClick={() => selectDay(today)}>
-              Today
+              {t("datepicker.today")}
             </button>
           </div>
         </div>,

@@ -1,0 +1,16 @@
+export default {
+  title: "Блог",
+  newPost: "+ Новая статья",
+  tabAll: "Все",
+  tabDrafts: "Черновики",
+  tabPublished: "Опубликованные",
+  searchPlaceholder: "Поиск по заголовку, URL-адресу или тегу…",
+  searchCount: "{{filtered}} из {{total}}",
+  emptyNone: "Пока нет статей.",
+  emptyNoMatch: "Нет подходящих статей.",
+  statusPublished: "Опубликовано",
+  statusDraft: "Черновик",
+  deleteConfirm: "Удалить статью «{{title}}»? Это действие нельзя отменить.",
+  couldntLoadPosts: "Не удалось загрузить статьи.",
+  couldntDeletePost: "Не удалось удалить статью.",
+};
