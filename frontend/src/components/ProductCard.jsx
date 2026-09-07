@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useQuoteCart } from "../context/QuoteCartContext";
 import { useProductQuickView } from "../context/ProductQuickViewContext";
@@ -12,8 +13,9 @@ const INTERACTIVE_SELECTOR = ".qty-stepper, .add-quote-btn";
 export default function ProductCard({ product, reveal = true }) {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage;
+  const navigate = useNavigate();
   const { addItem } = useQuoteCart();
-  const { openQuickView, hoverIntent, cancelHoverIntent } = useProductQuickView();
+  const { hoverIntent, cancelHoverIntent } = useProductQuickView();
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
   const thumbRef = useRef(null);
@@ -26,9 +28,12 @@ export default function ProductCard({ product, reveal = true }) {
     setTimeout(() => setAdded(false), 1100);
   }
 
+  // A click opens the product's own page (real URL, shareable, indexable);
+  // the hover-intent preview above still gives desktop users a fast peek
+  // without leaving the grid.
   function handleCardClick(e) {
     if (e.target.closest(INTERACTIVE_SELECTOR)) return;
-    openQuickView(product);
+    navigate(`/catalog/${product.id}`);
   }
 
   const name = localized(product, "name", lang);

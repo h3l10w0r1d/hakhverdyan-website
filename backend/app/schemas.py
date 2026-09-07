@@ -56,6 +56,12 @@ class ProductIn(BaseModel):
     unit: str = Field(..., min_length=1, max_length=20)
     badge: str = "In stock"
     badge_hy: Optional[str] = None
+    seo_title: Optional[str] = Field(None, max_length=300)
+    seo_title_hy: Optional[str] = Field(None, max_length=300)
+    seo_title_ru: Optional[str] = Field(None, max_length=300)
+    seo_description: Optional[str] = Field(None, max_length=500)
+    seo_description_hy: Optional[str] = Field(None, max_length=500)
+    seo_description_ru: Optional[str] = Field(None, max_length=500)
     is_promo: bool = False
     icon: str = "box"
     stock_qty: Optional[int] = Field(None, ge=0)
@@ -75,6 +81,12 @@ class ProductUpdate(BaseModel):
     unit: Optional[str] = Field(None, min_length=1, max_length=20)
     badge: Optional[str] = None
     badge_hy: Optional[str] = None
+    seo_title: Optional[str] = Field(None, max_length=300)
+    seo_title_hy: Optional[str] = Field(None, max_length=300)
+    seo_title_ru: Optional[str] = Field(None, max_length=300)
+    seo_description: Optional[str] = Field(None, max_length=500)
+    seo_description_hy: Optional[str] = Field(None, max_length=500)
+    seo_description_ru: Optional[str] = Field(None, max_length=500)
     is_promo: Optional[bool] = None
     icon: Optional[str] = None
     stock_qty: Optional[int] = Field(None, ge=0)
@@ -103,6 +115,12 @@ class ProductOut(BaseModel):
     unit: str
     badge: str
     badge_hy: Optional[str] = None
+    seo_title: Optional[str] = None
+    seo_title_hy: Optional[str] = None
+    seo_title_ru: Optional[str] = None
+    seo_description: Optional[str] = None
+    seo_description_hy: Optional[str] = None
+    seo_description_ru: Optional[str] = None
     is_promo: bool
     icon: str
     image: Optional[str] = None

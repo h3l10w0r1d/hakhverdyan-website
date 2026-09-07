@@ -56,6 +56,14 @@ class Product(Base):
     unit: Mapped[str] = mapped_column(String, nullable=False)
     badge: Mapped[str] = mapped_column(String, nullable=False, default="In stock")
     badge_hy: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+    # Meta title/description for the product's own page, in all three site
+    # languages. Optional — the page falls back to name/spec when blank.
+    seo_title: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+    seo_title_hy: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+    seo_title_ru: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+    seo_description: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+    seo_description_hy: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+    seo_description_ru: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     is_promo: Mapped[bool] = mapped_column(Boolean, default=False)
     icon: Mapped[str] = mapped_column(String, nullable=False, default="box")
     image: Mapped[Optional[str]] = mapped_column(String, nullable=True)

@@ -235,7 +235,11 @@
     "noResultsTitle": "No products match that search.",
     "noResultsDesc": "Try a different keyword or clear the category filter.",
     "finalCtaTitle": "Can't find a spec you need?",
-    "finalCtaDesc": "Call +374 60 770 700 or send your drawings — we source most items on request."
+    "finalCtaDesc": "Call +374 60 770 700 or send your drawings — we source most items on request.",
+    "backToCatalog": "Back to catalog",
+    "productNotFoundTitle": "That product doesn't exist.",
+    "productNotFoundDesc": "It may have been removed or is out of stock.",
+    "moreLikeThis": "More from {{category}}"
   },
   "services": {
     "tag": "Services",

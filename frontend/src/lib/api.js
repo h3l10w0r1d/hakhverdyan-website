@@ -22,6 +22,10 @@ export function fetchProducts({ category, q } = {}) {
   return request(`/api/products${qs ? `?${qs}` : ""}`);
 }
 
+export function fetchProduct(id) {
+  return request(`/api/products/${id}`);
+}
+
 export function submitQuote(payload) {
   const token = getCustomerToken();
   return request("/api/quotes", {
