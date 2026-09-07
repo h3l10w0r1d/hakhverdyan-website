@@ -10,7 +10,77 @@ import Select from "../components/admin/Select";
 import { fetchProducts, fetchCategories } from "../lib/api";
 import { localized } from "../lib/localized";
 import { useQuoteCart } from "../context/QuoteCartContext";
-import { ArrowIcon, SearchIcon, GlobeIcon, WrenchIcon, ClockIcon, CategoryIcon } from "../lib/icons";
+import { ArrowIcon, SearchIcon, GlobeIcon, WrenchIcon, ClockIcon, CategoryIcon, FilterIcon, CloseIcon } from "../lib/icons";
+
+// Filters shared by both the category counts and the final product list — every
+// facet except category itself, so a category's count reflects "how many would
+// match if I also picked this category", the standard e-commerce facet behavior.
+function applyCommonFilters(products, { search, priceMin, priceMax, onSaleOnly, lang }) {
+  let list = products;
+  if (search.trim()) {
+    const needle = search.trim().toLowerCase();
+    list = list.filter(p =>
+      localized(p, "name", lang).toLowerCase().includes(needle) ||
+      localized(p, "spec", lang).toLowerCase().includes(needle)
+    );
+  }
+  if (priceMin !== "") list = list.filter(p => p.price >= Number(priceMin));
+  if (priceMax !== "") list = list.filter(p => p.price <= Number(priceMax));
+  if (onSaleOnly) list = list.filter(p => p.is_promo);
+  return list;
+}
+
+function FilterPanel({
+  t, lang, categories, categoryCounts, selectedCategories, toggleCategory,
+  priceMin, priceMax, setPriceMin, setPriceMax, priceBounds, onSaleOnly, setOnSaleOnly,
+  hasActiveFilters, onClear,
+}) {
+  return (
+    <>
+      <div className="filter-group">
+        <h3 className="filter-group-title">{t("catalog.filterCategory")}</h3>
+        <div className="filter-checklist">
+          {categories.map(c => (
+            <label className="filter-checkbox" key={c.id}>
+              <input type="checkbox" checked={selectedCategories.includes(c.id)} onChange={() => toggleCategory(c.id)} />
+              <CategoryIcon id={c.id} size={16} />
+              <span>{localized(c, "label", lang)}</span>
+              <span className="filter-count">{categoryCounts[c.id] || 0}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      <div className="filter-group">
+        <h3 className="filter-group-title">{t("catalog.filterPrice")}</h3>
+        <div className="price-range-row">
+          <input
+            type="number" min="0" inputMode="numeric"
+            placeholder={priceBounds ? String(priceBounds.min) : t("catalog.priceMin")}
+            value={priceMin} onChange={e => setPriceMin(e.target.value)}
+          />
+          <span className="price-range-sep">–</span>
+          <input
+            type="number" min="0" inputMode="numeric"
+            placeholder={priceBounds ? String(priceBounds.max) : t("catalog.priceMax")}
+            value={priceMax} onChange={e => setPriceMax(e.target.value)}
+          />
+        </div>
+      </div>
+
+      <div className="filter-group">
+        <label className="filter-checkbox">
+          <input type="checkbox" checked={onSaleOnly} onChange={e => setOnSaleOnly(e.target.checked)} />
+          <span>{t("catalog.filterOnSale")}</span>
+        </label>
+      </div>
+
+      {hasActiveFilters && (
+        <button type="button" className="filter-clear-btn" onClick={onClear}>{t("catalog.clearFilters")}</button>
+      )}
+    </>
+  );
+}
 
 export default function Catalog() {
   const { t, i18n } = useTranslation();
@@ -21,15 +91,17 @@ export default function Catalog() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState([]);
-  const [activeTab, setActiveTab] = useState(searchParams.get("cat") || "all");
+  const [selectedCategories, setSelectedCategories] = useState(() => {
+    const cat = searchParams.get("cat");
+    return cat ? cat.split(",").filter(Boolean) : [];
+  });
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("default");
+  const [priceMin, setPriceMin] = useState("");
+  const [priceMax, setPriceMax] = useState("");
+  const [onSaleOnly, setOnSaleOnly] = useState(false);
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const finalCtaRef = useRef(null);
-
-  const TABS = [
-    { key: "all", label: t("catalog.tabAll") },
-    ...categories.map(c => ({ key: c.id, label: localized(c, "label", lang) })),
-  ];
 
   useEffect(() => {
     setLoading(true);
@@ -44,32 +116,61 @@ export default function Catalog() {
   }, []);
 
   useEffect(() => {
-    const cat = searchParams.get("cat");
-    if (cat && (cat === "all" || categories.some(c => c.id === cat))) setActiveTab(cat);
+    setSearchParams(selectedCategories.length ? { cat: selectedCategories.join(",") } : {}, { replace: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams, categories]);
+  }, [selectedCategories]);
 
-  function selectTab(key) {
-    setActiveTab(key);
-    setSearchParams(key === "all" ? {} : { cat: key });
+  useEffect(() => {
+    document.body.style.overflow = mobileFiltersOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [mobileFiltersOpen]);
+
+  useEffect(() => {
+    function onKey(e) { if (e.key === "Escape") setMobileFiltersOpen(false); }
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, []);
+
+  function toggleCategory(id) {
+    setSelectedCategories(prev => prev.includes(id) ? prev.filter(c => c !== id) : [...prev, id]);
   }
 
+  function clearFilters() {
+    setSelectedCategories([]);
+    setPriceMin("");
+    setPriceMax("");
+    setOnSaleOnly(false);
+  }
+
+  const priceBounds = useMemo(() => {
+    if (!products.length) return null;
+    const prices = products.map(p => p.price);
+    return { min: Math.min(...prices), max: Math.max(...prices) };
+  }, [products]);
+
+  const commonFiltered = useMemo(
+    () => applyCommonFilters(products, { search, priceMin, priceMax, onSaleOnly, lang }),
+    [products, search, priceMin, priceMax, onSaleOnly, lang]
+  );
+
+  const categoryCounts = useMemo(() => {
+    const counts = {};
+    categories.forEach(c => { counts[c.id] = commonFiltered.filter(p => p.category === c.id).length; });
+    return counts;
+  }, [commonFiltered, categories]);
+
   const visible = useMemo(() => {
-    let list = products;
-    if (activeTab !== "all") list = list.filter(p => p.category === activeTab);
-    if (search.trim()) {
-      const needle = search.trim().toLowerCase();
-      list = list.filter(p =>
-        localized(p, "name", lang).toLowerCase().includes(needle) ||
-        localized(p, "spec", lang).toLowerCase().includes(needle)
-      );
-    }
+    let list = commonFiltered;
+    if (selectedCategories.length) list = list.filter(p => selectedCategories.includes(p.category));
     const sorted = [...list];
     if (sort === "price-asc") sorted.sort((a, b) => a.price - b.price);
     else if (sort === "price-desc") sorted.sort((a, b) => b.price - a.price);
     else if (sort === "name-asc") sorted.sort((a, b) => localized(a, "name", lang).localeCompare(localized(b, "name", lang)));
     return sorted;
-  }, [products, activeTab, search, sort, lang]);
+  }, [commonFiltered, selectedCategories, sort, lang]);
+
+  const hasActiveFilters = selectedCategories.length > 0 || priceMin !== "" || priceMax !== "" || onSaleOnly;
+  const activeFilterCount = selectedCategories.length + (priceMin !== "" || priceMax !== "" ? 1 : 0) + (onSaleOnly ? 1 : 0);
 
   useReveal([loading]);
 
@@ -97,6 +198,12 @@ export default function Catalog() {
       ctx.revert();
     };
   }, []);
+
+  const filterPanelProps = {
+    t, lang, categories, categoryCounts, selectedCategories, toggleCategory,
+    priceMin, priceMax, setPriceMin, setPriceMax, priceBounds, onSaleOnly, setOnSaleOnly,
+    hasActiveFilters, onClear: clearFilters,
+  };
 
   return (
     <>
@@ -140,36 +247,53 @@ export default function Catalog() {
 
       <section className="block" style={{ paddingTop: 20 }}>
         <div className="container">
-          <div className="filter-bar">
-            <div className="filter-tabs">
-              {TABS.map(tab => (
-                <button
-                  key={tab.key}
-                  className={"filter-tab" + (activeTab === tab.key ? " active" : "")}
-                  onClick={() => selectTab(tab.key)}
-                >
-                  <CategoryIcon id={tab.key} size={18} />
-                  {tab.label}
+          <div className="catalog-layout">
+            <aside className="catalog-sidebar">
+              <FilterPanel {...filterPanelProps} />
+            </aside>
+
+            <div className="catalog-main">
+              <div className="filter-bar">
+                <button type="button" className="catalog-filters-toggle" onClick={() => setMobileFiltersOpen(true)}>
+                  <FilterIcon size={16} /> {t("catalog.filtersBtn")}
+                  {activeFilterCount > 0 && <span className="filter-badge">{activeFilterCount}</span>}
                 </button>
-              ))}
-            </div>
-            <div className="result-count">
-              {loading ? t("common.loading") : t("catalog.productCount", { count: visible.length })}
+                <div className="result-count">
+                  {loading ? t("common.loading") : t("catalog.productCount", { count: visible.length })}
+                </div>
+              </div>
+
+              <div className="product-grid">
+                {!loading && visible.map(p => <ProductCard key={p.id} product={p} />)}
+              </div>
+
+              {!loading && visible.length === 0 && (
+                <div className="no-results">
+                  <h3>{t("catalog.noResultsTitle")}</h3>
+                  <p>{t("catalog.noResultsDesc")}</p>
+                </div>
+              )}
             </div>
           </div>
-
-          <div className="product-grid">
-            {!loading && visible.map(p => <ProductCard key={p.id} product={p} />)}
-          </div>
-
-          {!loading && visible.length === 0 && (
-            <div className="no-results">
-              <h3>{t("catalog.noResultsTitle")}</h3>
-              <p>{t("catalog.noResultsDesc")}</p>
-            </div>
-          )}
         </div>
       </section>
+
+      <div className={"catalog-filters-backdrop" + (mobileFiltersOpen ? " open" : "")} onClick={() => setMobileFiltersOpen(false)}>
+        <div className="catalog-filters-drawer" onClick={e => e.stopPropagation()}>
+          <div className="catalog-filters-drawer-head">
+            <h3>{t("catalog.filtersBtn")}</h3>
+            <button type="button" onClick={() => setMobileFiltersOpen(false)} aria-label={t("common.close")}><CloseIcon size={18} /></button>
+          </div>
+          <div className="catalog-filters-drawer-body">
+            <FilterPanel {...filterPanelProps} />
+          </div>
+          <div className="catalog-filters-drawer-foot">
+            <button type="button" className="btn-primary" onClick={() => setMobileFiltersOpen(false)}>
+              {t("catalog.showResults", { count: visible.length })}
+            </button>
+          </div>
+        </div>
+      </div>
 
       <section className="block" style={{ paddingTop: 0 }}>
         <div className="container">

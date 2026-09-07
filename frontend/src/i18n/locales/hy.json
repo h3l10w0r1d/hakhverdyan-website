@@ -61,7 +61,8 @@
     "readArticle": "Կարդալ հոդվածը",
     "addToQuote": "Ավելացնել գնանշման մեջ",
     "added": "Ավելացված է ✓",
-    "loading": "Բեռնվում է…"
+    "loading": "Բեռնվում է…",
+    "close": "Փակել"
   },
   "home": {
     "eyebrow": "Երևանի վստահված մատակարարը շինարարական համակարգերի բնագավառում",
@@ -239,7 +240,16 @@
     "backToCatalog": "Վերադառնալ կատալոգ",
     "productNotFoundTitle": "Այս ապրանքը գոյություն չունի։",
     "productNotFoundDesc": "Այն կարող է հեռացված լինել կամ սպառված է։",
-    "moreLikeThis": "Ավելին «{{category}}» կատեգորիայից"
+    "moreLikeThis": "Ավելին «{{category}}» կատեգորիայից",
+    "filterCategory": "Կատեգորիա",
+    "filterPrice": "Գին",
+    "priceMin": "Նվազ.",
+    "priceMax": "Առավ.",
+    "filterOnSale": "Զեղչված",
+    "clearFilters": "Մաքրել զտիչները",
+    "filtersBtn": "Զտիչներ",
+    "showResults_one": "Ցուցադրել {{count}} ապրանք",
+    "showResults_other": "Ցուցադրել {{count}} ապրանք"
   },
   "services": {
     "tag": "Ծառայություններ",

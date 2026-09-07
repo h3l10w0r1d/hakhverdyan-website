@@ -61,7 +61,8 @@
     "readArticle": "Read article",
     "addToQuote": "Add to quote",
     "added": "Added ✓",
-    "loading": "Loading…"
+    "loading": "Loading…",
+    "close": "Close"
   },
   "home": {
     "eyebrow": "Yerevan's trusted building systems supplier",
@@ -239,7 +240,16 @@
     "backToCatalog": "Back to catalog",
     "productNotFoundTitle": "That product doesn't exist.",
     "productNotFoundDesc": "It may have been removed or is out of stock.",
-    "moreLikeThis": "More from {{category}}"
+    "moreLikeThis": "More from {{category}}",
+    "filterCategory": "Category",
+    "filterPrice": "Price",
+    "priceMin": "Min",
+    "priceMax": "Max",
+    "filterOnSale": "On sale",
+    "clearFilters": "Clear filters",
+    "filtersBtn": "Filters",
+    "showResults_one": "Show {{count}} result",
+    "showResults_other": "Show {{count}} results"
   },
   "services": {
     "tag": "Services",
