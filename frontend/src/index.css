@@ -34,8 +34,8 @@
   --fs-2xl: 26px;
   --fs-3xl: 32px;
 
-  --shadow-sm: 0 1px 2px rgba(20,20,30,0.04), 0 1px 1px rgba(20,20,30,0.03);
-  --shadow-md: 0 12px 28px -8px rgba(20,20,30,0.16);
+  --shadow-sm: 0 1px 2px rgba(20,20,30,0.05), 0 10px 24px -10px rgba(20,20,30,0.12);
+  --shadow-md: 0 16px 36px -10px rgba(20,20,30,0.20);
   --shadow-lg: 0 32px 64px -16px rgba(10,10,15,0.35);
 
   /* Category colors for the 3 trend charts (which chart, not what state) */
@@ -1194,6 +1194,7 @@ footer{ position:relative; z-index:1; padding:64px 32px 30px; border-top:1px sol
 .admin-sidebar{
   width:230px; flex:none; background:var(--ink); color:#fff;
   display:flex; flex-direction:column; padding:24px 16px; position:sticky; top:0; height:100vh; z-index:200;
+  box-shadow:4px 0 24px -4px rgba(10,10,15,0.25);
 }
 .admin-sidebar-logo{
   display:flex; align-items:center; gap:9px; font-family:'Space Grotesk',sans-serif; font-weight:700;
@@ -1204,7 +1205,7 @@ footer{ position:relative; z-index:1; padding:64px 32px 30px; border-top:1px sol
 .admin-nav-link{ display:flex; align-items:center; gap:11px; padding:12px 14px; border-radius:var(--radius-md); font-size:var(--fs-base); font-weight:500; color:rgba(255,255,255,0.65); transition:background .2s ease, color .2s ease; }
 .admin-nav-link svg{ flex:none; opacity:0.85; }
 .admin-nav-link:hover{ background:rgba(255,255,255,0.06); color:#fff; }
-.admin-nav-link.active{ background:var(--red); color:#fff; }
+.admin-nav-link.active{ background:var(--red); color:#fff; box-shadow:0 4px 12px -2px rgba(177,35,38,0.5); }
 .admin-nav-link.active svg{ opacity:1; }
 .admin-sidebar-foot{ margin-top:auto; padding-top:var(--space-4); border-top:1px solid rgba(255,255,255,0.1); }
 .admin-sidebar-user{ font-size:var(--fs-xs); color:rgba(255,255,255,0.55); padding:0 8px 10px; overflow-wrap:anywhere; }
@@ -1267,7 +1268,7 @@ footer{ position:relative; z-index:1; padding:64px 32px 30px; border-top:1px sol
 .admin-table-checkbox{ width:36px; }
 .admin-table-checkbox input{ width:16px; height:16px; cursor:pointer; }
 
-.admin-card{ background:#fff; border:1px solid var(--grey-100); border-radius:var(--radius-lg); box-shadow:var(--shadow-sm); overflow-x:auto; overflow-y:hidden; }
+.admin-card{ background:#fff; border:1px solid var(--grey-100); border-radius:var(--radius-xl); box-shadow:var(--shadow-sm); overflow-x:auto; overflow-y:hidden; }
 .admin-card + .admin-card{ margin-top:var(--space-6); }
 .admin-empty{ padding:64px var(--space-6); text-align:center; color:var(--grey-500); font-size:var(--fs-base); line-height:1.5; }
 
@@ -1321,10 +1322,17 @@ footer{ position:relative; z-index:1; padding:64px 32px 30px; border-top:1px sol
 
 .admin-stat-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:var(--space-6); }
 .admin-stat-link{ color:inherit; }
-.admin-stat-card{ background:#fff; border:1px solid var(--grey-100); border-radius:var(--radius-lg); box-shadow:var(--shadow-sm); padding:var(--space-6); transition:border-color .2s ease, transform .2s ease; }
-.admin-stat-link:hover .admin-stat-card{ border-color:var(--grey-800); transform:translateY(-2px); }
-.admin-stat-value{ font-family:'Space Grotesk',sans-serif; font-size:var(--fs-3xl); font-weight:700; }
-.admin-stat-label{ font-size:var(--fs-sm); color:var(--grey-600); margin-top:var(--space-1); }
+.admin-stat-card{
+  position:relative; background:#fff; border:1px solid var(--grey-100); border-radius:var(--radius-xl);
+  box-shadow:var(--shadow-sm); padding:var(--space-6); overflow:hidden;
+}
+.admin-stat-card::before{ content:""; position:absolute; top:0; left:0; right:0; height:3px; background:var(--red); }
+.admin-stat-grid .admin-stat-card:nth-of-type(2)::before{ background:var(--cat-blue); }
+.admin-stat-grid .admin-stat-card:nth-of-type(3)::before{ background:var(--cat-orange); }
+.admin-stat-grid .admin-stat-card:nth-of-type(4)::before{ background:var(--cat-green); }
+.admin-stat-grid .admin-stat-card:nth-of-type(5)::before{ background:var(--grey-600); }
+.admin-stat-value{ font-family:'Space Grotesk',sans-serif; font-size:36px; font-weight:700; letter-spacing:-0.02em; }
+.admin-stat-label{ font-size:var(--fs-sm); color:var(--grey-600); margin-top:var(--space-2); }
 
 .admin-btn{
   display:inline-flex; align-items:center; gap:var(--space-2); font-family:inherit; font-size:var(--fs-sm); font-weight:600;
