@@ -35,18 +35,18 @@ export default function AdminMemberDetail() {
         <h1 className="admin-page-title">{member.name}</h1>
       </div>
 
-      <div className="admin-stat-grid" style={{ marginBottom: 24 }}>
-        <div className="admin-stat-card">
-          <div className="admin-stat-value">{member.bookings_count}</div>
-          <div className="admin-stat-label">{t("memberDetail.statBookings")}</div>
+      <div className="adm-stat-bar" style={{ marginBottom: 24 }}>
+        <div className="adm-stat-col">
+          <div className="adm-stat-bar-label">{t("memberDetail.statBookings")}</div>
+          <div className="adm-stat-bar-value">{member.bookings_count}</div>
         </div>
-        <div className="admin-stat-card">
-          <div className="admin-stat-value">{fmt(totalSpent)}</div>
-          <div className="admin-stat-label">{t("memberDetail.statTotalBooked")}</div>
+        <div className="adm-stat-col">
+          <div className="adm-stat-bar-label">{t("memberDetail.statTotalBooked")}</div>
+          <div className="adm-stat-bar-value">{fmt(totalSpent)}</div>
         </div>
-        <div className="admin-stat-card">
-          <div className="admin-stat-value">{member.messages_count}</div>
-          <div className="admin-stat-label">{t("memberDetail.statMessages")}</div>
+        <div className="adm-stat-col">
+          <div className="adm-stat-bar-label">{t("memberDetail.statMessages")}</div>
+          <div className="adm-stat-bar-value">{member.messages_count}</div>
         </div>
       </div>
 

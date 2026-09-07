@@ -133,26 +133,26 @@ export default function AdminAnalytics() {
         </div>
       </div>
 
-      <div className="admin-stat-grid" style={{ marginBottom: 24 }}>
-        <div className="admin-stat-card">
-          <div className="admin-stat-value">{fmtMoney(data.total_revenue)}</div>
-          <div className="admin-stat-label">{t("analytics.statTotalRevenue")}</div>
+      <div className="adm-stat-bar" style={{ marginBottom: 24 }}>
+        <div className="adm-stat-col">
+          <div className="adm-stat-bar-label">{t("analytics.statTotalRevenue")}</div>
+          <div className="adm-stat-bar-value">{fmtMoney(data.total_revenue)}</div>
         </div>
-        <div className="admin-stat-card">
-          <div className="admin-stat-value">{data.total_bookings}</div>
-          <div className="admin-stat-label">{t("analytics.statTotalBookings")}</div>
+        <div className="adm-stat-col">
+          <div className="adm-stat-bar-label">{t("analytics.statTotalBookings")}</div>
+          <div className="adm-stat-bar-value">{data.total_bookings}</div>
         </div>
-        <div className="admin-stat-card">
-          <div className="admin-stat-value">{fmtMoney(data.avg_booking_value)}</div>
-          <div className="admin-stat-label">{t("analytics.statAvgBookingValue")}</div>
+        <div className="adm-stat-col">
+          <div className="adm-stat-bar-label">{t("analytics.statAvgBookingValue")}</div>
+          <div className="adm-stat-bar-value">{fmtMoney(data.avg_booking_value)}</div>
         </div>
-        <div className="admin-stat-card">
-          <div className="admin-stat-value">{data.total_customers}</div>
-          <div className="admin-stat-label">{t("analytics.statRegisteredMembers")}</div>
+        <div className="adm-stat-col">
+          <div className="adm-stat-bar-label">{t("analytics.statRegisteredMembers")}</div>
+          <div className="adm-stat-bar-value">{data.total_customers}</div>
         </div>
-        <div className="admin-stat-card">
-          <div className="admin-stat-value">{data.total_messages}</div>
-          <div className="admin-stat-label">{t("analytics.statTotalMessages")}</div>
+        <div className="adm-stat-col">
+          <div className="adm-stat-bar-label">{t("analytics.statTotalMessages")}</div>
+          <div className="adm-stat-bar-value">{data.total_messages}</div>
         </div>
       </div>
 
