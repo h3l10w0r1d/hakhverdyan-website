@@ -77,9 +77,11 @@ export default function Layout() {
       <div className="cursor-glow" id="cursorGlow"></div>
 
       <Nav />
-      <Suspense fallback={<PageLoader />}>
-        <Outlet />
-      </Suspense>
+      <main className="site-main">
+        <Suspense fallback={<PageLoader />}>
+          <Outlet />
+        </Suspense>
+      </main>
       <Footer />
       <QuoteCart />
       <ProductQuickView />

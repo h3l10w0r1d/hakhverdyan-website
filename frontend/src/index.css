@@ -16,6 +16,7 @@
 }
 *{box-sizing:border-box; margin:0; padding:0;}
 html{scroll-behavior:smooth;}
+html, body{ height:100%; }
 body{
   font-family:'Inter', sans-serif;
   background:var(--white);
@@ -23,6 +24,13 @@ body{
   overflow-x:hidden;
   -webkit-font-smoothing:antialiased;
 }
+/* Sticky footer: #root stretches to at least the full viewport and stacks its
+   header/main/footer in a column, so .site-main absorbs any leftover space and
+   the footer sits flush against the bottom of the screen instead of floating
+   mid-viewport on short pages. Nav and every fixed-position overlay (cursor glow,
+   quote cart, quick view) are position:fixed and stay outside this flow. */
+#root{ display:flex; flex-direction:column; min-height:100vh; min-height:100svh; }
+.site-main{ flex:1 0 auto; }
 h1,h2,h3,.display{ font-family:'Space Grotesk', sans-serif; letter-spacing:-0.02em; }
 a{text-decoration:none; color:inherit;}
 ul{list-style:none;}
