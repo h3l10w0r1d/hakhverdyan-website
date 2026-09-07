@@ -136,13 +136,13 @@ export default function AdminBookings() {
                           {q.note && <div className="admin-booking-note"><strong>{t("bookings.customerNote")}</strong> {q.note}</div>}
 
                           <div className="admin-form-row">
-                            <label className="quote-field">
+                            <label className="admin-form-field">
                               <span>{t("common.status")}</span>
                               <Select value={q.status} onChange={v => changeStatus(q.id, v)} options={STATUS_OPTIONS} />
                             </label>
                           </div>
 
-                          <label className="quote-field">
+                          <label className="admin-form-field">
                             <span>{t("bookings.internalNoteLabel")}</span>
                             <textarea rows={2} value={noteDraft} onChange={e => setNoteDraft(e.target.value)} />
                           </label>

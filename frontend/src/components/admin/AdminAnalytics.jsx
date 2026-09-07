@@ -13,12 +13,15 @@ const isoDaysAgo = n => {
   return toLocalIso(d);
 };
 
-// Validated categorical/status colors — see the dataviz palette reference.
-const BLUE = "#2a78d6";
-const ORANGE = "#eb6834";
-const GREEN = "#0ca30c";
-const STATUS_COLORS = { new: "#fab219", contacted: "#2a78d6", closed: "#0ca30c" };
-const MESSAGE_STATUS_COLORS = { new: "#fab219", replied: "#2a78d6", spam: "#9ca3af" };
+// Validated categorical colors (which trend chart — see the dataviz palette
+// reference) and status colors (what state a row is in). Both read from the
+// shared tokens in :root so a booking's status renders the same hue here as
+// it does in the .admin-badge table cells, instead of two disagreeing palettes.
+const BLUE = "var(--cat-blue)";
+const ORANGE = "var(--cat-orange)";
+const GREEN = "var(--cat-green)";
+const STATUS_COLORS = { new: "var(--status-new-dot)", contacted: "var(--status-progress-dot)", closed: "var(--status-done-dot)" };
+const MESSAGE_STATUS_COLORS = { new: "var(--status-new-dot)", replied: "var(--status-progress-dot)", spam: "var(--status-neutral-dot)" };
 const fmtMoney = n => n.toLocaleString("en-US") + "֏";
 const fmtDay = iso => new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric" });
 
@@ -167,7 +170,7 @@ export default function AdminAnalytics() {
             <h3>{t("analytics.messagesHeading")}{data.is_custom ? "" : t("analytics.lastNDays", { days: data.days })}</h3>
             <span className="adm-chart-range">{fmtDay(data.messages_by_day[0].date)} – {fmtDay(data.messages_by_day.at(-1).date)}</span>
           </div>
-          <DayBarChart data={data.messages_by_day} valueKey="count" color="#eb6834" formatValue={d => `${d.count} ${d.count === 1 ? t("analytics.messageSingular") : t("analytics.messagePlural")}`} />
+          <DayBarChart data={data.messages_by_day} valueKey="count" color={ORANGE} formatValue={d => `${d.count} ${d.count === 1 ? t("analytics.messageSingular") : t("analytics.messagePlural")}`} />
         </div>
 
         <div className="admin-card adm-chart-card">

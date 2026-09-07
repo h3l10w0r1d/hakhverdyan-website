@@ -102,11 +102,11 @@ export default function AdminAccount() {
         <h2 className="admin-card-title">{t("account.profile.title")}</h2>
         <form onSubmit={onSaveProfile} className="admin-settings-form">
           <div className="admin-form-row">
-            <label className="quote-field">
+            <label className="admin-form-field">
               <span>{t("common.personName")}</span>
               <input value={profile.name} onChange={e => setProfile(f => ({ ...f, name: e.target.value }))} required />
             </label>
-            <label className="quote-field">
+            <label className="admin-form-field">
               <span>{t("common.email")}</span>
               <input type="email" value={profile.email} onChange={e => setProfile(f => ({ ...f, email: e.target.value }))} required />
             </label>
@@ -122,21 +122,21 @@ export default function AdminAccount() {
         <h2 className="admin-card-title">{t("account.password.title")}</h2>
         <form onSubmit={onChangePassword} className="admin-settings-form">
           <div className="admin-form-row">
-            <label className="quote-field">
+            <label className="admin-form-field">
               <span>{t("account.password.current")}</span>
               <input
                 type="password" value={pwForm.current_password}
                 onChange={e => setPwForm(f => ({ ...f, current_password: e.target.value }))} required
               />
             </label>
-            <label className="quote-field">
+            <label className="admin-form-field">
               <span>{t("account.password.new")}</span>
               <input
                 type="password" value={pwForm.new_password} minLength={8}
                 onChange={e => setPwForm(f => ({ ...f, new_password: e.target.value }))} required
               />
             </label>
-            <label className="quote-field">
+            <label className="admin-form-field">
               <span>{t("account.password.confirm")}</span>
               <input
                 type="password" value={pwForm.confirm} minLength={8}
@@ -191,15 +191,15 @@ export default function AdminAccount() {
               <button type="button" className="admin-modal-close" onClick={() => setNewAdminForm(null)}>&times;</button>
             </div>
             <div className="admin-modal-body">
-              <label className="quote-field">
+              <label className="admin-form-field">
                 <span>{t("common.personName")}</span>
                 <input value={newAdminForm.name} onChange={e => setNewAdminForm(f => ({ ...f, name: e.target.value }))} required />
               </label>
-              <label className="quote-field">
+              <label className="admin-form-field">
                 <span>{t("common.email")}</span>
                 <input type="email" value={newAdminForm.email} onChange={e => setNewAdminForm(f => ({ ...f, email: e.target.value }))} required />
               </label>
-              <label className="quote-field">
+              <label className="admin-form-field">
                 <span>{t("common.password")}</span>
                 <input
                   type="password" value={newAdminForm.password} minLength={8}

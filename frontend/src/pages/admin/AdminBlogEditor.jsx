@@ -231,12 +231,12 @@ export default function AdminBlogEditor() {
               <button className="admin-modal-close" onClick={() => setSettingsOpen(false)} type="button"><CloseIcon size={16} /></button>
             </div>
             <div className="ghost-settings-body">
-              <label className="quote-field">
+              <label className="admin-form-field">
                 <span>{t("blogEditor.featureImage")}</span>
                 <ImageDropzone value={form.cover_url} onChange={img => updateField("cover_url", img)} />
               </label>
 
-              <label className="quote-field">
+              <label className="admin-form-field">
                 <span>{t("blogEditor.urlLabel")}</span>
                 {isNew ? (
                   <input
@@ -250,28 +250,28 @@ export default function AdminBlogEditor() {
               </label>
 
               <div className="admin-form-row">
-                <label className="quote-field">
+                <label className="admin-form-field">
                   <span>{t("blogEditor.excerptEn")}</span>
                   <textarea rows={2} value={form.excerpt} onChange={e => updateField("excerpt", e.target.value)} />
                 </label>
-                <label className="quote-field">
+                <label className="admin-form-field">
                   <span>{t("blogEditor.excerptHy")}</span>
                   <textarea rows={2} value={form.excerpt_hy} onChange={e => updateField("excerpt_hy", e.target.value)} />
                 </label>
               </div>
 
               <div className="admin-form-row">
-                <label className="quote-field">
+                <label className="admin-form-field">
                   <span>{t("blogEditor.categoryEn")}</span>
                   <input value={form.category} onChange={e => updateField("category", e.target.value)} required />
                 </label>
-                <label className="quote-field">
+                <label className="admin-form-field">
                   <span>{t("blogEditor.categoryHy")}</span>
                   <input value={form.category_hy} onChange={e => updateField("category_hy", e.target.value)} />
                 </label>
               </div>
 
-              <label className="quote-field">
+              <label className="admin-form-field">
                 <span>{t("blogEditor.tagsLabel")}</span>
                 <div className="ghost-tags-input">
                   {form.tags.map(tag => (
@@ -293,7 +293,7 @@ export default function AdminBlogEditor() {
                 </div>
               </label>
 
-              <label className="quote-field">
+              <label className="admin-form-field">
                 <span>{t("blogEditor.publishedDateLabel")}</span>
                 <input type="datetime-local" value={form.published_at} onChange={e => updateField("published_at", e.target.value)} />
               </label>
@@ -317,7 +317,7 @@ export default function AdminBlogEditor() {
               <p className="ghost-publish-summary">
                 <strong>{form.title || t("blogEditor.untitledPost")}</strong> {t("blogEditor.willBePublished")}
               </p>
-              <label className="quote-field">
+              <label className="admin-form-field">
                 <span>{t("blogEditor.publishedDateLabel")}</span>
                 <input type="datetime-local" value={form.published_at} onChange={e => updateField("published_at", e.target.value)} />
               </label>

@@ -35,11 +35,11 @@ export default function AdminLogin() {
       <form className="admin-login-card" onSubmit={onSubmit}>
         <div className="admin-login-logo"><img src="/brand/logo-icon.png" alt="" />HAKHVERDYAN</div>
         <h1>{t("login.title")}</h1>
-        <label className="quote-field">
+        <label className="admin-form-field">
           <span>{t("login.email")}</span>
           <input type="email" value={email} onChange={e => setEmail(e.target.value)} autoFocus required />
         </label>
-        <label className="quote-field">
+        <label className="admin-form-field">
           <span>{t("login.password")}</span>
           <input type="password" value={password} onChange={e => setPassword(e.target.value)} required />
         </label>

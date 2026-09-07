@@ -153,15 +153,15 @@ export default function AdminPartners() {
               <button type="button" className="admin-modal-close" onClick={closeForm}>&times;</button>
             </div>
             <div className="admin-modal-body">
-              <label className="quote-field">
+              <label className="admin-form-field">
                 <span>{t("partners.logoLabel")}</span>
                 <ImageDropzone value={form.logo} onChange={img => updateField("logo", img)} />
               </label>
-              <label className="quote-field">
+              <label className="admin-form-field">
                 <span>{t("common.name")}</span>
                 <input value={form.name} onChange={e => updateField("name", e.target.value)} required />
               </label>
-              <label className="quote-field">
+              <label className="admin-form-field">
                 <span>{t("partners.websiteFieldLabel")}</span>
                 <input type="url" value={form.url} onChange={e => updateField("url", e.target.value)} placeholder="https://example.com" />
               </label>

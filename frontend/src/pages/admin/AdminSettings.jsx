@@ -46,49 +46,49 @@ function SiteSettingsForm() {
   return (
     <form onSubmit={onSubmit} className="admin-settings-form">
       <div className="admin-form-row">
-        <label className="quote-field">
+        <label className="admin-form-field">
           <span>{t("settings.contact.phone")}</span>
           <input value={settings.phone} onChange={e => updateField("phone", e.target.value)} required />
         </label>
-        <label className="quote-field">
+        <label className="admin-form-field">
           <span>{t("settings.contact.whatsapp")}</span>
           <input value={settings.whatsapp} onChange={e => updateField("whatsapp", e.target.value)} required />
         </label>
-        <label className="quote-field">
+        <label className="admin-form-field">
           <span>{t("settings.contact.emailOptional")}</span>
           <input type="email" value={settings.email || ""} onChange={e => updateField("email", e.target.value || null)} />
         </label>
       </div>
       <div className="admin-form-row">
-        <label className="quote-field">
+        <label className="admin-form-field">
           <span>{t("settings.contact.facebookUrl")}</span>
           <input value={settings.facebook_url || ""} onChange={e => updateField("facebook_url", e.target.value || null)} placeholder={t("settings.contact.facebookPlaceholder")} />
         </label>
-        <label className="quote-field">
+        <label className="admin-form-field">
           <span>{t("settings.contact.instagramUrl")}</span>
           <input value={settings.instagram_url || ""} onChange={e => updateField("instagram_url", e.target.value || null)} placeholder={t("settings.contact.instagramPlaceholder")} />
         </label>
-        <label className="quote-field">
+        <label className="admin-form-field">
           <span>{t("settings.contact.tiktokUrl")}</span>
           <input value={settings.tiktok_url || ""} onChange={e => updateField("tiktok_url", e.target.value || null)} placeholder={t("settings.contact.tiktokPlaceholder")} />
         </label>
       </div>
       <div className="admin-form-row">
-        <label className="quote-field">
+        <label className="admin-form-field">
           <span>{t("settings.contact.hoursWeekdayEn")}</span>
           <input value={settings.hours_weekday} onChange={e => updateField("hours_weekday", e.target.value)} required />
         </label>
-        <label className="quote-field">
+        <label className="admin-form-field">
           <span>{t("settings.contact.hoursWeekdayHy")}</span>
           <input value={settings.hours_weekday_hy || ""} onChange={e => updateField("hours_weekday_hy", e.target.value || null)} />
         </label>
       </div>
       <div className="admin-form-row">
-        <label className="quote-field">
+        <label className="admin-form-field">
           <span>{t("settings.contact.hoursSaturdayEn")}</span>
           <input value={settings.hours_saturday} onChange={e => updateField("hours_saturday", e.target.value)} required />
         </label>
-        <label className="quote-field">
+        <label className="admin-form-field">
           <span>{t("settings.contact.hoursSaturdayHy")}</span>
           <input value={settings.hours_saturday_hy || ""} onChange={e => updateField("hours_saturday_hy", e.target.value || null)} />
         </label>
@@ -184,7 +184,7 @@ function LocationsSection() {
         <h2 className="admin-card-title">{t("settings.locations.title")}</h2>
         <button type="button" className="admin-btn admin-btn-primary" onClick={openCreate}>{t("settings.locations.newLocation")}</button>
       </div>
-      {error && <div className="admin-error-banner" style={{ margin: "0 20px 16px" }}>{error}</div>}
+      {error && <div className="admin-error-banner" style={{ margin: "0 24px 16px" }}>{error}</div>}
       {loading ? (
         <div className="admin-empty">{t("common.loading")}</div>
       ) : locations.length === 0 ? (
@@ -230,34 +230,34 @@ function LocationsSection() {
             </div>
             <div className="admin-modal-body">
               <div className="admin-form-row">
-                <label className="quote-field">
+                <label className="admin-form-field">
                   <span>{t("settings.locations.nameEn")}</span>
                   <input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} required />
                 </label>
-                <label className="quote-field">
+                <label className="admin-form-field">
                   <span>{t("settings.locations.nameHy")}</span>
                   <input value={form.name_hy} onChange={e => setForm(f => ({ ...f, name_hy: e.target.value }))} />
                 </label>
               </div>
               <div className="admin-form-row">
-                <label className="quote-field">
+                <label className="admin-form-field">
                   <span>{t("settings.locations.addressEn")}</span>
                   <input value={form.address} onChange={e => setForm(f => ({ ...f, address: e.target.value }))} required />
                 </label>
-                <label className="quote-field">
+                <label className="admin-form-field">
                   <span>{t("settings.locations.addressHy")}</span>
                   <input value={form.address_hy} onChange={e => setForm(f => ({ ...f, address_hy: e.target.value }))} />
                 </label>
               </div>
               <div className="admin-form-row">
-                <label className="quote-field">
+                <label className="admin-form-field">
                   <span>{t("settings.locations.latitude")}</span>
                   <input
                     type="number" step="any" placeholder={t("settings.locations.latPlaceholder")}
                     value={form.lat} onChange={e => setForm(f => ({ ...f, lat: e.target.value }))}
                   />
                 </label>
-                <label className="quote-field">
+                <label className="admin-form-field">
                   <span>{t("settings.locations.longitude")}</span>
                   <input
                     type="number" step="any" placeholder={t("settings.locations.lngPlaceholder")}
@@ -358,7 +358,7 @@ function CategoriesSection() {
         <h2 className="admin-card-title">{t("settings.categories.title")}</h2>
         <button type="button" className="admin-btn admin-btn-primary" onClick={openCreate}>{t("settings.categories.newCategory")}</button>
       </div>
-      {error && <div className="admin-error-banner" style={{ margin: "0 20px 16px" }}>{error}</div>}
+      {error && <div className="admin-error-banner" style={{ margin: "0 24px 16px" }}>{error}</div>}
       {loading ? (
         <div className="admin-empty">{t("common.loading")}</div>
       ) : categories.length === 0 ? (
@@ -404,17 +404,17 @@ function CategoriesSection() {
             </div>
             <div className="admin-modal-body">
               {!editingId && (
-                <label className="quote-field">
+                <label className="admin-form-field">
                   <span>{t("settings.categories.idLabel")}</span>
                   <input value={form.id} onChange={e => setForm(f => ({ ...f, id: e.target.value }))} required pattern="[a-z0-9\-]+" placeholder={t("settings.categories.idPlaceholder")} />
                 </label>
               )}
               <div className="admin-form-row">
-                <label className="quote-field">
+                <label className="admin-form-field">
                   <span>{t("settings.categories.labelEn")}</span>
                   <input value={form.label} onChange={e => setForm(f => ({ ...f, label: e.target.value }))} required />
                 </label>
-                <label className="quote-field">
+                <label className="admin-form-field">
                   <span>{t("settings.categories.labelHy")}</span>
                   <input value={form.label_hy} onChange={e => setForm(f => ({ ...f, label_hy: e.target.value }))} />
                 </label>

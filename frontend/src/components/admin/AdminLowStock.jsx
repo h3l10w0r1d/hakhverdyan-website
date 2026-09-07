@@ -25,7 +25,7 @@ export default function AdminLowStock() {
     return (
       <div className="admin-card adm-chart-card admin-lowstock-card">
         <div className="adm-chart-head"><h3>{t("lowstock.inventoryAlerts")}</h3></div>
-        <div className="admin-lowstock-empty">{t("lowstock.allStocked")}</div>
+        <div className="admin-empty">{t("lowstock.allStocked")}</div>
       </div>
     );
   }

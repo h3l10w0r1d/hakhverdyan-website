@@ -50,7 +50,7 @@ export default function AdminMemberDetail() {
         </div>
       </div>
 
-      <div className="admin-card admin-settings-card" style={{ marginBottom: 20 }}>
+      <div className="admin-card admin-settings-card">
         <h2 className="admin-card-title">{t("memberDetail.profileTitle")}</h2>
         <div className="admin-member-profile">
           <div><span className="admin-table-sub">{t("common.email")}</span><div>{member.email}</div></div>
@@ -59,7 +59,7 @@ export default function AdminMemberDetail() {
         </div>
       </div>
 
-      <div className="admin-card admin-settings-card" style={{ marginBottom: 20 }}>
+      <div className="admin-card admin-settings-card">
         <h2 className="admin-card-title">{t("memberDetail.bookingsTitle", { count: member.quotes.length })}</h2>
         {member.quotes.length === 0 ? (
           <div className="admin-empty">{t("memberDetail.bookingsEmpty")}</div>

@@ -176,43 +176,43 @@ export default function AdminProductEditor() {
             <h2 className="admin-card-title">{t("productEditor.basicInfo")}</h2>
             <div className="admin-settings-form">
               {isNew && (
-                <label className="quote-field">
+                <label className="admin-form-field">
                   <span>{t("productEditor.idLabel")}</span>
                   <input value={form.id} onChange={e => updateField("id", slugify(e.target.value))} required pattern="[a-z0-9\-]+" placeholder="alu-t40" />
                 </label>
               )}
               <div className="admin-form-row">
-                <label className="quote-field">
+                <label className="admin-form-field">
                   <span>{t("productEditor.nameEn")}</span>
                   <input value={form.name} onChange={e => updateField("name", e.target.value)} required />
                 </label>
-                <label className="quote-field">
+                <label className="admin-form-field">
                   <span>{t("productEditor.nameHy")}</span>
                   <input value={form.name_hy} onChange={e => updateField("name_hy", e.target.value)} />
                 </label>
               </div>
               <div className="admin-form-row">
-                <label className="quote-field">
+                <label className="admin-form-field">
                   <span>{t("productEditor.taglineEn")}</span>
                   <input value={form.spec} onChange={e => updateField("spec", e.target.value)} required />
                   <div className="quote-field-hint">{t("productEditor.taglineHint")}</div>
                 </label>
-                <label className="quote-field">
+                <label className="admin-form-field">
                   <span>{t("productEditor.taglineHy")}</span>
                   <input value={form.spec_hy} onChange={e => updateField("spec_hy", e.target.value)} />
                 </label>
               </div>
               <div className="admin-form-row">
-                <label className="quote-field">
+                <label className="admin-form-field">
                   <span>{t("productEditor.descriptionEn")}</span>
                   <textarea rows={5} value={form.description} onChange={e => updateField("description", e.target.value)} placeholder={t("productEditor.descriptionPlaceholder")} />
                 </label>
-                <label className="quote-field">
+                <label className="admin-form-field">
                   <span>{t("productEditor.descriptionHy")}</span>
                   <textarea rows={5} value={form.description_hy} onChange={e => updateField("description_hy", e.target.value)} />
                 </label>
               </div>
-              <label className="quote-field">
+              <label className="admin-form-field">
                 <span>
                   {t("productEditor.category")}
                   <button type="button" className="quote-field-inline-action" onClick={() => setNewCategoryForm({ id: "", label: "", label_hy: "" })}>
@@ -234,30 +234,30 @@ export default function AdminProductEditor() {
             <p className="quote-field-hint" style={{ marginBottom: 14 }}>{t("productEditor.seoSectionHint")}</p>
             <div className="admin-settings-form">
               <div className="admin-form-row">
-                <label className="quote-field">
+                <label className="admin-form-field">
                   <span>{t("productEditor.seoTitleEn")}</span>
                   <input value={form.seo_title} onChange={e => updateField("seo_title", e.target.value)} />
                 </label>
-                <label className="quote-field">
+                <label className="admin-form-field">
                   <span>{t("productEditor.seoTitleHy")}</span>
                   <input value={form.seo_title_hy} onChange={e => updateField("seo_title_hy", e.target.value)} />
                 </label>
               </div>
-              <label className="quote-field">
+              <label className="admin-form-field">
                 <span>{t("productEditor.seoTitleRu")}</span>
                 <input value={form.seo_title_ru} onChange={e => updateField("seo_title_ru", e.target.value)} />
               </label>
               <div className="admin-form-row">
-                <label className="quote-field">
+                <label className="admin-form-field">
                   <span>{t("productEditor.seoDescriptionEn")}</span>
                   <textarea rows={2} value={form.seo_description} onChange={e => updateField("seo_description", e.target.value)} />
                 </label>
-                <label className="quote-field">
+                <label className="admin-form-field">
                   <span>{t("productEditor.seoDescriptionHy")}</span>
                   <textarea rows={2} value={form.seo_description_hy} onChange={e => updateField("seo_description_hy", e.target.value)} />
                 </label>
               </div>
-              <label className="quote-field">
+              <label className="admin-form-field">
                 <span>{t("productEditor.seoDescriptionRu")}</span>
                 <textarea rows={2} value={form.seo_description_ru} onChange={e => updateField("seo_description_ru", e.target.value)} />
               </label>
@@ -270,17 +270,17 @@ export default function AdminProductEditor() {
             <h2 className="admin-card-title">{t("productEditor.pricing")}</h2>
             <div className="admin-settings-form">
               <div className="admin-form-row">
-                <label className="quote-field">
+                <label className="admin-form-field">
                   <span>{t("productEditor.price")}</span>
                   <input type="number" min="0" value={form.price} onChange={e => updateField("price", e.target.value)} required />
                 </label>
-                <label className="quote-field">
+                <label className="admin-form-field">
                   <span>{t("productEditor.oldPrice")}</span>
                   <input type="number" min="0" value={form.old_price} onChange={e => updateField("old_price", e.target.value)} />
                   <div className="quote-field-hint">{t("productEditor.oldPriceHint")}</div>
                 </label>
               </div>
-              <label className="quote-field">
+              <label className="admin-form-field">
                 <span>{t("productEditor.unit")}</span>
                 <input value={form.unit} onChange={e => updateField("unit", e.target.value)} required placeholder="/ m" />
               </label>
@@ -291,11 +291,11 @@ export default function AdminProductEditor() {
             <h2 className="admin-card-title">{t("productEditor.availability")}</h2>
             <div className="admin-settings-form">
               <div className="admin-form-row">
-                <label className="quote-field">
+                <label className="admin-form-field">
                   <span>{t("productEditor.badgeEn")}</span>
                   <input value={form.badge} onChange={e => updateField("badge", e.target.value)} placeholder={t("productEditor.badgePlaceholder")} />
                 </label>
-                <label className="quote-field">
+                <label className="admin-form-field">
                   <span>{t("productEditor.badgeHy")}</span>
                   <input value={form.badge_hy} onChange={e => updateField("badge_hy", e.target.value)} />
                 </label>
@@ -308,7 +308,7 @@ export default function AdminProductEditor() {
                 <span>{t("productEditor.trackInventory")}</span>
               </label>
               {form.stock_qty !== null && (
-                <label className="quote-field">
+                <label className="admin-form-field">
                   <span>{t("productEditor.quantityInStock")}</span>
                   <input
                     type="number" min="0" value={form.stock_qty}
@@ -317,7 +317,7 @@ export default function AdminProductEditor() {
                   <div className="quote-field-hint">{t("productEditor.quantityHint")}</div>
                 </label>
               )}
-              <label className="quote-field">
+              <label className="admin-form-field">
                 <span>{t("productEditor.fallbackIcon")}</span>
                 <Select value={form.icon} onChange={v => updateField("icon", v)} options={ICON_OPTIONS} />
                 <div className="quote-field-hint">{t("productEditor.fallbackIconHint")}</div>
@@ -348,7 +348,7 @@ export default function AdminProductEditor() {
             </div>
             <div className="admin-modal-body">
               {categoryError && <div className="admin-error-banner">{categoryError}</div>}
-              <label className="quote-field">
+              <label className="admin-form-field">
                 <span>{t("productEditor.labelEn")}</span>
                 <input
                   value={newCategoryForm.label} required autoFocus
@@ -357,14 +357,14 @@ export default function AdminProductEditor() {
                   }))}
                 />
               </label>
-              <label className="quote-field">
+              <label className="admin-form-field">
                 <span>{t("productEditor.labelHy")}</span>
                 <input
                   value={newCategoryForm.label_hy}
                   onChange={e => setNewCategoryForm(f => ({ ...f, label_hy: e.target.value }))}
                 />
               </label>
-              <label className="quote-field">
+              <label className="admin-form-field">
                 <span>{t("productEditor.categoryIdLabel")}</span>
                 <input
                   value={newCategoryForm.id} required pattern="[a-z0-9\-]+" placeholder="glass-panels"
