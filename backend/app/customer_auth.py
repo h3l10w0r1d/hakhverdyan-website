@@ -1,3 +1,5 @@
+import hashlib
+import secrets
 from datetime import datetime, timedelta, timezone
 from typing import Optional
 
@@ -9,6 +11,20 @@ from sqlalchemy.orm import Session
 from .auth import JWT_ALGORITHM, JWT_SECRET
 from .database import get_db
 from .models import Customer
+
+EMAIL_VERIFICATION_TTL = timedelta(hours=24)
+
+
+def generate_verification_token() -> tuple[str, str]:
+    """Returns (raw_token, sha256_hash) — the raw token goes in the emailed
+    link and is never stored; only its hash is persisted, so a DB leak alone
+    can't be used to verify arbitrary accounts."""
+    raw = secrets.token_urlsafe(32)
+    return raw, hash_verification_token(raw)
+
+
+def hash_verification_token(raw: str) -> str:
+    return hashlib.sha256(raw.encode()).hexdigest()
 
 # A distinct claim name ("customer_id" instead of admin.py's "sub") so a
 # customer token can never be mistaken for an admin token even if the two

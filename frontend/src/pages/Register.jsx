@@ -10,7 +10,7 @@ import { useCustomerAuth } from "../context/CustomerAuthContext";
 import { ArrowIcon } from "../lib/icons";
 
 export default function Register() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   useSEO({ title: t("auth.registerTitle"), description: t("auth.registerSub"), path: "/register" });
   const { register, isAuthenticated } = useCustomerAuth();
   const navigate = useNavigate();
@@ -55,7 +55,10 @@ export default function Register() {
 
     setSubmitting(true);
     try {
-      await register({ name: form.name, email: form.email, phone: form.phone || null, password: form.password });
+      await register({
+        name: form.name, email: form.email, phone: form.phone || null, password: form.password,
+        lang: i18n.resolvedLanguage,
+      });
       navigate("/account");
     } catch (err) {
       setError(err.status === 409 ? t("auth.emailTaken") : t("auth.genericError"));

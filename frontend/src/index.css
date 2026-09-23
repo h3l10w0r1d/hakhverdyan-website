@@ -1007,6 +1007,22 @@ footer{ position:relative; z-index:1; padding:64px 32px 30px; border-top:1px sol
 .auth-block{ padding-top:150px; }
 .auth-wrap{ max-width:480px; margin:0 auto; }
 .auth-head{ margin-bottom:28px; }
+.verify-banner{
+  display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+  background:#fff4de; border:1px solid #f0ddad; border-radius:var(--radius-md);
+  padding:16px 20px; margin-bottom:24px; font-size:14px; color:var(--ink);
+}
+.verify-banner p{ flex:1; min-width:200px; margin:0; }
+.verify-banner-btn{
+  font-family:inherit; font-size:13.5px; font-weight:700; color:var(--ink);
+  background:#fff; border:1.5px solid var(--grey-800); border-radius:var(--radius-sm);
+  padding:8px 16px; cursor:pointer; transition:background .2s ease; white-space:nowrap; flex:none;
+}
+.verify-banner-btn:hover{ background:var(--grey-50); }
+.verify-banner-btn:disabled{ opacity:0.6; cursor:not-allowed; }
+.verify-banner-status{ font-size:13px; font-weight:600; flex:none; }
+.verify-banner-status.success{ color:#1e9e4e; }
+.verify-banner-status.error{ color:var(--red); }
 .auth-head h1{ font-size:clamp(28px, 3.2vw, 38px); font-weight:700; line-height:1.14; margin:12px 0 10px; }
 .auth-head .sub{ font-size:15.5px; color:var(--grey-600); line-height:1.6; }
 .auth-form .btn-primary, .auth-form .btn-secondary{ width:100%; justify-content:center; }

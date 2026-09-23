@@ -202,6 +202,7 @@ class CustomerRegisterIn(BaseModel):
     email: EmailStr
     password: str = Field(..., min_length=8, max_length=200)
     phone: Optional[str] = Field(None, max_length=40)
+    lang: Optional[str] = "en"
 
 
 class CustomerLoginIn(BaseModel):
@@ -214,6 +215,7 @@ class CustomerOut(BaseModel):
     email: str
     name: str
     phone: Optional[str] = None
+    email_verified: bool = False
 
     class Config:
         from_attributes = True
@@ -228,6 +230,10 @@ class CustomerTokenOut(BaseModel):
 class CustomerUpdateIn(BaseModel):
     name: Optional[str] = Field(None, min_length=1, max_length=120)
     phone: Optional[str] = Field(None, max_length=40)
+
+
+class EmailVerifyIn(BaseModel):
+    token: str = Field(..., min_length=1, max_length=300)
 
 
 class BlogPostOut(BaseModel):

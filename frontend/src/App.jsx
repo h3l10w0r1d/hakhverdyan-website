@@ -23,6 +23,7 @@ const BlogPost = lazyWithReload(() => import("./pages/BlogPost"));
 const Login = lazyWithReload(() => import("./pages/Login"));
 const Register = lazyWithReload(() => import("./pages/Register"));
 const Account = lazyWithReload(() => import("./pages/Account"));
+const VerifyEmail = lazyWithReload(() => import("./pages/VerifyEmail"));
 
 const AdminLogin = lazyWithReload(() => import("./pages/admin/AdminLogin"));
 const AdminDashboard = lazyWithReload(() => import("./pages/admin/AdminDashboard"));
@@ -81,6 +82,7 @@ export default function App() {
                       <Route path="/login" element={<Login />} />
                       <Route path="/register" element={<Register />} />
                       <Route path="/account" element={<Account />} />
+                      <Route path="/verify-email" element={<VerifyEmail />} />
                     </Route>
                   </Routes>
                 </Suspense>

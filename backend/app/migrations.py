@@ -19,6 +19,7 @@ _COLUMN_DDL = {
     ("products", "seo_description"): "TEXT",
     ("products", "seo_description_hy"): "TEXT",
     ("products", "seo_description_ru"): "TEXT",
+    ("customers", "email_verified"): "BOOLEAN NOT NULL DEFAULT FALSE",
     ("quote_requests", "customer_id"): "INTEGER",
     ("contact_messages", "customer_id"): "INTEGER",
     ("locations", "lat"): "REAL",

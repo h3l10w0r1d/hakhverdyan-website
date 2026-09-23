@@ -445,6 +445,17 @@
     "visualRegisterSub": "Create an account to save your details, request quotes faster, and see the full history of everything you've ordered.",
     "visualBullet1": "See every quote you've requested",
     "visualBullet2": "Save your details for faster checkout",
-    "visualBullet3": "One login for every future project"
+    "visualBullet3": "One login for every future project",
+    "verifyingTitle": "Verifying your email…",
+    "verifySuccessTitle": "Email verified",
+    "verifySuccessDesc": "Your email address has been confirmed. You're all set.",
+    "verifyErrorTitle": "This link is invalid or has expired",
+    "verifyErrorDesc": "It may have already been used. You can request a new one from your account.",
+    "goToAccount": "Go to my account",
+    "verifyBannerDesc": "Please verify your email address. We sent a confirmation link to {{email}}.",
+    "resendVerification": "Resend email",
+    "resendSent": "Verification email sent.",
+    "resendError": "Couldn't resend right now — please try again shortly.",
+    "resendRateLimited": "You've requested this recently — please wait a bit before trying again."
   }
 }

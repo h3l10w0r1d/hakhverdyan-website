@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import {
-  customerLogin, customerMe, customerRegister, customerUpdateMe,
-  getCustomerToken, setCustomerToken,
+  customerLogin, customerMe, customerRegister, customerResendVerification, customerUpdateMe,
+  customerVerifyEmail, getCustomerToken, setCustomerToken,
 } from "../lib/customerApi";
 
 const CustomerAuthContext = createContext(null);
@@ -42,12 +42,27 @@ export function CustomerAuthProvider({ children }) {
     return result;
   }
 
+  async function verifyEmail(token) {
+    const result = await customerVerifyEmail(token);
+    setCustomer(result);
+    return result;
+  }
+
+  async function resendVerification() {
+    const result = await customerResendVerification();
+    setCustomer(result);
+    return result;
+  }
+
   function logout() {
     setCustomerToken(null);
     setCustomer(null);
   }
 
-  const value = { customer, loading, login, register, updateProfile, logout, isAuthenticated: !!customer };
+  const value = {
+    customer, loading, login, register, updateProfile, verifyEmail, resendVerification, logout,
+    isAuthenticated: !!customer,
+  };
   return <CustomerAuthContext.Provider value={value}>{children}</CustomerAuthContext.Provider>;
 }
 

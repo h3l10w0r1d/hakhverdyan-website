@@ -48,3 +48,9 @@ export const customerUpdateMe = payload =>
   request("/api/customers/me", { method: "PATCH", body: JSON.stringify(payload) });
 
 export const customerMyQuotes = () => request("/api/customers/me/quotes");
+
+export const customerVerifyEmail = token =>
+  request("/api/customers/verify-email", { method: "POST", body: JSON.stringify({ token }) });
+
+export const customerResendVerification = () =>
+  request("/api/customers/resend-verification", { method: "POST" });
