@@ -11,7 +11,7 @@ const fmt = n => n.toLocaleString("en-US") + "֏";
 export default function QuoteCart() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { isAuthenticated } = useCustomerAuth();
+  const { isAuthenticated, customer } = useCustomerAuth();
   const {
     items, totalCount, totalPrice, removeItem,
     panelOpen, setPanelOpen,
@@ -74,14 +74,21 @@ export default function QuoteCart() {
     submitBooking();
   }
 
-  // Guests can build a cart, but submitting a request requires an account —
-  // send them to log in (or register) instead of the contact-details step.
+  // Guests can build a cart, but submitting a request requires a verified
+  // account — send them to log in (or register), or to confirm their email,
+  // instead of the contact-details step.
   function handleContinue() {
     if (!items.length) { goToForm(); return; }
     if (!isAuthenticated) {
       setPanelOpen(false);
       setToast(t("quoteCart.loginRequiredToast"));
       navigate("/login");
+      return;
+    }
+    if (!customer.email_verified) {
+      setPanelOpen(false);
+      setToast(t("quoteCart.verifyRequiredToast"));
+      navigate("/verify-email");
       return;
     }
     goToForm();

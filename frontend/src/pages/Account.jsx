@@ -14,8 +14,7 @@ export default function Account() {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage;
   useSEO({ title: t("auth.accountTitle"), description: t("auth.accountSub"), path: "/account" });
-  const { customer, loading, updateProfile, logout, resendVerification } = useCustomerAuth();
-  const [resendStatus, setResendStatus] = useState(null); // null | 'sending' | 'sent' | 'error' | 'rate-limited'
+  const { customer, loading, updateProfile, logout } = useCustomerAuth();
 
   const fmtDate = iso => new Date(iso).toLocaleDateString(lang === "hy" ? "hy-AM" : "en-US", { month: "long", day: "numeric", year: "numeric" });
   const STATUS_LABELS = {
@@ -45,16 +44,7 @@ export default function Account() {
 
   if (loading) return <section className="block auth-block" />;
   if (!customer) return <Navigate to="/login" replace />;
-
-  async function handleResend() {
-    setResendStatus("sending");
-    try {
-      await resendVerification();
-      setResendStatus("sent");
-    } catch (err) {
-      setResendStatus(err.status === 429 ? "rate-limited" : "error");
-    }
-  }
+  if (!customer.email_verified) return <Navigate to="/verify-email" replace />;
 
   async function handleProfileSubmit(e) {
     e.preventDefault();
@@ -80,18 +70,6 @@ export default function Account() {
               <h1>{t("auth.accountHeading", { name: customer.name })}</h1>
               <p className="sub">{customer.email}</p>
             </div>
-
-            {!customer.email_verified && (
-              <div className="verify-banner">
-                <p>{t("auth.verifyBannerDesc", { email: customer.email })}</p>
-                <button type="button" className="verify-banner-btn" onClick={handleResend} disabled={resendStatus === "sending"}>
-                  {resendStatus === "sending" ? t("auth.saving") : t("auth.resendVerification")}
-                </button>
-                {resendStatus === "sent" && <span className="verify-banner-status success">{t("auth.resendSent")}</span>}
-                {resendStatus === "error" && <span className="verify-banner-status error">{t("auth.resendError")}</span>}
-                {resendStatus === "rate-limited" && <span className="verify-banner-status error">{t("auth.resendRateLimited")}</span>}
-              </div>
-            )}
 
             <form className="contact-form auth-form" onSubmit={handleProfileSubmit}>
               <div className="form-row">

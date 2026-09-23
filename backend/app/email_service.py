@@ -77,43 +77,121 @@ def send_email_real_with_retry(
 VERIFICATION_TEMPLATES = {
     "en": {
         "subject": "Confirm your email",
+        "heading": "Confirm your email address",
+        "greeting": "Hi {name},",
+        "intro": (
+            "Thanks for creating an account with Hakhverdyan Shinmontazh. Click the button "
+            "below to confirm your email and finish setting up your account."
+        ),
+        "button": "Confirm email address",
+        "expiry": "This link works for 24 hours. If you didn't create this account, you can safely ignore this email.",
+        "fallback": "Or copy and paste this link into your browser:",
+        "signoff": "— Hakhverdyan Shinmontazh",
         "body": (
             "Hi {name},\n\n"
-            "Please confirm your email address by opening this link:\n{link}\n\n"
-            "The link works for 24 hours. If you didn't sign up, you can ignore this email.\n\n"
+            "Thanks for creating an account with Hakhverdyan Shinmontazh. Please confirm your "
+            "email address by opening this link:\n{link}\n\n"
+            "The link works for 24 hours. If you didn't create this account, you can ignore this email.\n\n"
             "— Hakhverdyan Shinmontazh"
-        ),
-        "html": (
-            "<p>Hi {name},</p>"
-            "<p>Please confirm your email address by opening this link:</p>"
-            "<p><a href=\"{link}\">{link}</a></p>"
-            "<p>The link works for 24 hours. If you didn't sign up, you can ignore this email.</p>"
-            "<p>— Hakhverdyan Shinmontazh</p>"
         ),
     },
     "hy": {
         "subject": "Հաստատեք ձեր էլ. հասցեն",
+        "heading": "Հաստատեք ձեր էլ. հասցեն",
+        "greeting": "Բարև, {name},",
+        "intro": (
+            "Շնորհակալություն Հախվերդյան Շինմոնտաժում հաշիվ ստեղծելու համար։ Սեղմեք ստորև "
+            "գտնվող կոճակը՝ ձեր էլ. հասցեն հաստատելու և հաշվի ստեղծումն ավարտելու համար։"
+        ),
+        "button": "Հաստատել էլ. հասցեն",
+        "expiry": "Հղումն ուժի մեջ է 24 ժամ։ Եթե դուք չեք ստեղծել այս հաշիվը, կարող եք անտեսել այս նամակը։",
+        "fallback": "Կամ պատճենեք և տեղադրեք այս հղումը ձեր բրաուզերում.",
+        "signoff": "— Հախվերդյան Շինմոնտաժ",
         "body": (
             "Բարև, {name},\n\n"
-            "Խնդրում ենք հաստատել ձեր էլ. հասցեն՝ բացելով այս հղումը.\n{link}\n\n"
-            "Հղումն ուժի մեջ է 24 ժամ։ Եթե դուք չեք գրանցվել, կարող եք անտեսել այս նամակը։\n\n"
+            "Շնորհակալություն Հախվերդյան Շինմոնտաժում հաշիվ ստեղծելու համար։ Խնդրում ենք "
+            "հաստատել ձեր էլ. հասցեն՝ բացելով այս հղումը.\n{link}\n\n"
+            "Հղումն ուժի մեջ է 24 ժամ։ Եթե դուք չեք ստեղծել այս հաշիվը, կարող եք անտեսել այս նամակը։\n\n"
             "— Հախվերդյան Շինմոնտաժ"
-        ),
-        "html": (
-            "<p>Բարև, {name},</p>"
-            "<p>Խնդրում ենք հաստատել ձեր էլ. հասցեն՝ բացելով այս հղումը.</p>"
-            "<p><a href=\"{link}\">{link}</a></p>"
-            "<p>Հղումն ուժի մեջ է 24 ժամ։ Եթե դուք չեք գրանցվել, կարող եք անտեսել այս նամակը։</p>"
-            "<p>— Հախվերդյան Շինմոնտաժ</p>"
         ),
     },
 }
+
+# Table-based layout with every style inlined — the only way to get consistent
+# rendering across email clients (Outlook/Gmail strip <style> blocks and don't
+# reliably support flexbox/grid). No images per the deliverability guidance for
+# a shared IP, so the "logo" is just styled text on a brand-red band.
+_VERIFICATION_HTML = """\
+<!DOCTYPE html>
+<html lang="{html_lang}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{subject}</title>
+  </head>
+  <body style="margin:0; padding:0; background-color:#f6f6f7;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f6f6f7;">
+      <tr>
+        <td align="center" style="padding:40px 16px;">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:480px; background-color:#ffffff; border-radius:16px; overflow:hidden;">
+            <tr>
+              <td style="background-color:#b12326; padding:26px 32px;">
+                <span style="font-family:Arial,Helvetica,sans-serif; font-size:20px; font-weight:bold; color:#ffffff; letter-spacing:-0.02em;">Hakhverdyan</span>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:36px 32px 4px;">
+                <h1 style="margin:0 0 18px; font-family:Arial,Helvetica,sans-serif; font-size:21px; line-height:1.3; color:#2d2d2d;">{heading}</h1>
+                <p style="margin:0 0 14px; font-family:Arial,Helvetica,sans-serif; font-size:15px; line-height:1.6; color:#5c6270;">{greeting}</p>
+                <p style="margin:0 0 30px; font-family:Arial,Helvetica,sans-serif; font-size:15px; line-height:1.6; color:#5c6270;">{intro}</p>
+              </td>
+            </tr>
+            <tr>
+              <td align="center" style="padding:0 32px 34px;">
+                <table role="presentation" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td style="border-radius:8px; background-color:#b12326;">
+                      <a href="{link}" style="display:inline-block; padding:14px 34px; font-family:Arial,Helvetica,sans-serif; font-size:15px; font-weight:bold; color:#ffffff; text-decoration:none; border-radius:8px;">{button}</a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:0 32px 32px;">
+                <p style="margin:0 0 10px; font-family:Arial,Helvetica,sans-serif; font-size:13px; line-height:1.6; color:#9ca3af;">{expiry}</p>
+                <p style="margin:0; font-family:Arial,Helvetica,sans-serif; font-size:12px; line-height:1.6; color:#c2c6cc; word-break:break-all;">{fallback} <a href="{link}" style="color:#9ca3af;">{link}</a></p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:18px 32px; border-top:1px solid #eceef0;">
+                <p style="margin:0; font-family:Arial,Helvetica,sans-serif; font-size:12px; color:#9ca3af;">{signoff}</p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
+"""
 
 
 def build_verification_email(name: str, link: str, lang: str = "en"):
     tpl = VERIFICATION_TEMPLATES.get(lang) or VERIFICATION_TEMPLATES["en"]
     text_body = tpl["body"].format(name=name, link=link)
-    html_body = tpl["html"].format(name=name, link=link)
+    html_body = _VERIFICATION_HTML.format(
+        html_lang=lang if lang in VERIFICATION_TEMPLATES else "en",
+        subject=tpl["subject"],
+        heading=tpl["heading"],
+        greeting=tpl["greeting"].format(name=name),
+        intro=tpl["intro"],
+        button=tpl["button"],
+        expiry=tpl["expiry"],
+        fallback=tpl["fallback"],
+        signoff=tpl["signoff"],
+        link=link,
+    )
     return tpl["subject"], text_body, html_body
 
 

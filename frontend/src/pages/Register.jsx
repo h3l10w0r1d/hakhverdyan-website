@@ -59,7 +59,7 @@ export default function Register() {
         name: form.name, email: form.email, phone: form.phone || null, password: form.password,
         lang: i18n.resolvedLanguage,
       });
-      navigate("/account");
+      navigate("/verify-email");
     } catch (err) {
       setError(err.status === 409 ? t("auth.emailTaken") : t("auth.genericError"));
     } finally {

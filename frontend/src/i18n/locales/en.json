@@ -376,7 +376,8 @@
     "successDesc": "Booking #{{id}} is confirmed. We'll call you within 48 hours.",
     "emailPreviewLabel": "Confirmation email sent to {{email}} (simulated)",
     "doneBtn": "Done",
-    "loginRequiredToast": "Please log in or create an account to submit your request."
+    "loginRequiredToast": "Please log in or create an account to submit your request.",
+    "verifyRequiredToast": "Please verify your email to submit your request."
   },
   "blog": {
     "tag": "Blog",
@@ -452,10 +453,11 @@
     "verifyErrorTitle": "This link is invalid or has expired",
     "verifyErrorDesc": "It may have already been used. You can request a new one from your account.",
     "goToAccount": "Go to my account",
-    "verifyBannerDesc": "Please verify your email address. We sent a confirmation link to {{email}}.",
     "resendVerification": "Resend email",
     "resendSent": "Verification email sent.",
     "resendError": "Couldn't resend right now — please try again shortly.",
-    "resendRateLimited": "You've requested this recently — please wait a bit before trying again."
+    "resendRateLimited": "You've requested this recently — please wait a bit before trying again.",
+    "verifyPendingTitle": "Verify your email to continue",
+    "verifyPendingDesc": "We sent a confirmation link to {{email}}. Check your inbox and confirm it — you'll need to before you can request a quote."
   }
 }

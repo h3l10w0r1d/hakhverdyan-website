@@ -21,6 +21,8 @@ def create_quote(
     customer: Customer = Depends(get_current_customer),
 ):
     enforce_rate_limit(db, f"quote:{get_client_ip(request)}", limit=10, window=timedelta(hours=1))
+    if not customer.email_verified:
+        raise HTTPException(status_code=403, detail="Please verify your email before submitting a quote request")
     if not payload.items:
         raise HTTPException(status_code=400, detail="Quote request must include at least one item")
 
