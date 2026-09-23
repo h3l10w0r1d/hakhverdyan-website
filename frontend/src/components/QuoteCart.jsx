@@ -1,20 +1,24 @@
 import { useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import gsap from "gsap";
 import { useQuoteCart } from "../context/QuoteCartContext";
+import { useCustomerAuth } from "../context/CustomerAuthContext";
 import { CartIcon, ArrowIcon, CheckIcon } from "../lib/icons";
 
 const fmt = n => n.toLocaleString("en-US") + "֏";
 
 export default function QuoteCart() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { isAuthenticated } = useCustomerAuth();
   const {
     items, totalCount, totalPrice, removeItem,
     panelOpen, setPanelOpen,
     step, goToForm, backToCart,
     form, updateForm, formErrors, submitting, submitBooking, finishBooking,
     confirmation,
-    toast, flyEvent, clearFlyEvent,
+    toast, setToast, flyEvent, clearFlyEvent,
   } = useQuoteCart();
   const fabRef = useRef(null);
   const panelRef = useRef(null);
@@ -68,6 +72,19 @@ export default function QuoteCart() {
   function onSubmit(e) {
     e.preventDefault();
     submitBooking();
+  }
+
+  // Guests can build a cart, but submitting a request requires an account —
+  // send them to log in (or register) instead of the contact-details step.
+  function handleContinue() {
+    if (!items.length) { goToForm(); return; }
+    if (!isAuthenticated) {
+      setPanelOpen(false);
+      setToast(t("quoteCart.loginRequiredToast"));
+      navigate("/login");
+      return;
+    }
+    goToForm();
   }
 
   const title = step === "cart" ? t("quoteCart.title") : step === "form" ? t("quoteCart.detailsTitle") : t("quoteCart.successTitle");
@@ -166,7 +183,7 @@ export default function QuoteCart() {
           {step === "cart" && (
             <>
               <div className="total"><span>{t("quoteCart.estimatedTotal")}</span><span>{fmt(totalPrice)}</span></div>
-              <button className="btn-primary" onClick={goToForm}>
+              <button className="btn-primary" onClick={handleContinue}>
                 {t("quoteCart.continueBtn")} <ArrowIcon size={16} />
               </button>
             </>

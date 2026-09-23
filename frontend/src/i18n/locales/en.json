@@ -375,7 +375,8 @@
     "successTitle": "Booking confirmed",
     "successDesc": "Booking #{{id}} is confirmed. We'll call you within 48 hours.",
     "emailPreviewLabel": "Confirmation email sent to {{email}} (simulated)",
-    "doneBtn": "Done"
+    "doneBtn": "Done",
+    "loginRequiredToast": "Please log in or create an account to submit your request."
   },
   "blog": {
     "tag": "Blog",

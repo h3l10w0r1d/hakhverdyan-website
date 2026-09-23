@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { submitQuote } from "../lib/api";
 import { loadSavedContact, saveContact } from "../lib/userPrefs";
+import { useCustomerAuth } from "./CustomerAuthContext";
 
 const CART_KEY = "hakhverdyan_quote_v1";
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -23,6 +24,7 @@ function loadForm() {
 
 export function QuoteCartProvider({ children }) {
   const { t, i18n } = useTranslation();
+  const { customer } = useCustomerAuth();
   const [items, setItems] = useState(loadCart);
   const [panelOpen, setPanelOpen] = useState(false);
   const [step, setStep] = useState("cart"); // 'cart' | 'form' | 'success'
@@ -36,6 +38,19 @@ export function QuoteCartProvider({ children }) {
   useEffect(() => {
     localStorage.setItem(CART_KEY, JSON.stringify(items));
   }, [items]);
+
+  // Once logged in, fill in whatever contact fields the form doesn't already
+  // have from the account itself — the customer shouldn't have to retype
+  // details we already have on file.
+  useEffect(() => {
+    if (!customer) return;
+    setForm(f => ({
+      name: f.name || customer.name || "",
+      email: f.email || customer.email || "",
+      phone: f.phone || customer.phone || "",
+      note: f.note,
+    }));
+  }, [customer]);
 
   useEffect(() => {
     if (!toast) return;
