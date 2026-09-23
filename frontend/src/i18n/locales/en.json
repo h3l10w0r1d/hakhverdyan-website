@@ -458,6 +458,8 @@
     "resendError": "Couldn't resend right now — please try again shortly.",
     "resendRateLimited": "You've requested this recently — please wait a bit before trying again.",
     "verifyPendingTitle": "Verify your email to continue",
-    "verifyPendingDesc": "We sent a confirmation link to {{email}}. Check your inbox and confirm it — you'll need to before you can request a quote."
+    "verifyPendingDesc": "We sent a confirmation link to {{email}}. Check your inbox and confirm it — you'll need to before you can request a quote.",
+    "profileHeading": "Profile",
+    "profileSub": "Update your name and phone number."
   }
 }

@@ -71,6 +71,8 @@ export default function Account() {
               <p className="sub">{customer.email}</p>
             </div>
 
+            <h2 className="account-section-title">{t("auth.profileHeading")}</h2>
+            <p className="section-sub">{t("auth.profileSub")}</p>
             <form className="contact-form auth-form" onSubmit={handleProfileSubmit}>
               <div className="form-row">
                 <div className="form-field full">

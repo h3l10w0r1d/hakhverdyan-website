@@ -1020,10 +1020,12 @@ footer{ position:relative; z-index:1; padding:64px 32px 30px; border-top:1px sol
 .auth-switch{ text-align:center; margin-top:20px; font-size:14px; color:var(--grey-600); }
 .auth-switch a{ color:var(--ink); font-weight:700; }
 .auth-switch a:hover{ color:var(--red); }
-.auth-logout{ width:100%; justify-content:center; margin-top:14px; }
+.auth-logout{ width:100%; justify-content:center; margin-top:28px; }
 
-.account-grid{ display:grid; grid-template-columns:1fr 1.1fr; gap:64px; align-items:start; }
+.account-grid{ display:grid; grid-template-columns:1fr 1.1fr; gap:72px; align-items:start; }
 .account-grid .auth-wrap{ max-width:none; margin:0; }
+.account-grid .contact-form{ padding:40px; }
+.account-grid .form-row{ gap:20px; margin-bottom:0; }
 
 .account-quotes{ display:flex; flex-direction:column; gap:16px; }
 .account-quote-card{ border:1px solid var(--grey-100); border-radius:var(--radius-md); padding:20px; }
