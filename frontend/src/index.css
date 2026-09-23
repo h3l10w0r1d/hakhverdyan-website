@@ -683,32 +683,8 @@ footer{ position:relative; z-index:1; padding:64px 32px 30px; border-top:1px sol
 .skeleton-line{ margin-bottom:10px; }
 @keyframes skeleton-shimmer{ 0%{ background-position:100% 50%; } 100%{ background-position:0 50%; } }
 
-/* ---------- Product quick view (hover popup on desktop, tap sheet on mobile) ---------- */
-.qv-backdrop{
-  position:fixed; inset:0; z-index:500; background:rgba(15,15,18,0.55);
-  backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px);
-  display:flex; align-items:center; justify-content:center; padding:24px;
-}
-.qv-card{
-  position:relative; width:100%; max-width:440px; max-height:88vh;
-  background:#fff; border-radius:var(--radius-lg); overflow:hidden;
-  display:flex; flex-direction:column; box-shadow:0 40px 80px -20px rgba(10,10,15,0.5);
-}
-.qv-close{
-  position:absolute; top:14px; z-index:2; width:34px; height:34px; border-radius:var(--radius-sm); border:none;
-  background:rgba(20,20,25,0.55); color:#fff; backdrop-filter:blur(6px); cursor:pointer;
-  display:flex; align-items:center; justify-content:center; font-size:20px; line-height:1;
-  transition:background .2s ease;
-}
-.qv-close:hover{ background:rgba(20,20,25,0.8); }
-.qv-close:not(.is-back){ right:14px; }
-.qv-close.is-back{ left:14px; }
-.qv-media{
-  position:relative; height:260px; flex:none; background:linear-gradient(155deg, var(--grey-800), #14161a 70%);
-  overflow:hidden;
-}
-.qv-photo{ width:100%; height:100%; object-fit:cover; animation:qv-photo-in .3s ease; }
-.qv-media .product-badge{ top:auto; left:14px; bottom:14px; }
+/* ---------- Product page gallery nav (also used to be the quick-view popup's
+   nav before that popup was removed in favor of the dedicated product page) ---------- */
 @keyframes qv-photo-in{ from{ opacity:0.2; } to{ opacity:1; } }
 .qv-nav{
   position:absolute; top:50%; transform:translateY(-50%); z-index:2; width:34px; height:34px; border-radius:var(--radius-sm);
@@ -722,52 +698,8 @@ footer{ position:relative; z-index:1; padding:64px 32px 30px; border-top:1px sol
 .qv-dots{ position:absolute; bottom:12px; left:50%; transform:translateX(-50%); z-index:2; display:flex; gap:6px; }
 .qv-dot{ width:6px; height:6px; border-radius:50%; border:none; background:rgba(255,255,255,0.5); cursor:pointer; padding:0; transition:all .2s ease; }
 .qv-dot.active{ background:#fff; width:16px; border-radius:4px; }
-.qv-panel{ display:flex; flex-direction:column; flex:1; min-height:0; }
-.qv-body{ padding:22px 24px 4px; overflow-y:auto; flex:1; }
-.qv-name{ font-size:20px; font-weight:700; margin-bottom:6px; line-height:1.3; }
-.qv-spec{ font-size:14px; color:var(--grey-600); line-height:1.5; margin-bottom:16px; }
-.qv-description{ font-size:13.5px; color:var(--grey-600); line-height:1.6; margin-bottom:12px; }
-.qv-description:last-of-type{ margin-bottom:16px; }
-.qv-trust{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:18px; }
-.qv-trust span{
-  font-size:11.5px; font-weight:600; color:var(--grey-600); background:var(--grey-50);
-  padding:6px 10px; border-radius:6px;
-}
-.qv-footer{ display:flex; align-items:center; gap:10px; padding:16px 24px 22px; flex:none; }
-.qv-footer .qty-stepper{ flex:none; }
-.qv-footer .add-quote-btn{ white-space:normal; }
 
-@media (max-width: 560px){
-  .qv-backdrop{ align-items:flex-end; padding:0; }
-  .qv-card{ max-width:100%; height:90vh; height:90svh; border-radius:14px 14px 0 0; }
-  .qv-media{ height:260px; }
-  .qv-body{ display:flex; flex-direction:column; justify-content:center; }
-}
-
-/* Real desktop pointer: lay the card out horizontally (photo left, details
-   right) as a large, immersive overlay rather than a small popover. */
 @media (hover:hover) and (pointer:fine){
-  .qv-card{
-    flex-direction:row; width:min(94vw, 1280px); height:min(88vh, 820px);
-    max-width:none; max-height:none;
-  }
-  .qv-media{ width:52%; height:auto; flex:none; }
-  .qv-panel{ padding-top:0; }
-  .qv-body{ padding:52px 60px 12px; display:flex; flex-direction:column; justify-content:center; }
-  .qv-name{ font-size:32px; margin-bottom:10px; }
-  .qv-spec{ font-size:16.5px; margin-bottom:24px; max-width:480px; }
-  .qv-trust{ gap:10px; margin-bottom:28px; }
-  .qv-trust span{ font-size:13px; padding:8px 14px; }
-  .qv-body .product-price-row{ margin-bottom:4px; }
-  .qv-body .product-price{ font-size:32px; }
-  .qv-body .product-price-old{ font-size:16px; }
-  .qv-body .product-unit{ font-size:14px; }
-  .qv-footer{ padding:28px 60px 44px; }
-  .qv-footer .qty-stepper{ height:48px; }
-  .qv-footer .qty-stepper button{ width:40px; height:46px; font-size:18px; }
-  .qv-footer .add-quote-btn{ min-height:46px; font-size:14.5px; padding:12px 20px; }
-  .qv-close{ width:40px; height:40px; top:20px; }
-  .qv-close:not(.is-back){ right:20px; }
   .qv-nav{ width:40px; height:40px; }
 }
 

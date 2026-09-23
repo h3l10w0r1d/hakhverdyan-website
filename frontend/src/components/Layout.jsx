@@ -5,7 +5,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Nav from "./Nav";
 import Footer from "./Footer";
 import QuoteCart from "./QuoteCart";
-import ProductQuickView from "./ProductQuickView";
 import PageLoader from "./PageLoader";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -84,7 +83,6 @@ export default function Layout() {
       </main>
       <Footer />
       <QuoteCart />
-      <ProductQuickView />
     </>
   );
 }

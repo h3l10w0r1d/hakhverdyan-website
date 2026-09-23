@@ -6,7 +6,6 @@ import PageLoader from "./components/PageLoader";
 import ErrorBoundary from "./components/ErrorBoundary";
 import lazyWithReload from "./lib/lazyWithReload";
 import { QuoteCartProvider } from "./context/QuoteCartContext";
-import { ProductQuickViewProvider } from "./context/ProductQuickViewContext";
 import { AdminAuthProvider } from "./context/AdminAuthContext";
 import { AdminI18nProvider } from "./context/AdminI18nContext";
 import { CustomerAuthProvider } from "./context/CustomerAuthContext";
@@ -45,8 +44,7 @@ export default function App() {
       <AdminI18nProvider>
       <CustomerAuthProvider>
         <QuoteCartProvider>
-          <ProductQuickViewProvider>
-            <BrowserRouter>
+          <BrowserRouter>
               <ErrorBoundary>
                 <Suspense fallback={<PageLoader />}>
                   <Routes>
@@ -88,7 +86,6 @@ export default function App() {
                 </Suspense>
               </ErrorBoundary>
             </BrowserRouter>
-          </ProductQuickViewProvider>
         </QuoteCartProvider>
       </CustomerAuthProvider>
       </AdminI18nProvider>

@@ -2,7 +2,6 @@ import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useQuoteCart } from "../context/QuoteCartContext";
-import { useProductQuickView } from "../context/ProductQuickViewContext";
 import { PlusIcon } from "../lib/icons";
 import { productPhoto } from "../lib/productPhotos";
 import { localized } from "../lib/localized";
@@ -15,7 +14,6 @@ export default function ProductCard({ product, reveal = true }) {
   const lang = i18n.resolvedLanguage;
   const navigate = useNavigate();
   const { addItem } = useQuoteCart();
-  const { hoverIntent, cancelHoverIntent } = useProductQuickView();
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
   const thumbRef = useRef(null);
@@ -28,9 +26,7 @@ export default function ProductCard({ product, reveal = true }) {
     setTimeout(() => setAdded(false), 1100);
   }
 
-  // A click opens the product's own page (real URL, shareable, indexable);
-  // the hover-intent preview above still gives desktop users a fast peek
-  // without leaving the grid.
+  // A click opens the product's own page — real URL, shareable, indexable.
   function handleCardClick(e) {
     if (e.target.closest(INTERACTIVE_SELECTOR)) return;
     navigate(`/catalog/${product.id}`);
@@ -44,8 +40,6 @@ export default function ProductCard({ product, reveal = true }) {
     <div
       className={"product-card" + (reveal ? " reveal" : "")}
       onClick={handleCardClick}
-      onMouseEnter={() => hoverIntent(product)}
-      onMouseLeave={cancelHoverIntent}
     >
       <div className="product-thumb" ref={thumbRef}>
         <img className="product-photo" src={product.image || productPhoto(product.icon)} alt={name} loading="lazy" />
